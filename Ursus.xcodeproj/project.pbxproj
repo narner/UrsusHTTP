@@ -10,19 +10,19 @@
 		49FEF13B93F68D8807EC641A /* Pods_Ursus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C70F8B648B06359274A3D643 /* Pods_Ursus.framework */; };
 		6599BB261D51E4E70024D039 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6599BB251D51E4E70024D039 /* AppDelegate.swift */; };
 		6599BB281D51E4E70024D039 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6599BB271D51E4E70024D039 /* ViewController.swift */; };
-		6599BB2B1D51E4E70024D039 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6599BB291D51E4E70024D039 /* Main.storyboard */; };
-		6599BB2D1D51E4E70024D039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6599BB2C1D51E4E70024D039 /* Assets.xcassets */; };
-		6599BB301D51E4E70024D039 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6599BB2E1D51E4E70024D039 /* LaunchScreen.storyboard */; };
+		6599BB3D1D51E5E60024D039 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6599BB381D51E5E60024D039 /* Assets.xcassets */; };
+		6599BB3E1D51E5E60024D039 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6599BB391D51E5E60024D039 /* LaunchScreen.storyboard */; };
+		6599BB3F1D51E5E60024D039 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6599BB3A1D51E5E60024D039 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6599BB221D51E4E70024D039 /* Ursus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ursus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6599BB251D51E4E70024D039 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6599BB271D51E4E70024D039 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6599BB2A1D51E4E70024D039 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		6599BB2C1D51E4E70024D039 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		6599BB2F1D51E4E70024D039 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		6599BB311D51E4E70024D039 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6599BB381D51E5E60024D039 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6599BB391D51E5E60024D039 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		6599BB3A1D51E5E60024D039 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		6599BB3C1D51E5E60024D039 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		761124DAEC2FB8CCCA3071F2 /* Pods-Ursus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ursus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Ursus/Pods-Ursus.release.xcconfig"; sourceTree = "<group>"; };
 		96B5F07117CBBCC08E8E1879 /* Pods-Ursus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ursus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Ursus/Pods-Ursus.debug.xcconfig"; sourceTree = "<group>"; };
 		C70F8B648B06359274A3D643 /* Pods_Ursus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ursus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,12 +71,28 @@
 			children = (
 				6599BB251D51E4E70024D039 /* AppDelegate.swift */,
 				6599BB271D51E4E70024D039 /* ViewController.swift */,
-				6599BB291D51E4E70024D039 /* Main.storyboard */,
-				6599BB2C1D51E4E70024D039 /* Assets.xcassets */,
-				6599BB2E1D51E4E70024D039 /* LaunchScreen.storyboard */,
-				6599BB311D51E4E70024D039 /* Info.plist */,
+				6599BB371D51E5E60024D039 /* Assets */,
+				6599BB3B1D51E5E60024D039 /* Supporting Files */,
 			);
 			path = Ursus;
+			sourceTree = "<group>";
+		};
+		6599BB371D51E5E60024D039 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				6599BB381D51E5E60024D039 /* Assets.xcassets */,
+				6599BB391D51E5E60024D039 /* LaunchScreen.storyboard */,
+				6599BB3A1D51E5E60024D039 /* Main.storyboard */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		6599BB3B1D51E5E60024D039 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6599BB3C1D51E5E60024D039 /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		878396520B62548270AF0E3C /* Pods */ = {
@@ -149,9 +165,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6599BB301D51E4E70024D039 /* LaunchScreen.storyboard in Resources */,
-				6599BB2D1D51E4E70024D039 /* Assets.xcassets in Resources */,
-				6599BB2B1D51E4E70024D039 /* Main.storyboard in Resources */,
+				6599BB3F1D51E5E60024D039 /* Main.storyboard in Resources */,
+				6599BB3D1D51E5E60024D039 /* Assets.xcassets in Resources */,
+				6599BB3E1D51E5E60024D039 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,25 +232,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		6599BB291D51E4E70024D039 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6599BB2A1D51E4E70024D039 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		6599BB2E1D51E4E70024D039 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6599BB2F1D51E4E70024D039 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		6599BB321D51E4E70024D039 /* Debug */ = {
@@ -327,7 +324,7 @@
 			baseConfigurationReference = 96B5F07117CBBCC08E8E1879 /* Pods-Ursus.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Ursus/Info.plist;
+				INFOPLIST_FILE = "Ursus/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonome.Ursus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -339,7 +336,7 @@
 			baseConfigurationReference = 761124DAEC2FB8CCCA3071F2 /* Pods-Ursus.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Ursus/Info.plist;
+				INFOPLIST_FILE = "Ursus/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonome.Ursus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
