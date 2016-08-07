@@ -13,6 +13,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Ursus.GETAuth().then { auth in
+            print(auth)
+        }.error { error in
+            print(error)
+        }
     }
 
 }
