@@ -2,6 +2,11 @@
 
 An Urbit client for iOS in Swift.
 
+## Links
+
+- [Urbit web](http://urbit.org/docs/using/web/)
+- [`%eyre` specification](http://urbit.org/docs/arvo/internals/eyre/specification/)
+
 ## Usage
 
 For now, Ursus only supports authentication with your planet.
@@ -42,31 +47,35 @@ Ursus.DELETEAuth(oryx: oryx, ship: ship).then { auth in
 }
 ```
 
-## Next steps
-
-Set up the ability to send messages to a given app. The [`%click` example app](https://github.com/urbit/examples/tree/master/gall/click) is likely to be a good start.
-
-## Dependecies
-
 ## Demo application
 
-To run the demo application, you will need to open `AppDelegate.swift` and 
+There is a demo application in the `Ursus Demo` folder. You will need to open `AppDelegate.swift` and make sure `Ursus.baseURL` is set.
 
-## Wishlist
+## Cocoapods
 
-- Carthage
-- Place to stash Auth
-- Support for those `{ok: true}` ok/error responses
-- Demo app (which works with `pod Ursus try`)
-- Phonetic base validation (enum + StringLiteralConvertible)
-- Should be able to specify ship/event/desk before a request
-- Persistent auth with SSKeychain/SAMKeychain
-- Generalised support for galaxies, stars, planets etc
-- Send messages to individual apps
-- Find better way to handle base URL
-- Error cases:
-    - Invalid response
-    - Planet offline
-    - Code incorrect
-    - Phonetic base invalid
-- Marks, the basic paths like `/~/as`, `/~/am`, `/~/to`, `/~/of` etc
+Ursus can be installed by adding `pod 'Ursus', '~> 0.1'` to your `Podfile`.
+
+I can set up Carthage support if you need it.
+
+## Next steps/goals/ideas
+
+- Set up [messaging](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-4-messaging) and [subscriptions](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-5-subscriptions)
+
+- Talking to the [`%click` example app](https://github.com/urbit/examples/tree/master/gall/click) might be a good start...?
+
+- Persistent authorization (using SSKeychain/SAMKeychain)
+
+- Generalised support for phonetic base strings (perhaps object that conforms to `StringLiteralConvertible`, enum for galaxies, stars etc)
+
+- Easy specification of ship/event/desk when making a request
+
+- Mark specification
+
+- Clean usage of `/~/as`, `/~/am`, `/~/to`, `/~/of` etc
+
+## Dependencies
+
+- [Alamofire](https://github.com/Alamofire/Alamofire)
+- [AlamofireObjectMapper](https://github.com/tristanhimmelman/AlamofireObjectMapper)
+- [ObjectMapper](https://github.com/Hearst-DD/ObjectMapper)
+- [PromiseKit](https://github.com/mxcl/PromiseKit) (quite opinionated, I'd like to remove this eventually...)
