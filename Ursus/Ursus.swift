@@ -7,21 +7,46 @@
 //
 
 import Alamofire
-import AlamofireLogger
 import AlamofireObjectMapper
 import ObjectMapper
 import PromiseKit
 
+/// An Urbit API client.
 struct Ursus {
     
-    static var baseURL: String = "https://hidret-matped.urbit.org"
+    /**
+     The base URL used to make requests. This must be set before any requests are made.
+     
+     At this stage, this will usually be something like `https://pittyp-pittyp.urbit.org` or `http://localhost:8080`.
+     
+     Easiest thing to do is to add the following line to `application(didFinishLaunchingWithOptions:)`:
+     
+        Ursus.baseURL = "https://planet-name.urbit.org"
+     
+     Don't forget, your planet will need to be online for you to send messages to it!
+     */
+    static var baseURL: String?
     
     // MARK: - Requests
     
+    /**
+     Fetches an authentication object.
+     
+     - returns: A promise for an `Auth` object.
+     */
     static func GETAuth() -> Promise<Auth> {
         return request(.GET, "/~/auth.json")
     }
     
+    /**
+     Authorize a given user.
+     
+     - oryx: A unique CSRF token. Can be acquired from the results of `GETAuth`.
+     - ship: The ship's name, e.g.: `"pittyp-pittyp"`
+     - code: The ship's authentication code. Can be printed in dojo using `+code`.
+     
+     - returns: A promise for an `Auth` object.
+     */
     static func PUTAuth(oryx oryx: String, ship: String, code: String) -> Promise<Auth> {
         return request(.POST, "/~/auth.json?PUT", parameters: [
             "oryx": oryx,
@@ -30,6 +55,14 @@ struct Ursus {
             ])
     }
     
+    /**
+     Revoke authorization for a given user.
+     
+     - oryx: A unique CSRF token. Can be acquired from the results of `GETAuth`.
+     - ship: The ship's name, e.g.: `"pittyp-pittyp"`
+     
+     - returns: A promise for an empty `Auth` object (this needs to be revised).
+     */
     static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Auth> {
         return request(.POST, "/~/auth.json?DELETE", parameters: [
             "oryx": oryx,
@@ -39,11 +72,23 @@ struct Ursus {
     
     // MARK: - Promise wrapper
     
+    /**
+     Creates an HTTP request to a path on `baseURL`.
+     
+     - method: The HTTP method.
+     - path: The URL path, to be appended to `baseURL`.
+     - parameters: The parameters. Sent up as JSON. `nil` by default.
+     
+     - returns: A promise for an HTTP response.
+     */
     static func request<T: Mappable>(method: Alamofire.Method, _ path: Alamofire.URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Promise<T> {
-        let URLString = "\(self.baseURL)\(path)"
-        
         return Promise { fulfill, reject in
-            Alamofire.request(method, URLString, parameters: parameters, encoding: .JSON).log(level: .Verbose).responseObject { (response: Response<T, NSError>) in
+            guard let baseURL = baseURL else {
+                reject(Error.error(withCode: .NoBaseURLSpecified))
+                return
+            }
+            
+            Alamofire.request(method, "\(baseURL)\(path)", parameters: parameters, encoding: .JSON).responseObject { (response: Response<T, NSError>) in
                 switch response.result {
                 case .Success(let value):
                     fulfill(value)

@@ -9,34 +9,35 @@
 import Foundation
 import ObjectMapper
 
-/// An authentication response.
-struct Auth {
+/// An Urbit authentication response.
+/// Not unlike the [client state](http://urbit.org/~~/docs/arvo/internals/eyre/specification/#-2-2-authentication) as mentioned in the Arvo docs, except we don't really stash it anywhere (yet).
+public struct Auth {
     
     /// A list of allowed users.
-    var auth: [String]?
+    public var auth: [String]?
     
     /// A hash of `oryx`, used as an insecure view identifier
-    var ixor: String?
+    public var ixor: String?
     
     /// A unique CSRF token that identifies this view
-    var oryx: String?
+    public var oryx: String?
     
     /// The parent ship
-    var sein: String?
+    public var sein: String?
     
     /// The serving ship
-    var ship: String?
+    public var ship: String?
     
     /// The active user
-    var user: String?
+    public var user: String?
     
 }
 
 extension Auth: Mappable {
     
-    init?(_ map: Map) { }
+    public init?(_ map: Map) { }
     
-    mutating func mapping(map: Map) {
+    public mutating func mapping(map: Map) {
         auth <- map["auth"]
         ixor <- map["ixor"]
         oryx <- map["oryx"]

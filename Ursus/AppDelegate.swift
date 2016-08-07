@@ -14,6 +14,8 @@ import AlamofireNetworkActivityIndicator
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        Ursus.baseURL = "https://hidret-matped.urbit.org"
+        
         NetworkActivityIndicatorManager.sharedManager.isEnabled = true
         
         return true
