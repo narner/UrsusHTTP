@@ -1,6 +1,6 @@
 # Ursus
 
-An Urbit client for iOS in Swift.
+An Urbit HTTP client for iOS in Swift.
 
 ## Links
 
@@ -9,7 +9,7 @@ An Urbit client for iOS in Swift.
 
 ## Usage
 
-For now, Ursus only supports authentication with your planet.
+Ursus is very much a work in progress. For now, it only supports authentication with your planet.
 
 First, you need to set the `baseURL` on the Ursus client to the URL your planet is being served on. This might be something like `"https://pittyp-pittyp.urbit.org"` or `"http://localhost:8080"`. 
 
