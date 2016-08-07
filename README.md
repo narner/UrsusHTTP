@@ -10,7 +10,7 @@ An Urbit client for iOS in Swift.
 - Demo app (which works with `pod Ursus try`)
 - Phonetic base validation (enum + StringLiteralConvertible)
 - Should be able to specify ship/event/desk before a request
-
+- Persistent auth with SSKeychain
 - Error cases:
     - Invalid response
     - Planet offline

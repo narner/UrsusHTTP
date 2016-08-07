@@ -55,13 +55,29 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lxk-qh-qrz">
-                                <rect key="frame" x="160" y="178" width="55" height="33"/>
+                                <rect key="frame" x="139" y="178" width="98" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <state key="normal" title="Submit">
+                                <state key="normal" title="Authenticate">
                                     <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
-                                    <action selector="submitButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="c4v-8S-Uuo"/>
+                                    <action selector="authenticateButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="liG-Z3-ge2"/>
+                                </connections>
+                            </button>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="raL-4s-LrW">
+                                <rect key="frame" x="129" y="178" width="117" height="33"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Deauthenticate">
+                                    <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="deauthenticateButtonTapped" destination="BYZ-38-t0r" eventType="touchUpInside" id="e1B-Fw-GSe"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -71,12 +87,14 @@
                             <constraint firstItem="Lxk-qh-qrz" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="9UA-C6-qiT"/>
                             <constraint firstItem="Lxk-qh-qrz" firstAttribute="top" secondItem="cnE-zz-Mdt" secondAttribute="bottom" constant="16" id="Aic-ir-pHt"/>
                             <constraint firstItem="cnE-zz-Mdt" firstAttribute="top" secondItem="SwD-uA-FYu" secondAttribute="bottom" constant="8" id="CaF-0S-L6Q"/>
+                            <constraint firstItem="raL-4s-LrW" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="FpN-dM-TdR"/>
                             <constraint firstItem="cnE-zz-Mdt" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Lxo-Qy-NA8"/>
                             <constraint firstItem="VeI-x2-v2u" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="b3v-cP-OMJ"/>
                             <constraint firstItem="SwD-uA-FYu" firstAttribute="top" secondItem="VeI-x2-v2u" secondAttribute="bottom" constant="16" id="fVY-cp-t8Y"/>
                             <constraint firstItem="VeI-x2-v2u" firstAttribute="top" secondItem="EvR-S8-KBU" secondAttribute="bottom" constant="8" id="gaZ-qu-QDP"/>
                             <constraint firstItem="SwD-uA-FYu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iq7-Vr-2YD"/>
                             <constraint firstItem="EvR-S8-KBU" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="iuN-jl-mmc"/>
+                            <constraint firstItem="raL-4s-LrW" firstAttribute="top" secondItem="cnE-zz-Mdt" secondAttribute="bottom" constant="16" id="suK-Vg-jU3"/>
                             <constraint firstItem="cnE-zz-Mdt" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="uCw-Sy-lvk"/>
                             <constraint firstItem="VeI-x2-v2u" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="wRe-2m-bU3"/>
                         </constraints>
@@ -84,9 +102,10 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="authenticateButton" destination="Lxk-qh-qrz" id="Lby-RK-jfK"/>
                         <outlet property="codeTextField" destination="cnE-zz-Mdt" id="aRA-mx-dGc"/>
+                        <outlet property="deauthenticateButton" destination="raL-4s-LrW" id="PHf-oJ-6dB"/>
                         <outlet property="shipTextField" destination="VeI-x2-v2u" id="XsK-u2-IQe"/>
-                        <outlet property="submitButton" destination="Lxk-qh-qrz" id="Fca-GC-87i"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

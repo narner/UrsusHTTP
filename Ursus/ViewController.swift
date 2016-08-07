@@ -11,60 +11,99 @@ import PromiseKit
 
 class ViewController: UIViewController {
     
+    // MARK: State
+    
+    private var auth: Auth?
+    
     // MARK: Interface outlets
     
     @IBOutlet var shipTextField: UITextField!
     @IBOutlet var codeTextField: UITextField!
     
-    @IBOutlet var submitButton: UIButton!
+    @IBOutlet var authenticateButton: UIButton!
+    @IBOutlet var deauthenticateButton: UIButton!
     
     // MARK: Interface actions
     
-    @IBAction func submitButtonTapped() {
-        setTextFieldsEnabled(false)
+    @IBAction func authenticateButtonTapped() {
         authenticate(withShip: shipTextField.text!, andCode: codeTextField.text!)
     }
     
-    // MARK: Interface mutation
+    @IBAction func deauthenticateButtonTapped() {
+        deauthenticate(withShip: auth!.user!, andOryx: auth!.oryx!)
+    }
     
-    private func setTextFieldsEnabled(enabled: Bool) {
-        shipTextField.enabled = enabled
-        codeTextField.enabled = enabled
-        shipTextField.backgroundColor = enabled ? UIColor.whiteColor() : UIColor.lightGrayColor()
-        codeTextField.backgroundColor = enabled ? UIColor.whiteColor() : UIColor.lightGrayColor()
+    // MARK: Interface state
+    
+    private enum State {
+        case Authenticating
+        case Authenticated
+        case Deauthenticating
+        case Deauthenticated
+    }
+    
+    private func setState(state: State) {
+        shipTextField.enabled = state == .Deauthenticated
+        codeTextField.enabled = state == .Deauthenticated
+        
+        shipTextField.backgroundColor = state == .Deauthenticated ? UIColor.whiteColor() : UIColor.lightGrayColor()
+        codeTextField.backgroundColor = state == .Deauthenticated ? UIColor.whiteColor() : UIColor.lightGrayColor()
+        
+        authenticateButton.enabled = state == .Deauthenticated
+        deauthenticateButton.enabled = state == .Authenticated
+        
+        authenticateButton.hidden = state == .Authenticated || state == .Deauthenticating
+        deauthenticateButton.hidden = state == .Deauthenticated || state == .Authenticating
+    }
+    
+    // MARK: Life cycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setState(.Deauthenticated)
     }
     
     // MARK: Requests
     
     private func authenticate(withShip ship: String, andCode code: String) {
+        setState(.Authenticating)
+        
         Ursus.GETAuth().then { auth -> Promise<Auth> in
             return Ursus.PUTAuth(oryx: auth.oryx!, ship: ship, code: code)
         }.then { auth in
-            self.presentSuccessViewController(auth)
+            self.presentAlertController(withTitle: "Authentication success", message: "Logged in as ~\(auth.user!)") {
+                self.auth = auth
+                self.setState(.Authenticated)
+            }
         }.error { error in
-            self.presentErrorViewController(error as NSError)
+            self.presentAlertController(withTitle: "Authentication error", message: (error as NSError).localizedDescription) {
+                self.setState(.Deauthenticated)
+            }
+        }
+    }
+    
+    private func deauthenticate(withShip ship: String, andOryx oryx: String) {
+        setState(.Deauthenticating)
+        
+        Ursus.DELETEAuth(oryx: oryx, ship: ship).then { auth in
+            self.presentAlertController(withTitle: "Deauthentication success", message: "Logged out") {
+                self.auth = nil
+                self.setState(.Deauthenticated)
+            }
+        }.error { error in
+            self.presentAlertController(withTitle: "Deauthentication error", message: (error as NSError).localizedDescription) {
+                self.setState(.Authenticated)
+            }
         }
     }
     
     // MARK: Alerts
     
-    private func presentSuccessViewController(auth: Auth) {
-        let viewController = UIAlertController(title: "Success", message: "Logged in as ~\(auth.user!)", preferredStyle: .Alert)
-        
+    private func presentAlertController(withTitle title: String, message: String? = nil, handler: (Void -> Void)? = nil) {
+        let viewController = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         viewController.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
-            self.setTextFieldsEnabled(true)
+            handler?()
         }))
-        
-        presentViewController(viewController, animated: true, completion: nil)
-    }
-    
-    private func presentErrorViewController(error: NSError) {
-        let viewController = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .Alert)
-        
-        viewController.addAction(UIAlertAction(title: "OK", style: .Default, handler: { action in
-            self.setTextFieldsEnabled(true)
-        }))
-            
         presentViewController(viewController, animated: true, completion: nil)
     }
 
@@ -77,7 +116,6 @@ extension ViewController: UITextFieldDelegate {
         case shipTextField:
             codeTextField.becomeFirstResponder()
         case codeTextField:
-            setTextFieldsEnabled(false)
             authenticate(withShip: shipTextField.text!, andCode: codeTextField.text!)
         default:
             break
