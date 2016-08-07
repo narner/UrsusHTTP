@@ -12,7 +12,7 @@ import ObjectMapper
 import PromiseKit
 
 /// An Urbit API client.
-struct Ursus {
+public struct Ursus {
     
     /**
      The base URL used to make requests. This must be set before any requests are made.
@@ -25,16 +25,20 @@ struct Ursus {
      
      Don't forget, your planet will need to be online for you to send messages to it!
      */
-    static var baseURL: String?
+    public static var baseURL: String?
     
-    // MARK: - Requests
+}
+
+// MARK: - Authentication
+
+extension Ursus {
     
     /**
      Fetches an authentication object.
      
      - returns: A promise for an `Auth` object.
      */
-    static func GETAuth() -> Promise<Auth> {
+    public static func GETAuth() -> Promise<Auth> {
         return request(.GET, "/~/auth.json")
     }
     
@@ -47,7 +51,7 @@ struct Ursus {
      
      - returns: A promise for an `Auth` object.
      */
-    static func PUTAuth(oryx oryx: String, ship: String, code: String) -> Promise<Auth> {
+    public static func PUTAuth(oryx oryx: String, ship: String, code: String) -> Promise<Auth> {
         return request(.POST, "/~/auth.json?PUT", parameters: [
             "oryx": oryx,
             "ship": ship,
@@ -63,14 +67,18 @@ struct Ursus {
      
      - returns: A promise for an empty `Auth` object (this needs to be revised).
      */
-    static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Auth> {
+    public static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Auth> {
         return request(.POST, "/~/auth.json?DELETE", parameters: [
             "oryx": oryx,
             "ship": ship
             ])
     }
-    
-    // MARK: - Promise wrapper
+
+}
+
+// MARK: - Request constructors
+
+extension Ursus {
     
     /**
      Creates an HTTP request to a path on `baseURL`.
@@ -81,7 +89,7 @@ struct Ursus {
      
      - returns: A promise for an HTTP response.
      */
-    static func request<T: Mappable>(method: Alamofire.Method, _ path: Alamofire.URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Promise<T> {
+    public static func request<T: Mappable>(method: Alamofire.Method, _ path: Alamofire.URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Promise<T> {
         return Promise { fulfill, reject in
             guard let baseURL = baseURL else {
                 reject(Error.error(withCode: .NoBaseURLSpecified))

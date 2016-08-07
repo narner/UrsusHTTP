@@ -8,6 +8,7 @@
 
 import UIKit
 import PromiseKit
+import Ursus
 
 class ViewController: UIViewController {
     

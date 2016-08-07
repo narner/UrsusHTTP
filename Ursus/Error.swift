@@ -24,7 +24,7 @@ public struct Error {
         private var localizedDescription: String {
             switch self {
             case .NoBaseURLSpecified:
-                return "No base URL specified"
+                return "No base URL specified. Please set the baseURL property on the Ursus client."
             }
         }
     }

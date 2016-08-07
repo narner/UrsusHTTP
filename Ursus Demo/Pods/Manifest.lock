@@ -25,13 +25,19 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (3.4.2):
     - PromiseKit/CorePromise
+  - Ursus (0.1.0):
+    - Alamofire (~> 3.4)
+    - AlamofireObjectMapper (~> 3.0)
+    - ObjectMapper (~> 1.3)
+    - PromiseKit (~> 3.4)
 
 DEPENDENCIES:
-  - Alamofire (~> 3.4)
   - AlamofireNetworkActivityIndicator (~> 1.0)
-  - AlamofireObjectMapper (~> 3.0)
-  - ObjectMapper (~> 1.3)
-  - PromiseKit (~> 3.4)
+  - Ursus (from `..`)
+
+EXTERNAL SOURCES:
+  Ursus:
+    :path: ".."
 
 SPEC CHECKSUMS:
   Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
@@ -40,7 +46,8 @@ SPEC CHECKSUMS:
   ObjectMapper: 4eb08a726e9791a93b2632049951b56a7c17e471
   OMGHTTPURLRQ: 1e54807cb7d5dbb506926e53498e1e9ac5720c79
   PromiseKit: 58b5af222ac334fd36c83b0669747be16eecdf90
+  Ursus: f22395e1ff407c8ddd7d60093b6d3f3e26cc4575
 
-PODFILE CHECKSUM: d2c21ebd04e69ad19db94ac67c69ef705afc2d76
+PODFILE CHECKSUM: d6b39ba370e62bca332303109cf19faa0cd5486a
 
 COCOAPODS: 1.0.1

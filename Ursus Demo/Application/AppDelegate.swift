@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Ursus
 import AlamofireNetworkActivityIndicator
 
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,9 +15,10 @@ import AlamofireNetworkActivityIndicator
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        Ursus.baseURL = "https://hidret-matped.urbit.org"
-        
         NetworkActivityIndicatorManager.sharedManager.isEnabled = true
+        
+        // Uncomment this and set it to your planet's url, e.g. `"https://pittyp-pittyp.urbit.org"`
+        // Ursus.baseURL = "https://xxxxxx-xxxxxx.urbit.org"
         
         return true
     }
