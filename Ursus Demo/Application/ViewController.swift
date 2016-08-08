@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     
     @IBOutlet var authenticateButton: UIButton!
     @IBOutlet var deauthenticateButton: UIButton!
+    @IBOutlet var clickButton: UIButton!
     
     // MARK: Interface actions
     
@@ -32,6 +33,10 @@ class ViewController: UIViewController {
     
     @IBAction func deauthenticateButtonTapped() {
         deauthenticate(withShip: auth!.user!, andOryx: auth!.oryx!)
+    }
+    
+    @IBAction func clickButtonTapped() {
+        click()
     }
     
     // MARK: Interface state
@@ -95,6 +100,14 @@ class ViewController: UIViewController {
             self.presentAlertController(withTitle: "Deauthentication error", message: (error as NSError).localizedDescription) {
                 self.setState(.Authenticated)
             }
+        }
+    }
+    
+    private func click() {
+        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", auth: auth!).then { object in
+            print(object)
+        }.error { error in
+            print(error)
         }
     }
     

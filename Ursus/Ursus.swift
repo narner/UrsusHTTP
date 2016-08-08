@@ -39,7 +39,7 @@ extension Ursus {
      - returns: A promise for an `Auth` object.
      */
     public static func GETAuth() -> Promise<Auth> {
-        return request(.GET, "/~/auth.json")
+        return request(.GET, "/~/auth.json").promiseObject()
     }
     
     /**
@@ -52,11 +52,13 @@ extension Ursus {
      - returns: A promise for an `Auth` object.
      */
     public static func PUTAuth(oryx oryx: String, ship: String, code: String) -> Promise<Auth> {
-        return request(.POST, "/~/auth.json?PUT", parameters: [
+        let parameters = [
             "oryx": oryx,
             "ship": ship,
             "code": code
-            ])
+        ]
+        
+        return request(.POST, "/~/auth.json?PUT", parameters: parameters).promiseObject()
     }
     
     /**
@@ -65,18 +67,47 @@ extension Ursus {
      - oryx: A unique CSRF token. Can be acquired from the results of `GETAuth`.
      - ship: The ship's name, e.g.: `"pittyp-pittyp"`
      
-     - returns: A promise for an empty `Auth` object (this needs to be revised).
+     - returns: A promise for a `Status` object.
      */
-    public static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Auth> {
-        return request(.POST, "/~/auth.json?DELETE", parameters: [
+    public static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Status> {
+        let parameters = [
             "oryx": oryx,
             "ship": ship
-            ])
+        ]
+        
+        return request(.POST, "/~/auth.json?DELETE", parameters: parameters).promiseObject()
     }
 
 }
 
-// MARK: - Request constructors
+// MARK: - Messaging
+
+extension Ursus {
+    
+    /**
+     Posts a message to an Urbit application.
+     
+     - appl: The urbit application, e.g.: `"examples-click"`.
+     - mark: The application's mark, e.g.: `"examples-click-clique"`
+     
+     - returns: A promise for a `Status` object.
+     */
+    public static func POSTTo(appl appl: String, mark: String, parameters: [String: AnyObject]? = nil, auth: Auth) -> Promise<Status> {
+        let parameters = [
+            "oryx": auth.oryx!,
+            "xyro":"click",
+            "ship":"hidret-matped",
+            "appl":"examples-click",
+            "mark":"examples-click-clique",
+            "wire":"/"
+        ]
+        
+        return request(.POST, "/~/to/\(appl)/\(mark).json", parameters: parameters).promiseObject()
+    }
+    
+}
+
+// MARK: - Requests
 
 extension Ursus {
     
@@ -87,16 +118,48 @@ extension Ursus {
      - path: The URL path, to be appended to `baseURL`.
      - parameters: The parameters. Sent up as JSON. `nil` by default.
      
-     - returns: A promise for an HTTP response.
+     - returns: An HTTP request.
      */
-    public static func request<T: Mappable>(method: Alamofire.Method, _ path: Alamofire.URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Promise<T> {
+    public static func request(method: Alamofire.Method, _ path: Alamofire.URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Request {
+        guard let baseURL = baseURL else {
+            fatalError("Please set `Ursus.baseURL`.")
+        }
+        
+        return Alamofire.request(method, "\(baseURL)\(path)", parameters: parameters, encoding: .JSON)
+    }
+    
+}
+
+// MARK: - Promises
+
+extension Request {
+    
+    /**
+     Wraps an HTTP request in a promise of type `Promise<AnyObject>`.
+     
+     - returns: A promise for a JSON object.
+     */
+    public func promiseJSON() -> Promise<AnyObject> {
         return Promise { fulfill, reject in
-            guard let baseURL = baseURL else {
-                reject(Error.error(withCode: .NoBaseURLSpecified))
-                return
+            self.responseJSON { (response: Response<AnyObject, NSError>) in
+                switch response.result {
+                case .Success(let value):
+                    fulfill(value)
+                case .Failure(let error):
+                    reject(error)
+                }
             }
-            
-            Alamofire.request(method, "\(baseURL)\(path)", parameters: parameters, encoding: .JSON).responseObject { (response: Response<T, NSError>) in
+        }
+    }
+    
+    /**
+     Wraps an HTTP request in a promise of type `Promise<T>` where `T` conforms to `Mappable`.
+     
+     - returns: A promise for an ObjectMapper object.
+     */
+    public func promiseObject<T: Mappable>() -> Promise<T> {
+        return Promise { fulfill, reject in
+            self.responseObject { (response: Response<T, NSError>) in
                 switch response.result {
                 case .Success(let value):
                     fulfill(value)

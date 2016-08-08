@@ -59,6 +59,8 @@ I can set up Carthage support if you need it.
 
 ## Next steps/goals/ideas
 
+- Decouple PromiseKit/ObjectMapper
+
 - Set up [messaging](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-4-messaging) and [subscriptions](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-5-subscriptions)
 
 - Talking to the [`%click` example app](https://github.com/urbit/examples/tree/master/gall/click) might be a good start...?
@@ -72,6 +74,8 @@ I can set up Carthage support if you need it.
 - Mark specification
 
 - Clean usage of `/~/as`, `/~/am`, `/~/to`, `/~/of` etc
+
+- Figure out what to do about Status objects (`{ok: true}`). Should they be handled earlier in the `responseObject` chain? Might need some special handling of `500` responses etc...
 
 ## Dependencies
 
