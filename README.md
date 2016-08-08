@@ -9,9 +9,9 @@ An Urbit HTTP client for iOS in Swift.
 
 ## Usage
 
-Ursus is very much a work in progress. For now, it only supports authentication with your planet.
+Ursus is very much a work in progress, and with Arvo's HTTP interface subject to change this is mostly just a proof of concept for now. However, authentication is supported, and you can send messages to apps running on your ship.
 
-First, you need to set the `baseURL` on the Ursus client to the URL your planet is being served on. This might be something like `"https://pittyp-pittyp.urbit.org"` or `"http://localhost:8080"`. 
+To get set up, first you need to set the `baseURL` on the Ursus client to the URL your planet is being served on. This might be something like `"https://pittyp-pittyp.urbit.org"` or `"http://localhost:8080"`. 
 
 ```swift
 Ursus.baseURL = "https://pittyp-pittyp.urbit.org"
@@ -42,6 +42,23 @@ let oryx = self.auth!.oryx!
 Ursus.DELETEAuth(oryx: oryx, ship: ship).then { auth in
     self.auth = nil // Throw away our authentication object
     print("Signed out successfully")
+}.error { error in
+    print("Something went wrong", error.localizedDescription)
+}
+```
+
+Sending a message is also straightforward:
+
+```swift
+let appl = "examples-click"
+let mark = "examples-click-clique"
+let xyro = "click"
+let wire = "/"
+
+let auth = self.auth!
+
+Ursus.POSTTo(appl: appl, mark: mark, xyro: xyro, wire: wire, auth: auth).then { object in
+    print("Success")
 }.error { error in
     print("Something went wrong", error.localizedDescription)
 }
