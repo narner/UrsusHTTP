@@ -9,7 +9,7 @@ An Urbit HTTP client for iOS in Swift.
 
 ## Usage
 
-Ursus is very much a work in progress, and with Arvo's HTTP interface subject to change this is mostly just a proof of concept for now. However, authentication is supported, and you can send messages to apps running on your ship.
+Ursus is very much a work in progress, and with `%eyre`'s HTTP interface subject to change this is mostly just a proof of concept for now. However, authentication is supported, and you can send messages to apps running on your ship.
 
 To get set up, first you need to set the `baseURL` on the Ursus client to the URL your planet is being served on. This might be something like `"https://pittyp-pittyp.urbit.org"` or `"http://localhost:8080"`. 
 
@@ -69,6 +69,8 @@ Ursus.POSTTo(appl: appl, mark: mark, xyro: xyro, wire: wire, auth: auth).then { 
 There is a demo application in the `Ursus Demo` folder. You will need to open `AppDelegate.swift` and make sure `Ursus.baseURL` is set.
 
 The application can [authenticate](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-3-authentication) your session, and [send a message](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-4-messaging) to the [`%examples-click`](https://github.com/urbit/examples/tree/d3ac46d8f68335cb4dcf178e3953a829655d9a82/gall/click) application, if you have it running.
+
+![Ursus Demo screenshot](/Ursus Demo/Screenshot.png?raw=true "Ursus Demo screenshot")
 
 ## Cocoapods
 
