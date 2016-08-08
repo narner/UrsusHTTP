@@ -36,7 +36,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func clickButtonTapped() {
-        click()
+        click(withXyro: "click", andOryx: auth!.oryx!)
     }
     
     // MARK: Interface state
@@ -117,8 +117,8 @@ class ViewController: UIViewController {
      See https://github.com/urbit/examples/tree/d3ac46d8f68335cb4dcf178e3953a829655d9a82/gall/click
      */
     
-    private func click() {
-        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", xyro: "click", wire: "/", auth: auth!).then { object in
+    private func click(withXyro xyro: String, andOryx oryx: String) {
+        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", oryx: oryx, wire: "/", xyro: xyro).then { object in
             self.presentAlertController(withTitle: "Click success")
         }.error { error in
             self.presentAlertController(withTitle: "Click error", message: (error as NSError).localizedDescription)

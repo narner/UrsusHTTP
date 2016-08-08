@@ -66,7 +66,7 @@ extension Ursus {
     /**
      Revoke authorization for a given user.
      
-     - oryx: A unique CSRF token. Can be acquired from the results of `GETAuth`.
+     - oryx: The CSRF token. Can be acquired from the results of `GETAuth`.
      - ship: The ship's name, e.g.: `"pittyp-pittyp"`
      
      - returns: A promise for a `Status` object.
@@ -92,21 +92,18 @@ extension Ursus {
      Posts a message to an Urbit application.
      
      - appl: The application
-     - mark: The mark
-     - xyro: Data which will be converted to the `mark`
-     - wire: The current path, e.g. `"/"`
-     - auth: The authorization object for the current session.
+     - mark: The application's mark
+     - oryx: The CSRF token. Can be acquired from the results of `GETAuth`.
+     - wire: The path, e.g. `"/"`
+     - xyro: Data which will be converted to the `mark`.
      
      - returns: A promise for a `Status` object.
      */
-    public static func POSTTo(appl appl: String, mark: String, xyro: String, wire: String, auth: Auth) -> Promise<Status> {
+    public static func POSTTo(appl appl: String, mark: String, oryx: String, wire: String, xyro: String) -> Promise<Status> {
         let parameters = [
-            "oryx": auth.oryx!,
-            "xyro": xyro,
-            "ship": auth.user!,
-            "appl": appl,
-            "mark": mark,
-            "wire": wire
+            "oryx": oryx,
+            "wire": wire,
+            "xyro": xyro
         ]
         
         return request(.POST, "/~/to/\(appl)/\(mark).json", parameters: parameters).promiseObject()
