@@ -65,7 +65,7 @@ I can set up Carthage support if you need it.
 
 - Talking to the [`%click` example app](https://github.com/urbit/examples/tree/master/gall/click) might be a good start...?
 
-- Persistent authorization (using SSKeychain/SAMKeychain)
+- Persistent authorization (using SSKeychain/SAMKeychain) and clean up ship/oryx vs auth arguments
 
 - Generalised support for phonetic base strings (perhaps object that conforms to `StringLiteralConvertible`, enum for galaxies, stars etc. Might be best to wait until after the great renaming, though)
 

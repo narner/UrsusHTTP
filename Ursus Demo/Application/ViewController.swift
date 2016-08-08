@@ -60,6 +60,8 @@ class ViewController: UIViewController {
         
         authenticateButton.hidden = state == .Authenticated || state == .Deauthenticating
         deauthenticateButton.hidden = state == .Deauthenticated || state == .Authenticating
+        
+        clickButton.enabled = state == .Authenticated
     }
     
     // MARK: Life cycle
@@ -70,6 +72,12 @@ class ViewController: UIViewController {
     }
     
     // MARK: Requests
+    
+    /*
+     These methods authenticate and deauthenticate your session.
+     
+     See http://urbit.org/docs/arvo/internals/eyre/specification/#-1-3-authentication
+     */
     
     private func authenticate(withShip ship: String, andCode code: String) {
         setState(.Authenticating)
@@ -103,11 +111,17 @@ class ViewController: UIViewController {
         }
     }
     
+    /*
+     This method sends a message to the `examples-click` application, if you have it running.
+     
+     See https://github.com/urbit/examples/tree/d3ac46d8f68335cb4dcf178e3953a829655d9a82/gall/click
+     */
+    
     private func click() {
-        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", auth: auth!).then { object in
-            print(object)
+        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", xyro: "click", wire: "/", auth: auth!).then { object in
+            self.presentAlertController(withTitle: "Click success")
         }.error { error in
-            print(error)
+            self.presentAlertController(withTitle: "Click error", message: (error as NSError).localizedDescription)
         }
     }
     

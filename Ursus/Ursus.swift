@@ -31,6 +31,8 @@ public struct Ursus {
 
 // MARK: - Authentication
 
+// See http://urbit.org/docs/arvo/internals/eyre/specification/#-1-3-authentication
+
 extension Ursus {
     
     /**
@@ -82,24 +84,29 @@ extension Ursus {
 
 // MARK: - Messaging
 
+// See http://urbit.org/docs/arvo/internals/eyre/specification/#-1-4-messaging
+
 extension Ursus {
     
     /**
      Posts a message to an Urbit application.
      
-     - appl: The urbit application, e.g.: `"examples-click"`.
-     - mark: The application's mark, e.g.: `"examples-click-clique"`
+     - appl: The application
+     - mark: The mark
+     - xyro: Data which will be converted to the `mark`
+     - wire: The current path, e.g. `"/"`
+     - auth: The authorization object for the current session.
      
      - returns: A promise for a `Status` object.
      */
-    public static func POSTTo(appl appl: String, mark: String, parameters: [String: AnyObject]? = nil, auth: Auth) -> Promise<Status> {
+    public static func POSTTo(appl appl: String, mark: String, xyro: String, wire: String, auth: Auth) -> Promise<Status> {
         let parameters = [
             "oryx": auth.oryx!,
-            "xyro":"click",
-            "ship":"hidret-matped",
-            "appl":"examples-click",
-            "mark":"examples-click-clique",
-            "wire":"/"
+            "xyro": xyro,
+            "ship": auth.user!,
+            "appl": appl,
+            "mark": mark,
+            "wire": wire
         ]
         
         return request(.POST, "/~/to/\(appl)/\(mark).json", parameters: parameters).promiseObject()
@@ -122,7 +129,7 @@ extension Ursus {
      */
     public static func request(method: Alamofire.Method, _ path: Alamofire.URLStringConvertible, parameters: [String: AnyObject]? = nil) -> Request {
         guard let baseURL = baseURL else {
-            fatalError("Please set `Ursus.baseURL`.")
+            fatalError("Please set `Ursus.baseURL` to the URL your ship is being served on.")
         }
         
         return Alamofire.request(method, "\(baseURL)\(path)", parameters: parameters, encoding: .JSON)
