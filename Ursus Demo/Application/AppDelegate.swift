@@ -18,7 +18,7 @@ import AlamofireNetworkActivityIndicator
         NetworkActivityIndicatorManager.sharedManager.isEnabled = true
         
         // Uncomment this and set it to your planet's url, e.g. `"https://pittyp-pittyp.urbit.org"`
-        // Ursus.baseURL = "https://xxxxxx-xxxxxx.urbit.org"
+        Ursus.baseURL = "https://hidret-matped.urbit.org/~hidret-matped/sandbox/0"
         
         return true
     }

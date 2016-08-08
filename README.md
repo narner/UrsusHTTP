@@ -65,9 +65,9 @@ I can set up Carthage support if you need it.
 
 - Persistent authorization (using SSKeychain/SAMKeychain)
 
-- Generalised support for phonetic base strings (perhaps object that conforms to `StringLiteralConvertible`, enum for galaxies, stars etc)
+- Generalised support for phonetic base strings (perhaps object that conforms to `StringLiteralConvertible`, enum for galaxies, stars etc. Might be best to wait until after the great renaming, though)
 
-- Easy specification of ship/event/desk when making a request
+- Easy specification of ship/event/desk when making a request (e.g.: `"http://localhost:8080/~pittyp-pittyp/sandbox/0"`)
 
 - Mark specification
 
