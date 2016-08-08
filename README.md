@@ -51,6 +51,8 @@ Ursus.DELETEAuth(oryx: oryx, ship: ship).then { auth in
 
 There is a demo application in the `Ursus Demo` folder. You will need to open `AppDelegate.swift` and make sure `Ursus.baseURL` is set.
 
+The application can [authenticate](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-3-authentication) your session, and [send a message](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-4-messaging) to the [`%examples-click`](https://github.com/urbit/examples/tree/d3ac46d8f68335cb4dcf178e3953a829655d9a82/gall/click) application, if you have it running.
+
 ## Cocoapods
 
 Ursus can be installed by adding `pod 'Ursus', '~> 0.1'` to your `Podfile`.
@@ -59,11 +61,7 @@ I can set up Carthage support if you need it.
 
 ## Next steps/goals/ideas
 
-- Decouple PromiseKit/ObjectMapper
-
-- Set up [messaging](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-4-messaging) and [subscriptions](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-5-subscriptions)
-
-- Talking to the [`%click` example app](https://github.com/urbit/examples/tree/master/gall/click) might be a good start...?
+- Set up [subscriptions](http://urbit.org/docs/arvo/internals/eyre/specification/#-1-5-subscriptions)
 
 - Persistent authorization (using SSKeychain/SAMKeychain) and clean up ship/oryx vs auth arguments
 
