@@ -17,8 +17,11 @@ public struct Ack {
     /// Should be true when a response is positive.
     var ok: Bool = false
     
-    /// Should contain an error message when a response is negative.
+    /// Can contain an error code when a response is negative (check this).
     var fail: String?
+    
+    /// Can contain an error message when a response is negative (check this).
+    var mess: String?
     
 }
 
@@ -29,6 +32,19 @@ extension Ack: Mappable {
     public mutating func mapping(map: Map) {
         ok <- map["ok"]
         fail <- map["fail"]
+        mess <- map["mess"]
+    }
+    
+}
+
+extension Ack: CustomStringConvertible {
+    
+    public var description: String {
+        if ok == true {
+            return "ok"
+        }
+        
+        return [fail, mess].flatMap{$0}.joinWithSeparator("; ")
     }
     
 }

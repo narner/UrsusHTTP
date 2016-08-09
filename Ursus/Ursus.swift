@@ -146,7 +146,7 @@ extension Request {
     public func promise() -> Promise<Void> {
         return promiseObject().then { (ack: Ack) -> Void in
             if ack.ok == false {
-                throw Error.error(.AckFail, failureReason: ack.fail)
+                throw Error.error(.AckFail, failureReason: ack.description)
             }
         }
     }
