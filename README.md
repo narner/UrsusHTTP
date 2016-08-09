@@ -39,7 +39,7 @@ Easy! Signing out is about as simple:
 let ship = "pittyp-pittyp"
 let oryx = self.auth!.oryx!
 
-Ursus.DELETEAuth(oryx: oryx, ship: ship).then { auth in
+Ursus.DELETEAuth(oryx: oryx, ship: ship).then {
     self.auth = nil // Throw away our authentication object
     print("Signed out successfully")
 }.error { error in
@@ -57,7 +57,7 @@ let wire = "/"
 
 let auth = self.auth!
 
-Ursus.POSTTo(appl: appl, mark: mark, xyro: xyro, wire: wire, auth: auth).then { object in
+Ursus.POSTTo(appl: appl, mark: mark, xyro: xyro, wire: wire, auth: auth).then {
     print("Success")
 }.error { error in
     print("Something went wrong", error.localizedDescription)
