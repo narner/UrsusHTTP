@@ -1,6 +1,6 @@
 {
   "name": "Ursus",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "summary": "An Urbit client for iOS in Swift.",
   "homepage": "https://github.com/dclelland/Ursus",
   "license": {
@@ -11,7 +11,7 @@
   },
   "source": {
     "git": "https://github.com/dclelland/Ursus.git",
-    "tag": "0.1.0"
+    "tag": "0.2.1"
   },
   "platforms": {
     "ios": "9.0"
@@ -28,7 +28,7 @@
       "~> 3.0"
     ],
     "ObjectMapper": [
-      "~> 1.3"
+      "~> 1.4"
     ],
     "PromiseKit": [
       "~> 3.4"

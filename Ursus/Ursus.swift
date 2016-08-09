@@ -69,15 +69,15 @@ extension Ursus {
      - oryx: The CSRF token. Can be acquired from the results of `GETAuth`.
      - ship: The ship's name, e.g.: `"pittyp-pittyp"`
      
-     - returns: A promise for a `Status` object.
+     - returns: A promise for a `Ack` object.
      */
-    public static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Status> {
+    public static func DELETEAuth(oryx oryx: String, ship: String) -> Promise<Void> {
         let parameters = [
             "oryx": oryx,
             "ship": ship
         ]
         
-        return request(.POST, "/~/auth.json?DELETE", parameters: parameters).promiseObject()
+        return request(.POST, "/~/auth.json?DELETE", parameters: parameters).promise()
     }
 
 }
@@ -97,16 +97,16 @@ extension Ursus {
      - wire: The path, e.g. `"/"`
      - xyro: Data which will be converted to the `mark`.
      
-     - returns: A promise for a `Status` object.
+     - returns: A promise for a `Ack` object.
      */
-    public static func POSTTo(appl appl: String, mark: String, oryx: String, wire: String, xyro: String) -> Promise<Status> {
+    public static func POSTTo(appl appl: String, mark: String, oryx: String, wire: String, xyro: String) -> Promise<Void> {
         let parameters = [
             "oryx": oryx,
             "wire": wire,
             "xyro": xyro
         ]
         
-        return request(.POST, "/~/to/\(appl)/\(mark).json", parameters: parameters).promiseObject()
+        return request(.POST, "/~/to/\(appl)/\(mark).json", parameters: parameters).promise()
     }
     
 }
@@ -139,19 +139,14 @@ extension Ursus {
 extension Request {
     
     /**
-     Wraps an HTTP request in a promise of type `Promise<AnyObject>`.
+     Wraps an HTTP request in a promise, checking the response contents for an error case.
      
-     - returns: A promise for a JSON object.
+     - returns: An empty promise.
      */
-    public func promiseJSON() -> Promise<AnyObject> {
-        return Promise { fulfill, reject in
-            self.responseJSON { (response: Response<AnyObject, NSError>) in
-                switch response.result {
-                case .Success(let value):
-                    fulfill(value)
-                case .Failure(let error):
-                    reject(error)
-                }
+    public func promise() -> Promise<Void> {
+        return promiseObject().then { (ack: Ack) -> Void in
+            if ack.ok == false {
+                throw Error.error(.AckFail, failureReason: ack.fail)
             }
         }
     }

@@ -12,6 +12,6 @@ Pod::Spec.new do |s|
   s.requires_arc            = true
   s.dependency 'Alamofire', '~> 3.4'
   s.dependency 'AlamofireObjectMapper', '~> 3.0'
-  s.dependency 'ObjectMapper', '~> 1.3'
+  s.dependency 'ObjectMapper', '~> 1.4'
   s.dependency 'PromiseKit', '~> 3.4'
 end

@@ -99,7 +99,7 @@ class ViewController: UIViewController {
     private func deauthenticate(withShip ship: String, andOryx oryx: String) {
         setState(.Deauthenticating)
         
-        Ursus.DELETEAuth(oryx: oryx, ship: ship).then { auth in
+        Ursus.DELETEAuth(oryx: oryx, ship: ship).then {
             self.presentAlertController(withTitle: "Deauthentication success", message: "Logged out") {
                 self.auth = nil
                 self.setState(.Deauthenticated)
@@ -118,7 +118,7 @@ class ViewController: UIViewController {
      */
     
     private func click(withXyro xyro: String, andOryx oryx: String) {
-        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", oryx: oryx, wire: "/", xyro: xyro).then { object in
+        Ursus.POSTTo(appl: "examples-click", mark: "examples-click-clique", oryx: oryx, wire: "/", xyro: xyro).then {
             self.presentAlertController(withTitle: "Click success")
         }.error { error in
             self.presentAlertController(withTitle: "Click error", message: (error as NSError).localizedDescription)
