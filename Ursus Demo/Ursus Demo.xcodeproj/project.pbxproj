@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,6 +25,7 @@
 		65CDEFAF248741C00004FDB2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		65CDEFB2248741C00004FDB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		65CDEFB4248741C00004FDB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65CDEFBA2487429B0004FDB2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		9A2401E47D0BC1D56B970300 /* Pods_Ursus_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ursus_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9BDCB755BED280AC9FD0FA /* Pods-Ursus Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ursus Demo.debug.xcconfig"; path = "Target Support Files/Pods-Ursus Demo/Pods-Ursus Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		FB26A09F58DEA545E0ACD548 /* Pods-Ursus Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ursus Demo.release.xcconfig"; path = "Target Support Files/Pods-Ursus Demo/Pods-Ursus Demo.release.xcconfig"; sourceTree = "<group>"; };
@@ -45,6 +46,7 @@
 		65CDEF9A248741BE0004FDB2 = {
 			isa = PBXGroup;
 			children = (
+				65CDEFBA2487429B0004FDB2 /* README.md */,
 				65CDEFA5248741BE0004FDB2 /* Ursus Demo */,
 				65CDEFA4248741BE0004FDB2 /* Products */,
 				9E985C6C2571F10A0D8B94F4 /* Pods */,
@@ -88,7 +90,6 @@
 				EC9BDCB755BED280AC9FD0FA /* Pods-Ursus Demo.debug.xcconfig */,
 				FB26A09F58DEA545E0ACD548 /* Pods-Ursus Demo.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
