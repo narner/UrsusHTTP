@@ -1,6 +1,6 @@
 //
 //  Ursus.swift
-//  Pods-Ursus Demo
+//  Ursus
 //
 //  Created by Daniel Clelland on 3/06/20.
 //
