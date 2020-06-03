@@ -18,14 +18,19 @@ import Ursus
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        cancellable = ursus.connect().sink(
-            receiveCompletion: { completion in
-                print(completion)
-            },
-            receiveValue: { value in
-                print(value)
+        cancellable = ursus.connect()
+            .map(\.data)
+            .compactMap { data in
+                return String(data: data, encoding: .utf8)
             }
-        )
+            .sink(
+                receiveCompletion: { completion in
+                    print(completion)
+                },
+                receiveValue: { value in
+                    print(value)
+                }
+            )
         
         return true
     }
