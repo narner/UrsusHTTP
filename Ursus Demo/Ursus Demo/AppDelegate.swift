@@ -24,11 +24,13 @@ import Ursus
 //            mark: "json",
 //            json: ["test": 123]
 //        )
+        
+        
         cancellable = ursus.connect()
-        .map(\.data)
-        .compactMap { data in
-            return String(data: data, encoding: .utf8)
-        }
+//        .map(\.data)
+//        .compactMap { data in
+//            return String(data: data, encoding: .utf8)
+//        }
         .sink(
             receiveCompletion: { completion in
                 print(completion)
