@@ -10,15 +10,13 @@ import Combine
 
 public class Ursus {
     
+    public var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
+    
     public var url: URL
     
     public var code: String
     
     private var session = URLSession.shared
-    
-    private var encoder = JSONEncoder()
-    
-    private var decoder = JSONDecoder()
     
     public init(url: URL, code: String) {
         self.url = url
@@ -28,12 +26,5 @@ public class Ursus {
 }
 
 extension Ursus {
-    
-    public func connect() -> URLSession.DataTaskPublisher {
-        var request = URLRequest(url: url.appendingPathComponent("/~/login"))
-        request.httpMethod = "POST"
-        request.httpBody = try! encoder.encode(["password": code])
-        return session.dataTaskPublisher(for: request)
-    }
     
 }
