@@ -10,13 +10,13 @@ import Combine
 
 public class Ursus {
     
-    public var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
+    private var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
+    
+    private var session = URLSession.shared
     
     public var url: URL
     
     public var code: String
-    
-    private var session = URLSession.shared
     
     public init(url: URL, code: String) {
         self.url = url
@@ -26,5 +26,9 @@ public class Ursus {
 }
 
 extension Ursus {
+    
+    private var channelURL: URL {
+        return url.appendingPathComponent("/~/channel/\(uid)")
+    }
     
 }
