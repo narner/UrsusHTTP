@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		65CDEFA7248741BE0004FDB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFA6248741BE0004FDB2 /* AppDelegate.swift */; };
-		65CDEFA9248741BE0004FDB2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFA8248741BE0004FDB2 /* SceneDelegate.swift */; };
 		65CDEFBD248743820004FDB2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFBC248743820004FDB2 /* ContentView.swift */; };
 		65CDEFC1248743BB0004FDB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFBF248743BB0004FDB2 /* LaunchScreen.storyboard */; };
 		65CDEFC2248743BB0004FDB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFC0248743BB0004FDB2 /* Assets.xcassets */; };
@@ -18,7 +17,6 @@
 /* Begin PBXFileReference section */
 		65CDEFA3248741BE0004FDB2 /* Ursus Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ursus Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65CDEFA6248741BE0004FDB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		65CDEFA8248741BE0004FDB2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		65CDEFBA2487429B0004FDB2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		65CDEFBC248743820004FDB2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		65CDEFBF248743BB0004FDB2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,7 +62,6 @@
 			isa = PBXGroup;
 			children = (
 				65CDEFA6248741BE0004FDB2 /* AppDelegate.swift */,
-				65CDEFA8248741BE0004FDB2 /* SceneDelegate.swift */,
 				65CDEFBB248743820004FDB2 /* Views */,
 				65CDEFBE248743BB0004FDB2 /* Assets */,
 				65CDEFC3248743DE0004FDB2 /* Supporting Files */,
@@ -237,7 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				65CDEFA7248741BE0004FDB2 /* AppDelegate.swift in Sources */,
-				65CDEFA9248741BE0004FDB2 /* SceneDelegate.swift in Sources */,
 				65CDEFBD248743820004FDB2 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
