@@ -1,38 +1,7 @@
 PODS:
-  - Alamofire (3.4.1)
-  - AlamofireNetworkActivityIndicator (1.0.1):
-    - Alamofire (~> 3.3)
-  - AlamofireObjectMapper (3.0.2):
-    - Alamofire (~> 3.2)
-    - ObjectMapper (~> 1.0)
-  - ObjectMapper (1.4.0)
-  - OMGHTTPURLRQ (3.2.0):
-    - OMGHTTPURLRQ/RQ (= 3.2.0)
-  - OMGHTTPURLRQ/FormURLEncode (3.2.0)
-  - OMGHTTPURLRQ/RQ (3.2.0):
-    - OMGHTTPURLRQ/FormURLEncode
-    - OMGHTTPURLRQ/UserAgent
-  - OMGHTTPURLRQ/UserAgent (3.2.0)
-  - PromiseKit (3.4.3):
-    - PromiseKit/Foundation (= 3.4.3)
-    - PromiseKit/QuartzCore (= 3.4.3)
-    - PromiseKit/UIKit (= 3.4.3)
-  - PromiseKit/CorePromise (3.4.3)
-  - PromiseKit/Foundation (3.4.3):
-    - OMGHTTPURLRQ (~> 3.2.0)
-    - PromiseKit/CorePromise
-  - PromiseKit/QuartzCore (3.4.3):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (3.4.3):
-    - PromiseKit/CorePromise
-  - Ursus (0.2.1):
-    - Alamofire (~> 3.4)
-    - AlamofireObjectMapper (~> 3.0)
-    - ObjectMapper (~> 1.4)
-    - PromiseKit (~> 3.4)
+  - Ursus (1.0.0)
 
 DEPENDENCIES:
-  - AlamofireNetworkActivityIndicator (~> 1.0)
   - Ursus (from `..`)
 
 EXTERNAL SOURCES:
@@ -40,14 +9,8 @@ EXTERNAL SOURCES:
     :path: ".."
 
 SPEC CHECKSUMS:
-  Alamofire: 01a82e2f6c0f860ade35534c8dd88be61bdef40c
-  AlamofireNetworkActivityIndicator: 49a6e39afb947136f7b1872bae2d684957c26697
-  AlamofireObjectMapper: 70f97cbf45c01c48d26aa07a1a7059a60ed7411d
-  ObjectMapper: a07ad0462c5adf014adc0f89ef04c29b626e855e
-  OMGHTTPURLRQ: 1e54807cb7d5dbb506926e53498e1e9ac5720c79
-  PromiseKit: 4e92b3008341816bcd556c8ec4f16398a93ac920
-  Ursus: d3e3dcfe596434ef44244cf3f6ff1e5b08b61869
+  Ursus: 400a32c56cb295c27c615cc9fa6264bca31f4c66
 
-PODFILE CHECKSUM: d6b39ba370e62bca332303109cf19faa0cd5486a
+PODFILE CHECKSUM: 6c40f00cb337e263b2e867d0f791a2d2ced2d945
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.8.3
