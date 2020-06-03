@@ -9,10 +9,9 @@
 /* Begin PBXBuildFile section */
 		65CDEFA7248741BE0004FDB2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFA6248741BE0004FDB2 /* AppDelegate.swift */; };
 		65CDEFA9248741BE0004FDB2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFA8248741BE0004FDB2 /* SceneDelegate.swift */; };
-		65CDEFAB248741BE0004FDB2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFAA248741BE0004FDB2 /* ContentView.swift */; };
-		65CDEFAD248741C00004FDB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFAC248741C00004FDB2 /* Assets.xcassets */; };
-		65CDEFB0248741C00004FDB2 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFAF248741C00004FDB2 /* Preview Assets.xcassets */; };
-		65CDEFB3248741C00004FDB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFB1248741C00004FDB2 /* LaunchScreen.storyboard */; };
+		65CDEFBD248743820004FDB2 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65CDEFBC248743820004FDB2 /* ContentView.swift */; };
+		65CDEFC1248743BB0004FDB2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFBF248743BB0004FDB2 /* LaunchScreen.storyboard */; };
+		65CDEFC2248743BB0004FDB2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 65CDEFC0248743BB0004FDB2 /* Assets.xcassets */; };
 		9DB0977B89B7E4BA559F59DE /* Pods_Ursus_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A2401E47D0BC1D56B970300 /* Pods_Ursus_Demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -20,12 +19,11 @@
 		65CDEFA3248741BE0004FDB2 /* Ursus Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Ursus Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		65CDEFA6248741BE0004FDB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		65CDEFA8248741BE0004FDB2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		65CDEFAA248741BE0004FDB2 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		65CDEFAC248741C00004FDB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		65CDEFAF248741C00004FDB2 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		65CDEFB2248741C00004FDB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		65CDEFB4248741C00004FDB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65CDEFBA2487429B0004FDB2 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		65CDEFBC248743820004FDB2 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		65CDEFBF248743BB0004FDB2 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		65CDEFC0248743BB0004FDB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		65CDEFC4248743DE0004FDB2 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9A2401E47D0BC1D56B970300 /* Pods_Ursus_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ursus_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC9BDCB755BED280AC9FD0FA /* Pods-Ursus Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ursus Demo.debug.xcconfig"; path = "Target Support Files/Pods-Ursus Demo/Pods-Ursus Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		FB26A09F58DEA545E0ACD548 /* Pods-Ursus Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Ursus Demo.release.xcconfig"; path = "Target Support Files/Pods-Ursus Demo/Pods-Ursus Demo.release.xcconfig"; sourceTree = "<group>"; };
@@ -67,10 +65,9 @@
 			children = (
 				65CDEFA6248741BE0004FDB2 /* AppDelegate.swift */,
 				65CDEFA8248741BE0004FDB2 /* SceneDelegate.swift */,
-				65CDEFAA248741BE0004FDB2 /* ContentView.swift */,
-				65CDEFAC248741C00004FDB2 /* Assets.xcassets */,
-				65CDEFB1248741C00004FDB2 /* LaunchScreen.storyboard */,
-				65CDEFB4248741C00004FDB2 /* Info.plist */,
+				65CDEFBB248743820004FDB2 /* Views */,
+				65CDEFBE248743BB0004FDB2 /* Assets */,
+				65CDEFC3248743DE0004FDB2 /* Supporting Files */,
 				65CDEFAE248741C00004FDB2 /* Preview Content */,
 			);
 			path = "Ursus Demo";
@@ -79,9 +76,33 @@
 		65CDEFAE248741C00004FDB2 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				65CDEFAF248741C00004FDB2 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		65CDEFBB248743820004FDB2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				65CDEFBC248743820004FDB2 /* ContentView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		65CDEFBE248743BB0004FDB2 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				65CDEFBF248743BB0004FDB2 /* LaunchScreen.storyboard */,
+				65CDEFC0248743BB0004FDB2 /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		65CDEFC3248743DE0004FDB2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				65CDEFC4248743DE0004FDB2 /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		9E985C6C2571F10A0D8B94F4 /* Pods */ = {
@@ -161,9 +182,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65CDEFB3248741C00004FDB2 /* LaunchScreen.storyboard in Resources */,
-				65CDEFB0248741C00004FDB2 /* Preview Assets.xcassets in Resources */,
-				65CDEFAD248741C00004FDB2 /* Assets.xcassets in Resources */,
+				65CDEFC1248743BB0004FDB2 /* LaunchScreen.storyboard in Resources */,
+				65CDEFC2248743BB0004FDB2 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,22 +238,11 @@
 			files = (
 				65CDEFA7248741BE0004FDB2 /* AppDelegate.swift in Sources */,
 				65CDEFA9248741BE0004FDB2 /* SceneDelegate.swift in Sources */,
-				65CDEFAB248741BE0004FDB2 /* ContentView.swift in Sources */,
+				65CDEFBD248743820004FDB2 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		65CDEFB1248741C00004FDB2 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				65CDEFB2248741C00004FDB2 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		65CDEFB5248741C00004FDB2 /* Debug */ = {
@@ -356,10 +365,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Ursus Demo/Preview Content\"";
 				DEVELOPMENT_TEAM = SP382Y6YUY;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Ursus Demo/Info.plist";
+				INFOPLIST_FILE = "Ursus Demo/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -377,10 +385,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Ursus Demo/Preview Content\"";
 				DEVELOPMENT_TEAM = SP382Y6YUY;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Ursus Demo/Info.plist";
+				INFOPLIST_FILE = "Ursus Demo/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
