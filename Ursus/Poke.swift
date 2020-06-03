@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+struct Poke<JSON: Encodable>: Encodable {
+    
+    var id: Int
+    var action: String
+    var ship: String
+    var app: String
+    var mark: String
+    var json: JSON
+    
+}

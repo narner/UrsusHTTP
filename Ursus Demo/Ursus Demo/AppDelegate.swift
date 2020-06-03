@@ -27,18 +27,24 @@ import Ursus
         
         
         cancellable = ursus.connect()
-//        .map(\.data)
-//        .compactMap { data in
-//            return String(data: data, encoding: .utf8)
-//        }
-        .sink(
-            receiveCompletion: { completion in
-                print(completion)
-            },
-            receiveValue: { value in
-                print(value)
+            .flatMap { (data, response) in
+                return self.ursus.poke(
+                    ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                    app: "chat-store",
+                    mark: "json",
+                    json: [
+                        "test": 123
+                    ]
+                )
             }
-        )
+            .sink(
+                receiveCompletion: { completion in
+                    print(completion)
+                },
+                receiveValue: { value in
+                    print(String(bytes: value.data, encoding: .utf8)!, value.response)
+                }
+            )
         
         return true
     }
