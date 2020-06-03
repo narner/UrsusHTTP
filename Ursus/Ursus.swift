@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+public struct Ursus {
+    
+    public var url: URL
+    
+    public var code: String
+    
+    public var session: URLSession = .shared
+    
+    public init(url: URL, code: String) {
+        self.url = url
+        self.code = code
+    }
+    
+}
