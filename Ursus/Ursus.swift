@@ -6,18 +6,34 @@
 //
 
 import Foundation
+import Combine
 
-public struct Ursus {
+public class Ursus {
     
     public var url: URL
     
     public var code: String
     
-    public var session: URLSession = .shared
+    private var session = URLSession.shared
+    
+    private var encoder = JSONEncoder()
+    
+    private var decoder = JSONDecoder()
     
     public init(url: URL, code: String) {
         self.url = url
         self.code = code
+    }
+    
+}
+
+extension Ursus {
+    
+    public func connect() -> URLSession.DataTaskPublisher {
+        var request = URLRequest(url: url.appendingPathComponent("/~/login"))
+        request.httpMethod = "POST"
+        request.httpBody = try! encoder.encode(["password": code])
+        return session.dataTaskPublisher(for: request)
     }
     
 }
