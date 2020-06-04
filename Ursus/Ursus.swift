@@ -15,6 +15,8 @@ public class Ursus {
     
     private var session = URLSession.shared
     
+    private lazy var eventSource = EventSource(url: channelURL)
+    
     private var _eventID: Int = 1
     
     private var eventID: Int {
@@ -52,6 +54,19 @@ extension Ursus {
         request.httpBody = data.data(using: .utf8)
 //        request.addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
         return session.dataTaskPublisher(for: request)
+    }
+    
+    public func connectEventSource() {
+        eventSource.onOpen {
+            print("onOpen")
+        }
+        eventSource.onComplete { status, reconnect, error in
+            print("onComplete", status, reconnect, error)
+        }
+        eventSource.onMessage { id, event, data in
+            print("onMessage", id, event, data)
+        }
+        eventSource.connect()
     }
     
     public func poke<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON) -> URLSession.DataTaskPublisher {

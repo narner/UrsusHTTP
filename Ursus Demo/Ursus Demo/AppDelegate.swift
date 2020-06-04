@@ -41,7 +41,8 @@ import Ursus
         print("Cookie:", HTTPCookieStorage.shared.cookies(for: ursus.url) ?? [])
         
         cancellable = ursus.connect()
-            .flatMap { value in
+            .flatMap { value -> URLSession.DataTaskPublisher in
+                self.ursus.connectEventSource()
                 return self.ursus.poke(
                     ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
                     app: "chat-store",
