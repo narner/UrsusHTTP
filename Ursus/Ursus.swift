@@ -39,6 +39,10 @@ public class Ursus {
 
 extension Ursus {
     
+    private var loginURL: URL {
+        return url.appendingPathComponent("/~/login")
+    }
+    
     private var channelURL: URL {
         return url.appendingPathComponent("/~/channel/\(uid)")
     }
@@ -47,12 +51,12 @@ extension Ursus {
 
 extension Ursus {
     
-    public func connect() -> URLSession.DataTaskPublisher {
-        let data = "password=\(code)"
-        var request = URLRequest(url: url.appendingPathComponent("/~/login"))
-        request.httpMethod = "POST"
-        request.httpBody = data.data(using: .utf8)
-//        request.addValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
+    public func connect(_ completion: (Result<Void, Error>) -> Void) {
+        let request = URLRequest(
+            url: loginURL,
+            method: "POST",
+            body: "password=\(code)".data(using: .utf8)
+        )
         return session.dataTaskPublisher(for: request)
     }
     
@@ -69,12 +73,14 @@ extension Ursus {
         eventSource.connect()
     }
     
-    public func poke<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON) -> URLSession.DataTaskPublisher {
+    public func poke<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON) throws -> URLSession.DataTaskPublisher {
         let poke = Poke(id: eventID, action: "poke", ship: ship, app: app, mark: mark, json: json)
-        var request = URLRequest(url: channelURL)
-        request.httpMethod = "PUT"
-        request.httpBody = try! JSONEncoder().encode(poke)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let request = URLRequest(
+            url: channelURL,
+            headers: ["Content-Type": "application/json"],
+            method: "PUT",
+            body: try JSONEncoder().encode(poke)
+        )
         return session.dataTaskPublisher(for: request)
     }
     
