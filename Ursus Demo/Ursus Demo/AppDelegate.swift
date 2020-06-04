@@ -13,8 +13,6 @@ import Ursus
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let ursus = Ursus(url: URL(string: "http://192.168.1.65")!, code: "lidlyx-dinmeg-masper-hilbex")
-    
-    var cancellable: AnyCancellable?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -39,6 +37,8 @@ import Ursus
 //        >>>
         
         print("Cookie:", HTTPCookieStorage.shared.cookies(for: ursus.url) ?? [])
+        
+        ursus.connect()
         
         cancellable = ursus.connect()
             .flatMap { value -> URLSession.DataTaskPublisher in

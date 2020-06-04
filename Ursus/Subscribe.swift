@@ -1,5 +1,5 @@
 //
-//  Subscription.swift
+//  Subscribe.swift
 //  IKEventSource
 //
 //  Created by Daniel Clelland on 4/06/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Subscription: Encodable {
+struct Subscribe: Encodable {
     
     var id: Int
     var action: String = "subscribe"
