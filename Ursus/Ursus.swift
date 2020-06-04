@@ -7,6 +7,7 @@
 
 import Foundation
 import Combine
+import IKEventSource
 
 public class Ursus {
     

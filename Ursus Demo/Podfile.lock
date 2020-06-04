@@ -1,15 +1,22 @@
 PODS:
-  - Ursus (1.0.0)
+  - IKEventSource (3.0.1)
+  - Ursus (1.0.0):
+    - IKEventSource (~> 3.0)
 
 DEPENDENCIES:
   - Ursus (from `..`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - IKEventSource
 
 EXTERNAL SOURCES:
   Ursus:
     :path: ".."
 
 SPEC CHECKSUMS:
-  Ursus: 400a32c56cb295c27c615cc9fa6264bca31f4c66
+  IKEventSource: ababa323587c6b0c250dd54d4a48ab68fd845e8e
+  Ursus: c2f358fd93164d29c5d3823b59d20bf6dd9ee0fb
 
 PODFILE CHECKSUM: 6c40f00cb337e263b2e867d0f791a2d2ced2d945
 

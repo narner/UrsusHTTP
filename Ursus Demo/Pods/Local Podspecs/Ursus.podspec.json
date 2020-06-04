@@ -22,5 +22,10 @@
   },
   "osx": {
     "source_files": "Ursus/**/*.swift"
+  },
+  "dependencies": {
+    "IKEventSource": [
+      "~> 3.0"
+    ]
   }
 }
