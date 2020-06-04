@@ -25,30 +25,37 @@ import Ursus
 //            json: ["test": 123]
 //        )
         
-        let uid = 1 // '0v' + '.'.join(s[i:i+5] for i in range(0, len(s), 5))[::-1]
-        
-//        let json: [String: AnyObject] = [
-//            "message": [
-//                "path": "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
-//                "envelope": [
-//                    "uid": uid,
-//                    "number": 1,
-//                    "author": "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-//                    "when": Int(Date().timeIntervalSince1970 * 1000),
-//                    "letter": [
-//                        "text": "hello world!"
-//                    ]
-//                ]
-//            ]
-//        ]
+//        Python 3.7.3 (default, Nov 15 2019, 04:04:52)
+//        [Clang 11.0.0 (clang-1100.0.33.16)] on darwin
+//        Type "help", "copyright", "credits" or "license" for more information.
+//        >>> import baseconvert
+//        >>> import random
+//        >>> s = baseconvert.base(random.getrandbits(128), 10, 32, string=True).lower()
+//        >>> s
+//        'v0shjrp37vv838ktdf7iajtit'
+//        >>> uid = '0v' + '.'.join(s[i:i+5] for i in range(0, len(s), 5))[::-1]
+//        >>> uid
+//        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
+//        >>>
         
         cancellable = ursus.connect()
-            .flatMap { (data, response) in
+            .flatMap { value in
                 return self.ursus.poke(
                     ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
                     app: "chat-store",
                     mark: "json",
-                    json: [String: String]()
+                    json: Message(
+                        path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
+                        envelope: Envelope(
+                            uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
+                            number: 1,
+                            author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                            when: Int(Date().timeIntervalSince1970 * 1000),
+                            letter: [
+                                "text": "hello world!"
+                            ]
+                        )
+                    )
                 )
             }
             .sink(
@@ -63,4 +70,21 @@ import Ursus
         return true
     }
 
+}
+
+struct Message: Encodable {
+    
+    var path: String
+    var envelope: Envelope
+    
+}
+
+struct Envelope: Encodable {
+    
+    var uid: String
+    var number: Int
+    var author: String
+    var when: Int
+    var letter: [String: String]
+    
 }
