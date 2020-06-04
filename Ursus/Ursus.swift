@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Combine
 import IKEventSource
 
 public typealias PokeRequest<JSON: Encodable> = (ship: String, app: String, mark: String, json: JSON)
