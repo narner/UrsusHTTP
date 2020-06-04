@@ -38,6 +38,8 @@ import Ursus
 //        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
 //        >>>
         
+        print("Cookie:", HTTPCookieStorage.shared.cookies(for: ursus.url) ?? [])
+        
         cancellable = ursus.connect()
             .flatMap { value in
                 return self.ursus.poke(
@@ -60,9 +62,11 @@ import Ursus
             }
             .sink(
                 receiveCompletion: { completion in
+                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
                     print(completion)
                 },
                 receiveValue: { value in
+                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
                     print(String(bytes: value.data, encoding: .utf8)!, value.response)
                 }
             )
