@@ -51,7 +51,7 @@ extension Ursus {
 
 extension Ursus {
     
-    public func connect(_ completion: (Result<Void, Error>) -> Void) {
+    public func connect() -> URLSession.DataTaskPublisher {
         let request = URLRequest(
             url: loginURL,
             method: "POST",
@@ -74,12 +74,23 @@ extension Ursus {
     }
     
     public func poke<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON) throws -> URLSession.DataTaskPublisher {
-        let poke = Poke(id: eventID, action: "poke", ship: ship, app: app, mark: mark, json: json)
+        let poke = Poke(id: eventID, ship: ship, app: app, mark: mark, json: json)
         let request = URLRequest(
             url: channelURL,
             headers: ["Content-Type": "application/json"],
             method: "PUT",
             body: try JSONEncoder().encode(poke)
+        )
+        return session.dataTaskPublisher(for: request)
+    }
+    
+    public func subscribe(ship: String, app: String, path: String) throws -> URLSession.DataTaskPublisher {
+        let subscription = Subscription(id: eventID, ship: ship, app: app, path: path)
+        let request = URLRequest(
+            url: channelURL,
+            headers: ["Content-Type": "application/json"],
+            method: "PUT",
+            body: try JSONEncoder().encode(subscription)
         )
         return session.dataTaskPublisher(for: request)
     }

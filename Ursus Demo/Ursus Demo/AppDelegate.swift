@@ -43,7 +43,7 @@ import Ursus
         cancellable = ursus.connect()
             .flatMap { value -> URLSession.DataTaskPublisher in
                 self.ursus.connectEventSource()
-                return self.ursus.poke(
+                return try! self.ursus.poke(
                     ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
                     app: "chat-store",
                     mark: "json",
