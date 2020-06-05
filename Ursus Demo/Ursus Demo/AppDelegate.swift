@@ -38,35 +38,36 @@ import Ursus
         
         print("Cookie:", HTTPCookieStorage.shared.cookies(for: ursus.url) ?? [])
         
-        ursus.connect()
-        
-        try! ursus.poke(
-            request: (
-                ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-                app: "chat-store",
-                mark: "json",
-                json: Message(
-                    path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
-                    envelope: Envelope(
-                        uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
-                        number: 1,
-                        author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-                        when: Int(Date().timeIntervalSince1970 * 1000),
-                        letter: [
-                            "text": "hello world!"
-                        ]
+        ursus.connect() {
+            try! self.ursus.poke(
+                request: (
+                    ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                    app: "chat-store",
+                    mark: "json",
+                    json: Message(
+                        path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
+                        envelope: Envelope(
+                            uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
+                            number: 1,
+                            author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                            when: Int(Date().timeIntervalSince1970 * 1000),
+                            letter: [
+                                "text": "hello world!"
+                            ]
+                        )
                     )
+                ),
+                response: (
+                    onSuccess: { data in
+                        print("onSuccess:", String(bytes: data, encoding: .utf8)!)
+                    },
+                    onFailure: { error in
+                        print("onFailure:", error)
+                    }
                 )
-            ),
-            response: (
-                onSuccess: { data in
-                    print("onSuccess:", String(bytes: data, encoding: .utf8)!)
-                },
-                onFailure: { error in
-                    print("onFailure:", error)
-                }
             )
-        )
+        }
+        
         
 //        cancellable = ursus.connect()
 //            .flatMap { value -> URLSession.DataTaskPublisher in

@@ -116,13 +116,14 @@ extension Ursus {
     
     #warning("This probably needs a callback; should also call automatically...?")
     
-    public func connect() {
+    public func connect(completion: @escaping () -> Void) {
         var request = URLRequest(url: loginURL)
         request.httpMethod = "POST"
         request.httpBody = "password=\(code)".data(using: .utf8)
         
         session.dataTask(with: request) { (data, response, error) in
             print("Connect completed:", data, response, error)
+            completion()
         }.resume()
     }
     
