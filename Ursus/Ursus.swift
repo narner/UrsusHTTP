@@ -103,12 +103,58 @@ extension Ursus {
             #warning("Handle errors here; if error, delete() and init(); setOnChannelError() and onChannelError")
             print("onComplete", status, reconnect, error)
         }
-        eventSource?.onMessage { id, event, data in
-            #warning("Handle messages (pokes and subscribes) here")
+        eventSource?.onMessage { [weak self] id, event, data in
             print("onMessage", id, event, data)
+            
+            guard let id = id.flatMap(Int.init) else {
+                return
+            }
+            
+            guard let data = data?.data(using: .utf8), let message = try? JSONDecoder().decode(Message.self, from: data) else {
+                return
+            }
+            
+            #warning("Does channel.js set lastEventId even if nil...?")
+            self?.lastEventID = id
+            
+            print("onMessage", message)
+            switch message.response {
+            case .poke:
+                break
+                // if message["ok"] exists
+                // self?.outstandingPokes[message["id"]]?.onSuccess()
+                // if message["err"] exists
+                // self?.outstandingPokes[message["id"]]?.onFailure()
+                // then remove outstandingPokes[message["id"]]
+            case .subscribe:
+                break
+            case .diff:
+                break
+            case .quit:
+                break
+            }
+            
+            #warning("Handle messages (pokes and subscribes) here")
         }
         eventSource?.connect()
     }
+    
+}
+
+struct Message: Decodable {
+    
+    enum Response: String, Decodable {
+        case poke
+        case subscribe
+        case diff
+        case quit
+    }
+    
+    var id: Int
+    var response: Response
+    var err: String?
+    // ok
+    // json
     
 }
 
