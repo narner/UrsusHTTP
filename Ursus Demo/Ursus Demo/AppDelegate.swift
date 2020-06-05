@@ -40,37 +40,65 @@ import Ursus
         
         ursus.connect()
         
-        cancellable = ursus.connect()
-            .flatMap { value -> URLSession.DataTaskPublisher in
-                self.ursus.connectEventSource()
-                return try! self.ursus.poke(
-                    ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-                    app: "chat-store",
-                    mark: "json",
-                    json: Message(
-                        path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
-                        envelope: Envelope(
-                            uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
-                            number: 1,
-                            author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-                            when: Int(Date().timeIntervalSince1970 * 1000),
-                            letter: [
-                                "text": "hello world!"
-                            ]
-                        )
+        try! ursus.poke(
+            request: (
+                ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                app: "chat-store",
+                mark: "json",
+                json: Message(
+                    path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
+                    envelope: Envelope(
+                        uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
+                        number: 1,
+                        author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                        when: Int(Date().timeIntervalSince1970 * 1000),
+                        letter: [
+                            "text": "hello world!"
+                        ]
                     )
                 )
-            }
-            .sink(
-                receiveCompletion: { completion in
-                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
-                    print(completion)
+            ),
+            response: (
+                onSuccess: { data in
+                    print("onSuccess:", String(bytes: data, encoding: .utf8)!)
                 },
-                receiveValue: { value in
-                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
-                    print(String(bytes: value.data, encoding: .utf8)!, value.response)
+                onFailure: { error in
+                    print("onFailure:", error)
                 }
             )
+        )
+        
+//        cancellable = ursus.connect()
+//            .flatMap { value -> URLSession.DataTaskPublisher in
+//                self.ursus.connectEventSource()
+//                return try! self.ursus.poke(
+//                    ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+//                    app: "chat-store",
+//                    mark: "json",
+//                    json: Message(
+//                        path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
+//                        envelope: Envelope(
+//                            uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
+//                            number: 1,
+//                            author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+//                            when: Int(Date().timeIntervalSince1970 * 1000),
+//                            letter: [
+//                                "text": "hello world!"
+//                            ]
+//                        )
+//                    )
+//                )
+//            }
+//            .sink(
+//                receiveCompletion: { completion in
+//                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
+//                    print(completion)
+//                },
+//                receiveValue: { value in
+//                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
+//                    print(String(bytes: value.data, encoding: .utf8)!, value.response)
+//                }
+//            )
         
         return true
     }

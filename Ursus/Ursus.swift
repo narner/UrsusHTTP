@@ -8,6 +8,8 @@
 import Foundation
 import IKEventSource
 
+#warning("Unify the way these are handled (with Poke, Ack, Subscribe)")
+
 public typealias PokeRequest<JSON: Encodable> = (ship: String, app: String, mark: String, json: JSON)
 public typealias PokeResponse = (onSuccess: (Data) -> Void, onFailure: (Error) -> Void)
 
@@ -24,7 +26,8 @@ public class Ursus {
     private var eventSource: EventSource? = nil
     
     private var lastEventID: Int = 0
-    private var lastAcknowledgedEventID: Int = 0 #warning("Does this get set anywhere?")
+    private var lastAcknowledgedEventID: Int = 0
+    #warning("Does this get set anywhere?")
     
     private var outstandingPokes: [Int: PokeResponse] = [:]
     private var outstandingSubscribes: [Int: SubscribeResponse] = [:]
@@ -68,13 +71,21 @@ extension Ursus {
         var request = URLRequest(url: channelURL)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "PUT"
-        request.httpBody = try JSONEncoder().encode(json)
-        
-        #warning("Handle acks here")
-        
-        session.dataTask(with: request) { (data, response, error) in
-            print("Request completed:", data, response, error)
-        }
+
+        #warning("Figure out what to do here (`[ack, json]` won't compile)")
+//        if (lastEventID == lastAcknowledgedEventID) {
+            request.httpBody = try JSONEncoder().encode([json])
+            session.dataTask(with: request) { (data, response, error) in
+                print("Request completed:", data, response, error)
+            }.resume()
+//        } else {
+//            let ack = Ack(eventID: lastEventID)
+//            request.httpBody = try JSONEncoder().encode([ack, json])
+//            session.dataTask(with: request) { (data, response, error) in
+//                print("Request completed:", data, response, error)
+//            }.resume()
+//            lastEventID = lastAcknowledgedEventID
+//        }
         
         connectIfDisconnected()
     }
@@ -112,7 +123,7 @@ extension Ursus {
         
         session.dataTask(with: request) { (data, response, error) in
             print("Connect completed:", data, response, error)
-        }
+        }.resume()
     }
     
     public func poke<JSON: Encodable>(request: PokeRequest<JSON>, response: PokeResponse) throws {

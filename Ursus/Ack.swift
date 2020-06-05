@@ -7,12 +7,14 @@
 
 import Foundation
 
-struct Ack<JSON: Encodable>: Encodable {
-    
-    #warning("Note that this needs to be an array with two json objects")
+struct Ack: Encodable {
     
     var action: String = "ack"
-    // [{action: "ack", "event-id": parseInt(this.lastEventId)}, j]
-    var json: JSON
+    var eventID: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case action
+        case eventID = "event-id"
+    }
     
 }
