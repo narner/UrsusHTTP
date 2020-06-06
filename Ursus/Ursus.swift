@@ -18,7 +18,7 @@ public typealias SubscribeResponse = (onError: (Error) -> Void, onEvent: (Data) 
 
 public class Ursus {
     
-    private var session = URLSession.shared
+    public var session = URLSession(configuration: .ephemeral)
     
     private var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
     
@@ -179,6 +179,8 @@ extension Ursus {
 
         outstandingPokes[id] = response
         try sendJSONToChannel(poke)
+        
+        #warning("Catch error and remove poke if this fails")
     }
     
     public func subscribe(request: SubscribeRequest, response: SubscribeResponse) throws {
@@ -187,6 +189,8 @@ extension Ursus {
         
         outstandingSubscribes[id] = response
         try sendJSONToChannel(subscribe)
+        
+        #warning("Catch error and remove subscription if this fails")
     }
 
     #warning("Finish me")

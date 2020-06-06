@@ -4,8 +4,8 @@ An Urbit HTTP client for iOS in Swift.
 
 ## Links
 
-- [Urbit web](http://urbit.org/docs/using/web/)
-- [`%eyre` specification](http://urbit.org/docs/arvo/internals/eyre/specification/)
+- [channel.js](https://github.com/urbit/urbit/blob/master/pkg/arvo/app/launch/js/channel.js)
+- [urlock.py](https://github.com/baudtack/urlock-py/blob/master/urlock/urlock.py)
 
 ## Usage
 

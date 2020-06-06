@@ -36,9 +36,10 @@ import Ursus
 //        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
 //        >>>
         
-        print("Cookie:", HTTPCookieStorage.shared.cookies(for: ursus.url) ?? [])
+        print("Cookies:", ursus.session.configuration.httpCookieStorage?.cookies ?? [])
         
         ursus.connect() {
+            print("Cookies:", self.ursus.session.configuration.httpCookieStorage?.cookies ?? [])
             try! self.ursus.poke(
                 request: (
                     ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
