@@ -25,10 +25,6 @@ public class Ursus {
     private var eventID: Int = 0
     private var eventSource: EventSource? = nil
     
-    private var lastEventID: Int = 0
-    private var lastAcknowledgedEventID: Int = 0
-    #warning("Does this get set anywhere?")
-    
     private var outstandingPokes: [Int: PokeResponse] = [:]
     private var outstandingSubscribes: [Int: SubscribeResponse] = [:]
     
@@ -71,21 +67,10 @@ extension Ursus {
         var request = URLRequest(url: channelURL)
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "PUT"
-
-        #warning("Figure out what to do here (`[ack, json]` won't compile)")
-//        if (lastEventID == lastAcknowledgedEventID) {
-            request.httpBody = try JSONEncoder().encode([json])
-            session.dataTask(with: request) { (data, response, error) in
-                print("Request completed:", data, response, error)
-            }.resume()
-//        } else {
-//            let ack = Ack(eventID: lastEventID)
-//            request.httpBody = try JSONEncoder().encode([ack, json])
-//            session.dataTask(with: request) { (data, response, error) in
-//                print("Request completed:", data, response, error)
-//            }.resume()
-//            lastEventID = lastAcknowledgedEventID
-//        }
+        request.httpBody = try JSONEncoder().encode([json])
+        session.dataTask(with: request) { (data, response, error) in
+            print("Request completed:", data, response, error)
+        }.resume()
         
         connectIfDisconnected()
     }
@@ -115,7 +100,6 @@ extension Ursus {
             }
             
             #warning("Does channel.js set lastEventId even if nil...?")
-            self?.lastEventID = id
             
             print("onMessage", message)
             switch message.response {
