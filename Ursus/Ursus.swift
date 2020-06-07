@@ -43,7 +43,7 @@ public class Ursus {
 
 extension Ursus {
     
-    private var loginURL: URL {
+    private var authenticationURL: URL {
         return url.appendingPathComponent("/~/login")
     }
     
@@ -55,12 +55,12 @@ extension Ursus {
 
 extension Ursus {
     
-    @discardableResult public func loginRequest() -> DataRequest {
-        return session.request(loginURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default)
+    @discardableResult public func authenticationRequest() -> DataRequest {
+        return session.request(authenticationURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default)
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
-        connectIfDisconnected()
+        defer { connectIfDisconnected() }
         return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default)
     }
     
@@ -72,6 +72,8 @@ extension Ursus {
         guard eventSource == nil else {
             return
         }
+        
+        #warning("Should be able to pass in the last event ID here")
         
         eventSource = EventSource(url: channelURL)
         eventSource?.onOpen {
@@ -112,40 +114,6 @@ extension Ursus {
             print("onComplete", status, reconnect, error)
         }
         eventSource?.connect()
-    }
-    
-}
-
-enum Response: Decodable {
-    
-    case poke(PokeResponse)
-    case subscribe(SubscribeResponse)
-    case diff(DiffResponse)
-    case quit(QuitResponse)
-    
-    enum Response: String, Decodable {
-        case poke
-        case subscribe
-        case diff
-        case quit
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case response
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        switch try container.decode(Response.self, forKey: .response) {
-        case .poke:
-            self = .poke(try PokeResponse(from: decoder))
-        case .subscribe:
-            self = .subscribe(try SubscribeResponse(from: decoder))
-        case .diff:
-            self = .diff(try DiffResponse(from: decoder))
-        case .quit:
-            self = .quit(try QuitResponse(from: decoder))
-        }
     }
     
 }

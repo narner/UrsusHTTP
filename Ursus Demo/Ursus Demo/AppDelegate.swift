@@ -36,7 +36,7 @@ import Ursus
 //        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
 //        >>>
         
-        ursus.loginRequest().response { response in
+        ursus.authenticationRequest().response { response in
             print("Login request response:", response)
             self.ursus.pokeRequest(
                 ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
