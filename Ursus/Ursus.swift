@@ -126,25 +126,28 @@ extension Ursus {
     }
     
     @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, callbacks: PokeCallbacks) -> DataRequest {
-        let request = PokeRequest(id: nextRequestID, ship: ship, app: app, mark: mark, json: json)
+        let id = nextRequestID
+        let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
-                self?.outstandingPokes[request.id] = callbacks
+                self?.outstandingPokes[id] = callbacks
             }
         }
     }
     
     @discardableResult public func subscribeRequest(ship: String, app: String, path: String, callbacks: SubscribeCallbacks) -> DataRequest {
-        let request = SubscribeRequest(id: nextRequestID, ship: ship, app: app, path: path)
+        let id = nextRequestID
+        let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
-                self?.outstandingSubscribes[request.id] = callbacks
+                self?.outstandingSubscribes[id] = callbacks
             }
         }
     }
     
     @discardableResult public func unsubscribeRequest(subscriptionID: Int) -> DataRequest {
-        let request = UnsubscribeRequest(id: nextRequestID, subscriptionID: subscriptionID)
+        let id = nextRequestID
+        let request = UnsubscribeRequest(id: id, subscriptionID: subscriptionID)
         return channelRequest(request)
     }
     
