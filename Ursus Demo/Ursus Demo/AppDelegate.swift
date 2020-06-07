@@ -55,8 +55,8 @@ import Ursus
                     )
                 ),
                 callbacks: (
-                    onSuccess: { data in
-                        print("onSuccess:", String(bytes: data, encoding: .utf8)!)
+                    onSuccess: {
+                        print("onSuccess")
                     },
                     onFailure: { error in
                         print("onFailure:", error)

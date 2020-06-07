@@ -7,10 +7,15 @@
 
 import Foundation
 
-enum SubscribeResponse: Decodable {
+struct SubscribeResponse: Decodable {
 
-    case success(id: Int)
-    case failure(id: Int, error: String)
+    var id: Int
+    var result: Result
+    
+    enum Result {
+        case success
+        case failure(String)
+    }
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -20,16 +25,12 @@ enum SubscribeResponse: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(Int.self, forKey: .id)
         switch container.allKeys {
         case [.id, .okay]:
-            self = .success(
-                id: try container.decode(Int.self, forKey: .id)
-            )
+            self.result = .success
         case [.id, .error]:
-            self = .failure(
-                id: try container.decode(Int.self, forKey: .id),
-                error: try container.decode(String.self, forKey: .error)
-            )
+            self.result = .failure(try container.decode(String.self, forKey: .error))
         default:
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Failed to decode \(type(of: self)); available keys: \(container.allKeys)"))
         }

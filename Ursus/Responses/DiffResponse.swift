@@ -10,8 +10,10 @@ import Foundation
 struct DiffResponse: Decodable {
     
     var id: Int
-//    var json: Any
-    #warning("Set up dynamic JSON decoder")
+    var json: Any {
+        #warning("Set up dynamic JSON decoder")
+        return 42
+    }
     
     enum CodingKeys: String, CodingKey {
         case id

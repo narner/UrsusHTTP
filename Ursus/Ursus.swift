@@ -11,9 +11,9 @@ import IKEventSource
 
 #warning("Unify the way these are handled (with Poke, Ack, Subscribe)")
 
-public typealias PokeCallbacks = (onSuccess: (Data) -> Void, onFailure: (Error) -> Void)
+public typealias PokeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void)
 
-public typealias SubscribeCallbacks = (onError: (Error) -> Void, onEvent: (Data) -> Void, onQuit: () -> Void)
+public typealias SubscribeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void, onEvent: (Any) -> Void, onQuit: () -> Void)
 
 public class Ursus {
     
@@ -88,26 +88,30 @@ extension Ursus {
                 return
             }
             
-            print("onMessage", id, event, response)
-            
-//            print("onMessage", message)
-//            switch message.response {
-//            case .poke:
-//                break
-//                // if message["ok"] exists
-//                // self?.outstandingPokes[message["id"]]?.onSuccess()
-//                // if message["err"] exists
-//                // self?.outstandingPokes[message["id"]]?.onFailure()
-//                // then remove outstandingPokes[message["id"]]
-//            case .subscribe:
-//                break
-//            case .diff:
-//                break
-//            case .quit:
-//                break
-//            }
-            
-            #warning("Handle messages (pokes and subscribes) here")
+            switch response {
+            case .poke(let response):
+                switch response.result {
+                case .success:
+                    self?.outstandingPokes[response.id]?.onSuccess()
+                    self?.outstandingPokes[response.id] = nil
+                case .failure(let error):
+                    self?.outstandingPokes[response.id]?.onFailure(error)
+                    self?.outstandingPokes[response.id] = nil
+                }
+            case .subscribe(let response):
+                switch response.result {
+                case .success:
+                    self?.outstandingSubscribes[response.id]?.onSuccess()
+                case .failure(let error):
+                    self?.outstandingSubscribes[response.id]?.onFailure(error)
+                    self?.outstandingSubscribes[response.id] = nil
+                }
+            case .diff(let response):
+                self?.outstandingSubscribes[response.id]?.onEvent(response.json)
+            case .quit(let response):
+                self?.outstandingSubscribes[response.id]?.onQuit()
+                self?.outstandingSubscribes[response.id] = nil
+            }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
             #warning("Handle errors here; if error, delete() and init(); setOnChannelError() and onChannelError")
