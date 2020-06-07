@@ -9,8 +9,14 @@ import Foundation
 
 struct UnsubscribeRequest: Encodable {
     
-    var id: Int
     var action: String = "unsubscribe"
-    var subscription: Int
+    var id: Int
+    var subscriptionID: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case action
+        case id
+        case subscriptionID = "subscription"
+    }
     
 }

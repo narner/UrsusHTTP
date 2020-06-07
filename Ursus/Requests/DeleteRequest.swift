@@ -9,7 +9,10 @@ import Foundation
 
 struct DeleteRequest: Encodable {
     
-    var id: Int
-    var action: String = "subscribe"
+    var action: String = "delete"
+    
+    enum CodingKeys: String, CodingKey {
+        case action
+    }
     
 }

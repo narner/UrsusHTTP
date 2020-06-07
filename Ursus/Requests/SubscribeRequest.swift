@@ -9,10 +9,18 @@ import Foundation
 
 struct SubscribeRequest: Encodable {
     
-    var id: Int
     var action: String = "subscribe"
+    var id: Int
     var ship: String
     var app: String
     var path: String
+    
+    enum CodingKeys: String, CodingKey {
+        case action
+        case id
+        case ship
+        case app
+        case path
+    }
     
 }

@@ -18,14 +18,18 @@ public typealias SubscribeResponse = (onError: (Error) -> Void, onEvent: (Data) 
 public class Ursus {
     
     private var session: Session = .default
-    
-    private var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
-    
-    private var eventID: Int = 0
     private var eventSource: EventSource? = nil
     
     private var outstandingPokes: [Int: PokeResponse] = [:]
     private var outstandingSubscribes: [Int: SubscribeResponse] = [:]
+    
+    private var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
+    
+    private var requestID: Int = 0
+    private var nextRequestID: Int {
+        requestID += 1
+        return requestID
+    }
     
     public var url: URL
     public var code: String
@@ -33,15 +37,6 @@ public class Ursus {
     public init(url: URL, code: String) {
         self.url = url
         self.code = code
-    }
-    
-}
-
-extension Ursus {
-    
-    private var nextEventID: Int {
-        eventID += 1
-        return eventID
     }
     
 }
@@ -137,8 +132,13 @@ struct Message: Decodable {
 
 extension Ursus {
     
+    @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
+        let request = AckRequest(eventID: eventID)
+        return channelRequest(request)
+    }
+    
     @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, pokeResponse: PokeResponse) -> DataRequest {
-        let request = PokeRequest(id: nextEventID, ship: ship, app: app, mark: mark, json: json)
+        let request = PokeRequest(id: nextRequestID, ship: ship, app: app, mark: mark, json: json)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
                 self?.outstandingPokes[request.id] = pokeResponse
@@ -147,7 +147,7 @@ extension Ursus {
     }
     
     @discardableResult public func subscribeRequest(ship: String, app: String, path: String, subscribeResponse: SubscribeResponse) -> DataRequest {
-        let request = SubscribeRequest(id: nextEventID, ship: ship, app: app, path: path)
+        let request = SubscribeRequest(id: nextRequestID, ship: ship, app: app, path: path)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
                 self?.outstandingSubscribes[request.id] = subscribeResponse
@@ -155,22 +155,13 @@ extension Ursus {
         }
     }
     
-}
-
-extension Ursus {
-    
-    @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
-        let request = AckRequest(eventID: eventID)
+    @discardableResult public func unsubscribeRequest(subscriptionID: Int) -> DataRequest {
+        let request = UnsubscribeRequest(id: nextRequestID, subscriptionID: subscriptionID)
         return channelRequest(request)
     }
     
     @discardableResult public func deleteRequest() -> DataRequest {
-        let request = DeleteRequest(id: nextEventID)
-        return channelRequest(request)
-    }
-    
-    @discardableResult public func unsubscribeRequest(subscription: Int) -> DataRequest {
-        let request = UnsubscribeRequest(id: nextEventID, subscription: subscription)
+        let request = DeleteRequest()
         return channelRequest(request)
     }
     
