@@ -24,6 +24,9 @@
     "source_files": "Ursus/**/*.swift"
   },
   "dependencies": {
+    "Alamofire": [
+      "~> 5.2"
+    ],
     "IKEventSource": [
       "~> 3.0"
     ]

@@ -13,5 +13,6 @@ Pod::Spec.new do |s|
   s.osx.deployment_target   = '10.13'
   s.osx.source_files        = 'Ursus/**/*.swift'
   
+  s.dependency 'Alamofire', '~> 5.2'
   s.dependency 'IKEventSource', '~> 3.0'
 end

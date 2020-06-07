@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Subscribe: Encodable {
+struct SubscribeRequest: Encodable {
     
     var id: Int
     var action: String = "subscribe"

@@ -1,6 +1,8 @@
 PODS:
+  - Alamofire (5.2.1)
   - IKEventSource (3.0.1)
   - Ursus (1.0.0):
+    - Alamofire (~> 5.2)
     - IKEventSource (~> 3.0)
 
 DEPENDENCIES:
@@ -8,6 +10,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
+    - Alamofire
     - IKEventSource
 
 EXTERNAL SOURCES:
@@ -15,8 +18,9 @@ EXTERNAL SOURCES:
     :path: ".."
 
 SPEC CHECKSUMS:
+  Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   IKEventSource: ababa323587c6b0c250dd54d4a48ab68fd845e8e
-  Ursus: c2f358fd93164d29c5d3823b59d20bf6dd9ee0fb
+  Ursus: e1cbfc1ee262ba6f050513974c2434d133aa1f0b
 
 PODFILE CHECKSUM: 6c40f00cb337e263b2e867d0f791a2d2ced2d945
 

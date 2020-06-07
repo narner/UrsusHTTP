@@ -36,11 +36,9 @@ import Ursus
 //        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
 //        >>>
         
-        print("Cookies:", ursus.session.configuration.httpCookieStorage?.cookies ?? [])
-        
-        ursus.connect() {
-            print("Cookies:", self.ursus.session.configuration.httpCookieStorage?.cookies ?? [])
-            try! self.ursus.poke(
+        ursus.loginRequest().response { response in
+            print("Login request response:", response)
+            self.ursus.pokeRequest(
                 request: (
                     ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
                     app: "chat-store",
@@ -66,41 +64,10 @@ import Ursus
                         print("onFailure:", error)
                     }
                 )
-            )
+            ).response { response in
+                print("Poke request response:", response)
+            }
         }
-        
-        
-//        cancellable = ursus.connect()
-//            .flatMap { value -> URLSession.DataTaskPublisher in
-//                self.ursus.connectEventSource()
-//                return try! self.ursus.poke(
-//                    ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-//                    app: "chat-store",
-//                    mark: "json",
-//                    json: Message(
-//                        path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
-//                        envelope: Envelope(
-//                            uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
-//                            number: 1,
-//                            author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-//                            when: Int(Date().timeIntervalSince1970 * 1000),
-//                            letter: [
-//                                "text": "hello world!"
-//                            ]
-//                        )
-//                    )
-//                )
-//            }
-//            .sink(
-//                receiveCompletion: { completion in
-//                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
-//                    print(completion)
-//                },
-//                receiveValue: { value in
-//                    print("Cookie:", HTTPCookieStorage.shared.cookies(for: self.ursus.url) ?? [])
-//                    print(String(bytes: value.data, encoding: .utf8)!, value.response)
-//                }
-//            )
         
         return true
     }

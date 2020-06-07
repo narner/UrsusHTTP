@@ -6,19 +6,18 @@
 //
 
 import Foundation
+import Alamofire
 import IKEventSource
 
 #warning("Unify the way these are handled (with Poke, Ack, Subscribe)")
 
-public typealias PokeRequest<JSON: Encodable> = (ship: String, app: String, mark: String, json: JSON)
 public typealias PokeResponse = (onSuccess: (Data) -> Void, onFailure: (Error) -> Void)
 
-public typealias SubscribeRequest = (ship: String, app: String, path: String)
 public typealias SubscribeResponse = (onError: (Error) -> Void, onEvent: (Data) -> Void, onQuit: () -> Void)
 
 public class Ursus {
     
-    public var session = URLSession(configuration: .ephemeral)
+    private var session: Session = .default
     
     private var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
     
@@ -59,21 +58,20 @@ extension Ursus {
     
 }
 
-#warning("Need delete() function")
-
 extension Ursus {
     
-    private func sendJSONToChannel<JSON: Encodable>(_ json: JSON) throws {
-        var request = URLRequest(url: channelURL)
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpMethod = "PUT"
-        request.httpBody = try JSONEncoder().encode([json])
-        session.dataTask(with: request) { (data, response, error) in
-            print("Request completed:", data, response, error)
-        }.resume()
-        
-        connectIfDisconnected()
+    public func loginRequest() -> DataRequest {
+        return session.request(loginURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default)
     }
+    
+    public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
+        defer { connectIfDisconnected() }
+        return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default)
+    }
+    
+}
+
+extension Ursus {
     
     private func connectIfDisconnected() {
         guard eventSource == nil else {
@@ -81,13 +79,6 @@ extension Ursus {
         }
         
         eventSource = EventSource(url: channelURL)
-        eventSource?.onOpen {
-            print("onOpen")
-        }
-        eventSource?.onComplete { status, reconnect, error in
-            #warning("Handle errors here; if error, delete() and init(); setOnChannelError() and onChannelError")
-            print("onComplete", status, reconnect, error)
-        }
         eventSource?.onMessage { [weak self] id, event, data in
             print("onMessage", id, event, data)
             
@@ -98,8 +89,6 @@ extension Ursus {
             guard let data = data?.data(using: .utf8), let message = try? JSONDecoder().decode(Message.self, from: data) else {
                 return
             }
-            
-            #warning("Does channel.js set lastEventId even if nil...?")
             
             print("onMessage", message)
             switch message.response {
@@ -119,6 +108,10 @@ extension Ursus {
             }
             
             #warning("Handle messages (pokes and subscribes) here")
+        }
+        eventSource?.onComplete { [weak self] status, reconnect, error in
+            #warning("Handle errors here; if error, delete() and init(); setOnChannelError() and onChannelError")
+            print("onComplete", status, reconnect, error)
         }
         eventSource?.connect()
     }
@@ -144,44 +137,32 @@ struct Message: Decodable {
 
 extension Ursus {
     
-    #warning("This probably needs a callback; should also call automatically...?")
-    
-    public func connect(completion: @escaping () -> Void) {
-        var request = URLRequest(url: loginURL)
-        request.httpMethod = "POST"
-        request.httpBody = "password=\(code)".data(using: .utf8)
-        
-        session.dataTask(with: request) { (data, response, error) in
-            print("Connect completed:", data, response, error)
-            completion()
-        }.resume()
+    public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, pokeResponse: PokeResponse) -> DataRequest {
+        let request = PokeRequest(id: nextEventID, ship: ship, app: app, mark: mark, json: json)
+        return channelRequest(request).response { [weak self] response in
+            if case .success = response.result {
+                self?.outstandingPokes[request.id] = pokeResponse
+            }
+        }
     }
     
-    public func poke<JSON: Encodable>(request: PokeRequest<JSON>, response: PokeResponse) throws {
-        let id = nextEventID
-        let poke = Poke(id: id, ship: request.ship, app: request.app, mark: request.mark, json: request.json)
-
-        outstandingPokes[id] = response
-        try sendJSONToChannel(poke)
-        
-        #warning("Catch error and remove poke if this fails")
+    public func subscribeRequest(ship: String, app: String, path: String, subscribeResponse: SubscribeResponse) -> DataRequest {
+        let request = SubscribeRequest(id: nextEventID, ship: ship, app: app, path: path)
+        return channelRequest(request).response { [weak self] response in
+            if case .success = response.result {
+                self?.outstandingSubscribes[request.id] = subscribeResponse
+            }
+        }
     }
     
-    public func subscribe(request: SubscribeRequest, response: SubscribeResponse) throws {
-        let id = nextEventID
-        let subscribe = Subscribe(id: id, ship: request.ship, app: request.app, path: request.path)
-        
-        outstandingSubscribes[id] = response
-        try sendJSONToChannel(subscribe)
-        
-        #warning("Catch error and remove subscription if this fails")
+    public func unsubscribeRequest(subscription: Int) -> DataRequest {
+        let request = UnsubscribeRequest(id: nextEventID, subscription: subscription)
+        return channelRequest(request)
     }
-
-    #warning("Finish me")
     
-    public func unsubscribe() {
-        let id = nextEventID
-        
+    public func deleteRequest() -> DataRequest {
+        let request = DeleteRequest(id: nextEventID)
+        return channelRequest(request)
     }
     
 }
