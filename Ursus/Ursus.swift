@@ -155,13 +155,22 @@ extension Ursus {
         }
     }
     
-    @discardableResult public func unsubscribeRequest(subscription: Int) -> DataRequest {
-        let request = UnsubscribeRequest(id: nextEventID, subscription: subscription)
+}
+
+extension Ursus {
+    
+    @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
+        let request = AckRequest(eventID: eventID)
         return channelRequest(request)
     }
     
     @discardableResult public func deleteRequest() -> DataRequest {
         let request = DeleteRequest(id: nextEventID)
+        return channelRequest(request)
+    }
+    
+    @discardableResult public func unsubscribeRequest(subscription: Int) -> DataRequest {
+        let request = UnsubscribeRequest(id: nextEventID, subscription: subscription)
         return channelRequest(request)
     }
     
