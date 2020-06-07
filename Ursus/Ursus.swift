@@ -9,11 +9,7 @@ import Foundation
 import Alamofire
 import IKEventSource
 
-#warning("Unify the way these are handled (with Poke, Ack, Subscribe)")
-
-public typealias PokeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void)
-
-public typealias SubscribeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void, onEvent: (Any) -> Void, onQuit: () -> Void)
+#warning("Change the way the poke/subscribe callbacks are handled")
 
 public class Ursus {
     
@@ -23,7 +19,7 @@ public class Ursus {
     private var outstandingPokes: [Int: PokeCallbacks] = [:]
     private var outstandingSubscribes: [Int: SubscribeCallbacks] = [:]
     
-    private var uid: String = "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
+    private var uid: String = Ursus.uid
     
     private var requestID: Int = 0
     private var nextRequestID: Int {
@@ -41,12 +37,30 @@ public class Ursus {
         self.code = code
     }
     
-    private func reset() {
-        #warning("Reset uid, requestID, eventSource, lastEventID, outstandingPokes, outstandingSubscriptions")
+    public func reset() {
+        deleteRequest()
+        
+        eventSource = nil
+        
+        outstandingPokes.removeAll()
+        outstandingSubscribes.removeAll()
+        
+        uid = Ursus.uid
+        
+        requestID = 0
+        lastEventID = nil
     }
     
     deinit {
         deleteRequest()
+    }
+    
+}
+
+extension Ursus {
+    
+    private static var uid: String {
+        return "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
     }
     
 }
@@ -88,11 +102,7 @@ extension Ursus {
             print("onOpen")
         }
         eventSource?.onMessage { [weak self] id, event, data in
-            guard let `self` = self else {
-                return
-            }
-            
-            self.lastEventID = id ?? self.lastEventID
+            self?.lastEventID = id ?? self?.lastEventID
             
             do {
                 guard let data = data?.data(using: .utf8) else {
@@ -104,37 +114,32 @@ extension Ursus {
                 case .poke(let response):
                     switch response.result {
                     case .success:
-                        self.outstandingPokes[response.id]?.onSuccess()
-                        self.outstandingPokes[response.id] = nil
+                        self?.outstandingPokes[response.id]?.onSuccess()
+                        self?.outstandingPokes[response.id] = nil
                     case .failure(let error):
-                        self.outstandingPokes[response.id]?.onFailure(error)
-                        self.outstandingPokes[response.id] = nil
+                        self?.outstandingPokes[response.id]?.onFailure(error)
+                        self?.outstandingPokes[response.id] = nil
                     }
                 case .subscribe(let response):
                     switch response.result {
                     case .success:
-                        self.outstandingSubscribes[response.id]?.onSuccess()
+                        self?.outstandingSubscribes[response.id]?.onSuccess()
                     case .failure(let error):
-                        self.outstandingSubscribes[response.id]?.onFailure(error)
-                        self.outstandingSubscribes[response.id] = nil
+                        self?.outstandingSubscribes[response.id]?.onFailure(error)
+                        self?.outstandingSubscribes[response.id] = nil
                     }
                 case .diff(let response):
-                    self.outstandingSubscribes[response.id]?.onEvent(response.json)
+                    self?.outstandingSubscribes[response.id]?.onEvent(response.json)
                 case .quit(let response):
-                    self.outstandingSubscribes[response.id]?.onQuit()
-                    self.outstandingSubscribes[response.id] = nil
+                    self?.outstandingSubscribes[response.id]?.onQuit()
+                    self?.outstandingSubscribes[response.id] = nil
                 }
             } catch let error {
                 print("Error decoding message:", error)
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
-            guard let `self` = self else {
-                return
-            }
-            
-            self.deleteRequest()
-            self.reset()
+            self?.reset()
             
             print("Error from event source:", status, reconnect, error)
         }
@@ -149,6 +154,8 @@ extension Ursus {
         let request = AckRequest(eventID: eventID)
         return channelRequest(request)
     }
+
+    public typealias PokeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void)
     
     @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, callbacks: PokeCallbacks) -> DataRequest {
         let id = nextRequestID
@@ -159,6 +166,8 @@ extension Ursus {
             }
         }
     }
+
+    public typealias SubscribeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void, onEvent: (Any) -> Void, onQuit: () -> Void)
     
     @discardableResult public func subscribeRequest(ship: String, app: String, path: String, callbacks: SubscribeCallbacks) -> DataRequest {
         let id = nextRequestID
