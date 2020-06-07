@@ -60,11 +60,11 @@ extension Ursus {
 
 extension Ursus {
     
-    public func loginRequest() -> DataRequest {
+    @discardableResult public func loginRequest() -> DataRequest {
         return session.request(loginURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default)
     }
     
-    public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
+    @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
         defer { connectIfDisconnected() }
         return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default)
     }
@@ -137,7 +137,7 @@ struct Message: Decodable {
 
 extension Ursus {
     
-    public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, pokeResponse: PokeResponse) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, pokeResponse: PokeResponse) -> DataRequest {
         let request = PokeRequest(id: nextEventID, ship: ship, app: app, mark: mark, json: json)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
@@ -146,7 +146,7 @@ extension Ursus {
         }
     }
     
-    public func subscribeRequest(ship: String, app: String, path: String, subscribeResponse: SubscribeResponse) -> DataRequest {
+    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, subscribeResponse: SubscribeResponse) -> DataRequest {
         let request = SubscribeRequest(id: nextEventID, ship: ship, app: app, path: path)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
@@ -155,12 +155,12 @@ extension Ursus {
         }
     }
     
-    public func unsubscribeRequest(subscription: Int) -> DataRequest {
+    @discardableResult public func unsubscribeRequest(subscription: Int) -> DataRequest {
         let request = UnsubscribeRequest(id: nextEventID, subscription: subscription)
         return channelRequest(request)
     }
     
-    public func deleteRequest() -> DataRequest {
+    @discardableResult public func deleteRequest() -> DataRequest {
         let request = DeleteRequest(id: nextEventID)
         return channelRequest(request)
     }
