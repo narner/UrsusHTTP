@@ -31,6 +31,8 @@ public class Ursus {
         return requestID
     }
     
+    private var lastEventID: String? = nil
+    
     public var url: URL
     public var code: String
     
@@ -73,51 +75,56 @@ extension Ursus {
             return
         }
         
-        #warning("Should be able to pass in the last event ID here")
-        
         eventSource = EventSource(url: channelURL)
         eventSource?.onOpen {
             print("onOpen")
         }
         eventSource?.onMessage { [weak self] id, event, data in
-            guard let id = id.flatMap(Int.init) else {
+            guard let `self` = self else {
                 return
             }
             
-            guard let data = data?.data(using: .utf8), let response = try? JSONDecoder().decode(Response.self, from: data) else {
-                return
-            }
+            self.lastEventID = id ?? self.lastEventID
             
-            switch response {
-            case .poke(let response):
-                switch response.result {
-                case .success:
-                    self?.outstandingPokes[response.id]?.onSuccess()
-                    self?.outstandingPokes[response.id] = nil
-                case .failure(let error):
-                    self?.outstandingPokes[response.id]?.onFailure(error)
-                    self?.outstandingPokes[response.id] = nil
+            do {
+                guard let data = data?.data(using: .utf8) else {
+                    return
                 }
-            case .subscribe(let response):
-                switch response.result {
-                case .success:
-                    self?.outstandingSubscribes[response.id]?.onSuccess()
-                case .failure(let error):
-                    self?.outstandingSubscribes[response.id]?.onFailure(error)
-                    self?.outstandingSubscribes[response.id] = nil
+                
+                let response = try JSONDecoder().decode(Response.self, from: data)
+                switch response {
+                case .poke(let response):
+                    switch response.result {
+                    case .success:
+                        self.outstandingPokes[response.id]?.onSuccess()
+                        self.outstandingPokes[response.id] = nil
+                    case .failure(let error):
+                        self.outstandingPokes[response.id]?.onFailure(error)
+                        self.outstandingPokes[response.id] = nil
+                    }
+                case .subscribe(let response):
+                    switch response.result {
+                    case .success:
+                        self.outstandingSubscribes[response.id]?.onSuccess()
+                    case .failure(let error):
+                        self.outstandingSubscribes[response.id]?.onFailure(error)
+                        self.outstandingSubscribes[response.id] = nil
+                    }
+                case .diff(let response):
+                    self.outstandingSubscribes[response.id]?.onEvent(response.json)
+                case .quit(let response):
+                    self.outstandingSubscribes[response.id]?.onQuit()
+                    self.outstandingSubscribes[response.id] = nil
                 }
-            case .diff(let response):
-                self?.outstandingSubscribes[response.id]?.onEvent(response.json)
-            case .quit(let response):
-                self?.outstandingSubscribes[response.id]?.onQuit()
-                self?.outstandingSubscribes[response.id] = nil
+            } catch let error {
+                print("Error decoding message:", error)
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
             #warning("Handle errors here; if error, delete() and init(); setOnChannelError() and onChannelError")
             print("onComplete", status, reconnect, error)
         }
-        eventSource?.connect()
+        eventSource?.connect(lastEventId: lastEventID)
     }
     
 }
