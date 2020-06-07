@@ -1,6 +1,6 @@
 //
 //  Subscribe.swift
-//  IKEventSource
+//  Ursus
 //
 //  Created by Daniel Clelland on 4/06/20.
 //

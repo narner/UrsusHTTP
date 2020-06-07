@@ -39,24 +39,22 @@ import Ursus
         ursus.loginRequest().response { response in
             print("Login request response:", response)
             self.ursus.pokeRequest(
-                request: (
-                    ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-                    app: "chat-store",
-                    mark: "json",
-                    json: Message(
-                        path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
-                        envelope: Envelope(
-                            uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
-                            number: 1,
-                            author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-                            when: Int(Date().timeIntervalSince1970 * 1000),
-                            letter: [
-                                "text": "hello world!"
-                            ]
-                        )
+                ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                app: "chat-store",
+                mark: "json",
+                json: Message(
+                    path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
+                    envelope: Envelope(
+                        uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
+                        number: 1,
+                        author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                        when: Int(Date().timeIntervalSince1970 * 1000),
+                        letter: [
+                            "text": "hello world!"
+                        ]
                     )
                 ),
-                response: (
+                callbacks: (
                     onSuccess: { data in
                         print("onSuccess:", String(bytes: data, encoding: .utf8)!)
                     },

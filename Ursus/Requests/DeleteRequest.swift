@@ -1,6 +1,6 @@
 //
 //  DeleteRequest.swift
-//  Alamofire
+//  Ursus
 //
 //  Created by Daniel Clelland on 7/06/20.
 //
