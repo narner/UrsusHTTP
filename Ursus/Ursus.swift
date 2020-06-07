@@ -41,6 +41,14 @@ public class Ursus {
         self.code = code
     }
     
+    private func reset() {
+        #warning("Reset uid, requestID, eventSource, lastEventID, outstandingPokes, outstandingSubscriptions")
+    }
+    
+    deinit {
+        deleteRequest()
+    }
+    
 }
 
 extension Ursus {
@@ -121,8 +129,14 @@ extension Ursus {
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
-            #warning("Handle errors here; if error, delete() and init(); setOnChannelError() and onChannelError")
-            print("onComplete", status, reconnect, error)
+            guard let `self` = self else {
+                return
+            }
+            
+            self.deleteRequest()
+            self.reset()
+            
+            print("Error from event source:", status, reconnect, error)
         }
         eventSource?.connect(lastEventId: lastEventID)
     }
