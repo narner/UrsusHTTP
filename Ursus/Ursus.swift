@@ -40,9 +40,6 @@ public class Ursus {
         
         eventSource = nil
         
-        pokeHandlers.removeAll()
-        subscribeHandlers.removeAll()
-        
         uid = Ursus.uid
         
         requestID = 0
@@ -95,8 +92,6 @@ extension Ursus {
             return
         }
         
-        print("Disconnected, connecting")
-        
         eventSource = EventSource(url: channelURL)
         eventSource?.onOpen {
             print("onOpen")
@@ -117,7 +112,7 @@ extension Ursus {
                         self?.pokeHandlers[response.id]?(.success)
                         self?.pokeHandlers[response.id] = nil
                     case .failure(let error):
-                        self?.pokeHandlers[response.id]?(.failure(error))
+                        self?.pokeHandlers[response.id]?(.failure(.response(error)))
                         self?.pokeHandlers[response.id] = nil
                     }
                 case .subscribe(let response):
@@ -125,7 +120,7 @@ extension Ursus {
                     case .success:
                         self?.subscribeHandlers[response.id]?(.success)
                     case .failure(let error):
-                        self?.subscribeHandlers[response.id]?(.failure(error))
+                        self?.subscribeHandlers[response.id]?(.failure(.response(error)))
                         self?.subscribeHandlers[response.id] = nil
                     }
                 case .diff(let response):
@@ -139,10 +134,17 @@ extension Ursus {
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
-            #warning("Should this forward the error to all the poke/subscribe handlers before removal?")
-            self?.reset()
+            self?.pokeHandlers.values.forEach { handler in
+                handler(.failure(.disconnection(status, reconnect, error)))
+            }
+            self?.pokeHandlers.removeAll()
             
-            print("Error from event source:", status, reconnect, error)
+            self?.subscribeHandlers.values.forEach { handler in
+                handler(.failure(.disconnection(status, reconnect, error)))
+            }
+            self?.subscribeHandlers.removeAll()
+            
+            self?.reset()
         }
         eventSource?.connect(lastEventId: lastEventID)
     }

@@ -7,9 +7,16 @@
 
 import Foundation
 
+public enum PokeError: Error {
+    
+    case response(String)
+    case disconnection(Int?, Bool?, NSError?)
+    
+}
+
 public enum PokeEvent {
     
     case success
-    case failure(String)
+    case failure(PokeError)
     
 }
