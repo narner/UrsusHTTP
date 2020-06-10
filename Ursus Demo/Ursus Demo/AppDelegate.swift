@@ -36,6 +36,18 @@ import Ursus
 //        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
 //        >>>
         
+//        export function uuid() {
+//          let str = "0v"
+//          str += Math.ceil(Math.random()*8)+"."
+//          for (var i = 0; i < 5; i++) {
+//            let _str = Math.ceil(Math.random()*10000000).toString(32);
+//            _str = ("00000"+_str).substr(-5,5);
+//            str += _str+".";
+//          }
+//
+//          return str.slice(0,-1);
+//        }
+        
         ursus.authenticationRequest().response { response in
             print("Login request response:", response)
             self.ursus.pokeRequest(
@@ -54,14 +66,14 @@ import Ursus
                         ]
                     )
                 ),
-                callbacks: (
-                    onSuccess: {
+                handler: { event in
+                    switch event {
+                    case .success:
                         print("onSuccess")
-                    },
-                    onFailure: { error in
+                    case .failure(let error):
                         print("onFailure:", error)
                     }
-                )
+                }
             ).response { response in
                 print("Poke request response:", response)
             }

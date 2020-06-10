@@ -9,15 +9,13 @@ import Foundation
 import Alamofire
 import IKEventSource
 
-#warning("Change the way the poke/subscribe callbacks are handled")
-
 public class Ursus {
     
     private var session: Session = .default
     private var eventSource: EventSource? = nil
     
-    private var outstandingPokes: [Int: PokeCallbacks] = [:]
-    private var outstandingSubscribes: [Int: SubscribeCallbacks] = [:]
+    private var pokeHandlers: [Int: (PokeEvent) -> Void] = [:]
+    private var subscribeHandlers: [Int: (SubscribeEvent) -> Void] = [:]
     
     private var uid: String = Ursus.uid
     
@@ -42,8 +40,8 @@ public class Ursus {
         
         eventSource = nil
         
-        outstandingPokes.removeAll()
-        outstandingSubscribes.removeAll()
+        pokeHandlers.removeAll()
+        subscribeHandlers.removeAll()
         
         uid = Ursus.uid
         
@@ -97,6 +95,8 @@ extension Ursus {
             return
         }
         
+        print("Disconnected, connecting")
+        
         eventSource = EventSource(url: channelURL)
         eventSource?.onOpen {
             print("onOpen")
@@ -114,25 +114,25 @@ extension Ursus {
                 case .poke(let response):
                     switch response.result {
                     case .success:
-                        self?.outstandingPokes[response.id]?.onSuccess()
-                        self?.outstandingPokes[response.id] = nil
+                        self?.pokeHandlers[response.id]?(.success)
+                        self?.pokeHandlers[response.id] = nil
                     case .failure(let error):
-                        self?.outstandingPokes[response.id]?.onFailure(error)
-                        self?.outstandingPokes[response.id] = nil
+                        self?.pokeHandlers[response.id]?(.failure(error))
+                        self?.pokeHandlers[response.id] = nil
                     }
                 case .subscribe(let response):
                     switch response.result {
                     case .success:
-                        self?.outstandingSubscribes[response.id]?.onSuccess()
+                        self?.subscribeHandlers[response.id]?(.success)
                     case .failure(let error):
-                        self?.outstandingSubscribes[response.id]?.onFailure(error)
-                        self?.outstandingSubscribes[response.id] = nil
+                        self?.subscribeHandlers[response.id]?(.failure(error))
+                        self?.subscribeHandlers[response.id] = nil
                     }
                 case .diff(let response):
-                    self?.outstandingSubscribes[response.id]?.onEvent(response.json)
+                    self?.subscribeHandlers[response.id]?(.message(response.json))
                 case .quit(let response):
-                    self?.outstandingSubscribes[response.id]?.onQuit()
-                    self?.outstandingSubscribes[response.id] = nil
+                    self?.subscribeHandlers[response.id]?(.quit)
+                    self?.subscribeHandlers[response.id] = nil
                 }
             } catch let error {
                 print("Error decoding message:", error)
@@ -154,27 +154,23 @@ extension Ursus {
         let request = AckRequest(eventID: eventID)
         return channelRequest(request)
     }
-
-    public typealias PokeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void)
     
-    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, callbacks: PokeCallbacks) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
-                self?.outstandingPokes[id] = callbacks
+                self?.pokeHandlers[id] = handler
             }
         }
     }
-
-    public typealias SubscribeCallbacks = (onSuccess: () -> Void, onFailure: (String) -> Void, onEvent: (Any) -> Void, onQuit: () -> Void)
     
-    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, callbacks: SubscribeCallbacks) -> DataRequest {
+    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         return channelRequest(request).response { [weak self] response in
             if case .success = response.result {
-                self?.outstandingSubscribes[id] = callbacks
+                self?.subscribeHandlers[id] = handler
             }
         }
     }
