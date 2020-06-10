@@ -139,6 +139,7 @@ extension Ursus {
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
+            #warning("Should this forward the error to all the poke/subscribe handlers before removal?")
             self?.reset()
             
             print("Error from event source:", status, reconnect, error)
