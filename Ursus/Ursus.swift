@@ -79,7 +79,8 @@ extension Ursus {
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
-        defer { connectIfDisconnected() }
+        #warning("Try and make this async...")
+        connectIfDisconnected()
         return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default)
     }
     
@@ -94,9 +95,10 @@ extension Ursus {
         
         eventSource = EventSource(url: channelURL)
         eventSource?.onOpen {
-            print("onOpen")
+            print("eventSource.onOpen")
         }
         eventSource?.onMessage { [weak self] id, event, data in
+            print("eventSource.onMessage", id, event, data)
             self?.lastEventID = id ?? self?.lastEventID
             
             do {
@@ -134,6 +136,7 @@ extension Ursus {
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
+            print("eventSource.onComplete", status, reconnect, error)
             self?.pokeHandlers.values.forEach { handler in
                 handler(.failure(.disconnection(status, reconnect, error)))
             }

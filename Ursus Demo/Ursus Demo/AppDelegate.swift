@@ -69,9 +69,9 @@ import Ursus
                 handler: { event in
                     switch event {
                     case .success:
-                        print("onSuccess")
+                        print("Poke handler success")
                     case .failure(let error):
-                        print("onFailure:", error)
+                        print("Poke handler failure:", error)
                     }
                 }
             ).response { response in
