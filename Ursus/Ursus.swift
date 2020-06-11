@@ -95,10 +95,10 @@ extension Ursus {
         
         eventSource = EventSource(url: channelURL)
         eventSource?.onOpen {
-            print("eventSource.onOpen")
+            print("[Ursus] Event source opened")
         }
         eventSource?.onMessage { [weak self] id, event, data in
-            print("eventSource.onMessage", id, event, data)
+            print("[Ursus] Event source received message:", id, event, data)
             self?.lastEventID = id ?? self?.lastEventID
             
             do {
@@ -132,11 +132,11 @@ extension Ursus {
                     self?.subscribeHandlers[response.id] = nil
                 }
             } catch let error {
-                print("Error decoding message:", error)
+                print("[Ursus] Error decoding message:", error)
             }
         }
         eventSource?.onComplete { [weak self] status, reconnect, error in
-            print("eventSource.onComplete", status, reconnect, error)
+            print("[Ursus] Event source completed:", status, reconnect, error)
             self?.pokeHandlers.values.forEach { handler in
                 handler(.failure(.disconnection(status, reconnect, error)))
             }
