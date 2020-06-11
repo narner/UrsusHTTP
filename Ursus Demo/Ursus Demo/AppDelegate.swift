@@ -12,16 +12,9 @@ import AlamofireLogger
 
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
     
-    let ursus = Ursus(url: URL(string: "http://192.168.1.65")!, code: "lidlyx-dinmeg-masper-hilbex")
+    let ursus = Ursus(url: URL(string: "http://192.168.1.65")!, code: "namwes-boster-dalryt-rosfeb")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-//        cancellable = ursus.poke(
-//            ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
-//            app: "chat-store",
-//            mark: "json",
-//            json: ["test": 123]
-//        )
         
 //        Python 3.7.3 (default, Nov 15 2019, 04:04:52)
 //        [Clang 11.0.0 (clang-1100.0.33.16)] on darwin
@@ -50,15 +43,15 @@ import AlamofireLogger
         
         ursus.authenticationRequest().log(.verbose).response { response in
             self.ursus.pokeRequest(
-                ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                ship: "lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod",
                 app: "chat-store",
                 mark: "json",
                 json: Message(
-                    path: "/~/~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod/mc",
+                    path: "/~/~lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod/mc",
                     envelope: Envelope(
                         uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
                         number: 1,
-                        author: "~habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
+                        author: "~lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod",
                         when: Int(Date().timeIntervalSince1970 * 1000),
                         letter: [
                             "text": "hello world!"
@@ -66,12 +59,7 @@ import AlamofireLogger
                     )
                 ),
                 handler: { event in
-                    switch event {
-                    case .success:
-                        print("Poke handler success")
-                    case .failure(let error):
-                        print("Poke handler failure:", error)
-                    }
+                    print("Poke:", event)
                 }
             ).log(.verbose)
         }

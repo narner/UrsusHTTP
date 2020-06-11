@@ -79,8 +79,9 @@ extension Ursus {
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
-        defer { connectIfDisconnected() }
-        return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default)
+        return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default).response { [weak self] _ in
+            self?.connectIfDisconnected()
+        }
     }
     
 }
