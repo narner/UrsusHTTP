@@ -164,9 +164,11 @@ extension Ursus {
     @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
+        pokeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
-            if case .success = response.result {
-                self?.pokeHandlers[id] = handler
+            if let error = response.error {
+                self?.pokeHandlers[id]?(.failure(.request(error)))
+                self?.pokeHandlers[id] = nil
             }
         }
     }
@@ -174,9 +176,11 @@ extension Ursus {
     @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
+        subscribeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
-            if case .success = response.result {
-                self?.subscribeHandlers[id] = handler
+            if let error = response.error {
+                self?.subscribeHandlers[id]?(.failure(.request(error)))
+                self?.subscribeHandlers[id] = nil
             }
         }
     }

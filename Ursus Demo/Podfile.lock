@@ -1,11 +1,14 @@
 PODS:
   - Alamofire (5.2.1)
+  - AlamofireLogger (0.3.0):
+    - Alamofire (~> 5.0)
   - IKEventSource (3.0.1)
   - Ursus (1.0.0):
     - Alamofire (~> 5.2)
     - IKEventSource (~> 3.0)
 
 DEPENDENCIES:
+  - AlamofireLogger (from `../../../Protonome/AlamofireLogger`)
   - Ursus (from `..`)
 
 SPEC REPOS:
@@ -14,14 +17,17 @@ SPEC REPOS:
     - IKEventSource
 
 EXTERNAL SOURCES:
+  AlamofireLogger:
+    :path: "../../../Protonome/AlamofireLogger"
   Ursus:
     :path: ".."
 
 SPEC CHECKSUMS:
   Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
+  AlamofireLogger: 8843aafdf632a7358ca347bc1811f2eaf04cf45a
   IKEventSource: ababa323587c6b0c250dd54d4a48ab68fd845e8e
   Ursus: e1cbfc1ee262ba6f050513974c2434d133aa1f0b
 
-PODFILE CHECKSUM: 6c40f00cb337e263b2e867d0f791a2d2ced2d945
+PODFILE CHECKSUM: 66413c2323c2bc14b4e6f903df12ba4cc2858375
 
 COCOAPODS: 1.8.3

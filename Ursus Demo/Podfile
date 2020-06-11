@@ -5,4 +5,5 @@ use_frameworks!
 
 target 'Ursus Demo' do
     pod 'Ursus', path: '..'
+    pod 'AlamofireLogger', '~> 0.3'
 end

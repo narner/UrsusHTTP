@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Alamofire
 
 public enum SubscribeError: Error {
     
+    case request(AFError)
     case response(String)
     case disconnection(Int?, Bool?, NSError?)
     

@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import Alamofire
 
 public enum PokeError: Error {
     
+    case request(AFError)
     case response(String)
     case disconnection(Int?, Bool?, NSError?)
     

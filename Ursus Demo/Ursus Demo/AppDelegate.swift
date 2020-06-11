@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import Combine
 import Ursus
+import AlamofireLogger
 
 @UIApplicationMain class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -48,8 +48,7 @@ import Ursus
 //          return str.slice(0,-1);
 //        }
         
-        ursus.authenticationRequest().response { response in
-            print("Login request response:", response)
+        ursus.authenticationRequest().log(.verbose).response { response in
             self.ursus.pokeRequest(
                 ship: "habsun-sansep-filfyr-fotpec--simlun-ticrus-matzod-marzod",
                 app: "chat-store",
@@ -74,9 +73,7 @@ import Ursus
                         print("Poke handler failure:", error)
                     }
                 }
-            ).response { response in
-                print("Poke request response:", response)
-            }
+            ).log(.verbose)
         }
         
         return true
