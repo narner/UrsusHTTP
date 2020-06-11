@@ -75,12 +75,11 @@ extension Ursus {
 extension Ursus {
     
     @discardableResult public func authenticationRequest() -> DataRequest {
-        defer { connectIfDisconnected() }
         return session.request(authenticationURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default)
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
-//        defer { connectIfDisconnected() }
+        defer { connectIfDisconnected() }
         return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder.default)
     }
     
