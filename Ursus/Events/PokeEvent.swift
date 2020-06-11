@@ -8,17 +8,17 @@
 import Foundation
 import Alamofire
 
-public enum PokeError: Error {
-    
-    case request(AFError)
-    case response(String)
-    case disconnection(Int?, Bool?, NSError?)
-    
-}
-
 public enum PokeEvent {
+
+    public enum Error: Swift.Error {
+        
+        case request(AFError)
+        case response(String)
+        case disconnection(Int?, Bool?, NSError?)
+        
+    }
     
     case success
-    case failure(PokeError)
+    case failure(Error)
     
 }

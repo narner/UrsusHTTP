@@ -26,7 +26,7 @@ struct PokeResponse: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decode(Int.self, forKey: .id)
-        switch container.allKeys {
+        switch Set(container.allKeys) {
         case [.id, .okay]:
             self.result = .success
         case [.id, .error]:

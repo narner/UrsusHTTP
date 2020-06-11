@@ -8,18 +8,18 @@
 import Foundation
 import Alamofire
 
-public enum SubscribeError: Error {
-    
-    case request(AFError)
-    case response(String)
-    case disconnection(Int?, Bool?, NSError?)
-    
-}
-
 public enum SubscribeEvent {
+
+    public enum Error: Swift.Error {
+        
+        case request(AFError)
+        case response(String)
+        case disconnection(Int?, Bool?, NSError?)
+        
+    }
     
     case success
-    case failure(SubscribeError)
+    case failure(Error)
     case message(Any)
     case quit
     
