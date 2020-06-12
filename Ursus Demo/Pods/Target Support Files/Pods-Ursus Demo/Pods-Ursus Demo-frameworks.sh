@@ -164,12 +164,14 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AlamofireLogger/AlamofireLogger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IKEventSource/IKEventSource.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/UInt128/UInt128.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Ursus/Ursus.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/AlamofireLogger/AlamofireLogger.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/IKEventSource/IKEventSource.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/UInt128/UInt128.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Ursus/Ursus.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

@@ -15,32 +15,6 @@ import AlamofireLogger
     let ursus = Ursus(url: URL(string: "http://192.168.1.65")!, code: "namwes-boster-dalryt-rosfeb")
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-//        Python 3.7.3 (default, Nov 15 2019, 04:04:52)
-//        [Clang 11.0.0 (clang-1100.0.33.16)] on darwin
-//        Type "help", "copyright", "credits" or "license" for more information.
-//        >>> import baseconvert
-//        >>> import random
-//        >>> s = baseconvert.base(random.getrandbits(128), 10, 32, string=True).lower()
-//        >>> s
-//        'v0shjrp37vv838ktdf7iajtit'
-//        >>> uid = '0v' + '.'.join(s[i:i+5] for i in range(0, len(s), 5))[::-1]
-//        >>> uid
-//        '0vtitja.i7fdt.k838v.v73pr.jhs0v'
-//        >>>
-        
-//        export function uuid() {
-//          let str = "0v"
-//          str += Math.ceil(Math.random()*8)+"."
-//          for (var i = 0; i < 5; i++) {
-//            let _str = Math.ceil(Math.random()*10000000).toString(32);
-//            _str = ("00000"+_str).substr(-5,5);
-//            str += _str+".";
-//          }
-//
-//          return str.slice(0,-1);
-//        }
-        
         ursus.authenticationRequest().log(.verbose).response { response in
             self.ursus.pokeRequest(
                 ship: "lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod",
@@ -49,7 +23,7 @@ import AlamofireLogger
                 json: Message(
                     path: "/~/~lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod/mc",
                     envelope: Envelope(
-                        uid: "0vtitja.i7fdt.k838v.v73pr.jhs0v",
+                        uid: UUID().base32String,
                         number: 1,
                         author: "~lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod",
                         when: Int(Date().timeIntervalSince1970 * 1000),

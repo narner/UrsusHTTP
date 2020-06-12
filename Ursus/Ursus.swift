@@ -17,7 +17,7 @@ public class Ursus {
     private var pokeHandlers: [Int: (PokeEvent) -> Void] = [:]
     private var subscribeHandlers: [Int: (SubscribeEvent) -> Void] = [:]
     
-    private var uid: String = Ursus.uid
+    private var uid: String = Ursus.uid()
     
     private var requestID: Int = 0
     private var nextRequestID: Int {
@@ -40,7 +40,7 @@ public class Ursus {
         
         eventSource = nil
         
-        uid = Ursus.uid
+        uid = Ursus.uid()
         
         requestID = 0
         lastEventID = nil
@@ -54,8 +54,8 @@ public class Ursus {
 
 extension Ursus {
     
-    private static var uid: String {
-        return "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(format: "%06x", Int.random(in: 0x000000...0xFFFFFF)))"
+    private static func uid() -> String {
+        return "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(Int.random(in: 0...0xFFFFFF), radix: 16))"
     }
     
 }

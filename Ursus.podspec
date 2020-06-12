@@ -15,4 +15,5 @@ Pod::Spec.new do |s|
   
   s.dependency 'Alamofire', '~> 5.2'
   s.dependency 'IKEventSource', '~> 3.0'
+  s.dependency 'UInt128', '~> 0.8'
 end
