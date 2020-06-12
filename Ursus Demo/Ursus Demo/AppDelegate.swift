@@ -16,24 +16,12 @@ import AlamofireLogger
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         ursus.authenticationRequest().log(.verbose).response { response in
-            self.ursus.pokeRequest(
+            self.ursus.subscribeRequest(
                 ship: "lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod",
-                app: "chat-store",
-                mark: "json",
-                json: Message(
-                    path: "/~/~lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod/mc",
-                    envelope: Envelope(
-                        uid: UUID().base32String,
-                        number: 1,
-                        author: "~lapred-pandel-polnet-sorwed--bacbep-labmul-tolmes-marzod",
-                        when: Int(Date().timeIntervalSince1970 * 1000),
-                        letter: [
-                            "text": "hello world!"
-                        ]
-                    )
-                ),
+                app: "chat-view",
+                path: "/primary",
                 handler: { event in
-                    print("Poke:", event)
+                    print("Subscribe event:", event)
                 }
             ).log(.verbose)
         }
