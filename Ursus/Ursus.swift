@@ -94,60 +94,55 @@ extension Ursus {
         }
         
         eventSource = EventSource(url: channelURL)
-        eventSource?.onOpen {
-            print("[Ursus] Event source opened")
-        }
-        eventSource?.onMessage { [weak self] id, event, data in
-            print("[Ursus] Event source received message:", id, event, data)
-            self?.lastEventID = id ?? self?.lastEventID
-            
-            do {
-                guard let data = data?.data(using: .utf8) else {
-                    return
-                }
+        eventSource?.onEvent { [weak self] event in
+            switch event {
+            case .open:
+                break
+            case .message(let id, let data):
+                self?.lastEventID = id
                 
-                let response = try JSONDecoder().decode(Response.self, from: data)
-                switch response {
-                case .poke(let response):
-                    switch response.result {
-                    case .success:
-                        self?.pokeHandlers[response.id]?(.success)
-                        self?.pokeHandlers[response.id] = nil
-                    case .failure(let error):
-                        self?.pokeHandlers[response.id]?(.failure(.response(error)))
-                        self?.pokeHandlers[response.id] = nil
-                    }
-                case .subscribe(let response):
-                    switch response.result {
-                    case .success:
-                        self?.subscribeHandlers[response.id]?(.success)
-                    case .failure(let error):
-                        self?.subscribeHandlers[response.id]?(.failure(.response(error)))
+                do {
+                    let response = try JSONDecoder().decode(Response.self, from: data)
+                    switch response {
+                    case .poke(let response):
+                        switch response.result {
+                        case .success:
+                            self?.pokeHandlers[response.id]?(.success)
+                            self?.pokeHandlers[response.id] = nil
+                        case .failure(let error):
+                            self?.pokeHandlers[response.id]?(.failure(.response(error)))
+                            self?.pokeHandlers[response.id] = nil
+                        }
+                    case .subscribe(let response):
+                        switch response.result {
+                        case .success:
+                            self?.subscribeHandlers[response.id]?(.success)
+                        case .failure(let error):
+                            self?.subscribeHandlers[response.id]?(.failure(.response(error)))
+                            self?.subscribeHandlers[response.id] = nil
+                        }
+                    case .diff(let response):
+                        self?.subscribeHandlers[response.id]?(.message(response.json))
+                    case .quit(let response):
+                        self?.subscribeHandlers[response.id]?(.quit)
                         self?.subscribeHandlers[response.id] = nil
                     }
-                case .diff(let response):
-                    self?.subscribeHandlers[response.id]?(.message(response.json))
-                case .quit(let response):
-                    self?.subscribeHandlers[response.id]?(.quit)
-                    self?.subscribeHandlers[response.id] = nil
+                } catch let error {
+                    print("[Ursus] Error decoding message:", error)
                 }
-            } catch let error {
-                print("[Ursus] Error decoding message:", error)
+            case .complete(let completion):
+                self?.pokeHandlers.values.forEach { handler in
+                    handler(.failure(.disconnection(completion)))
+                }
+                self?.subscribeHandlers.values.forEach { handler in
+                    handler(.failure(.disconnection(completion)))
+                }
+                
+                self?.pokeHandlers.removeAll()
+                self?.subscribeHandlers.removeAll()
+                
+                self?.reset()
             }
-        }
-        eventSource?.onComplete { [weak self] status, reconnect, error in
-            print("[Ursus] Event source completed:", status, reconnect, error)
-            self?.pokeHandlers.values.forEach { handler in
-                handler(.failure(.disconnection(status, reconnect, error)))
-            }
-            self?.pokeHandlers.removeAll()
-            
-            self?.subscribeHandlers.values.forEach { handler in
-                handler(.failure(.disconnection(status, reconnect, error)))
-            }
-            self?.subscribeHandlers.removeAll()
-            
-            self?.reset()
         }
         eventSource?.connect(lastEventId: lastEventID)
     }
