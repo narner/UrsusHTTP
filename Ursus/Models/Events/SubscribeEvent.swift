@@ -10,8 +10,8 @@ import Foundation
 public enum SubscribeEvent {
     
     case success
-    case failure(Error)
     case message(Data)
+    case failure(Error)
     case quit
     
 }

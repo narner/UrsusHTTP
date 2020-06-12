@@ -21,7 +21,16 @@ import AlamofireLogger
                 app: "chat-view",
                 path: "/primary",
                 handler: { event in
-                    print("Subscribe event:", event)
+                    switch event {
+                    case .success:
+                        print("Subscribe success")
+                    case .message(let data):
+                        print("Subscribe message:", String(data: data, encoding: .utf8)!)
+                    case .failure(let error):
+                        print("Subscribe failed:", error)
+                    case .quit:
+                        print("Subscribe quit")
+                    }
                 }
             ).log(.verbose)
         }
