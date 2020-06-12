@@ -12,8 +12,6 @@ struct DiffResponse: Decodable {
     var id: Int
     var json: Data
     
-    #warning("Test dynamic JSON decoding")
-    
     enum CodingKeys: String, CodingKey {
         case id
         case json

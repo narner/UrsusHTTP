@@ -7,6 +7,8 @@ Pod::Spec.new do |s|
   s.author                  = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
   s.source                  = { :git => "https://github.com/dclelland/Ursus.git", :tag => "1.0.0" }
 
+  s.swift_versions          = ['5.1', '5.2']
+  
   s.ios.deployment_target   = '13.0'
   s.ios.source_files        = 'Ursus/**/*.swift'
 
