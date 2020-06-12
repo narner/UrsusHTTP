@@ -11,7 +11,7 @@ public enum SubscribeEvent {
     
     case success
     case failure(Error)
-    case message(Any)
+    case message(Data)
     case quit
     
 }
