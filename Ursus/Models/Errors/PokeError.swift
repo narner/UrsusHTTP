@@ -6,12 +6,9 @@
 //
 
 import Foundation
-import Alamofire
 
-public enum PokeError: Error {
+public struct PokeError: Error {
     
-    case request(AFError)
-    case response(String)
-    case disconnection(EventCompletion)
+    var description: String
     
 }

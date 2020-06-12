@@ -8,24 +8,24 @@
 import Foundation
 import IKEventSource
 
-public enum Event {
+enum Event {
     
     case open
     case message(id: String, data: Data)
-    case complete(completion: EventCompletion)
+    case complete(error: EventError)
     
 }
 
-public enum EventCompletion {
+enum EventError: Error {
     
-    case server(statusCode: Int)
     case client(error: Error)
+    case server(statusCode: Int)
     
 }
 
 extension EventSource {
     
-    public func onEvent(_ onEventCallback: @escaping ((Event) -> Void)) {
+    func onEvent(_ onEventCallback: @escaping ((Event) -> Void)) {
         onOpen {
             onEventCallback(.open)
         }
@@ -39,10 +39,10 @@ extension EventSource {
         }
         onComplete { statusCode, reconnect, error in
             switch (statusCode, error) {
-            case (.some(let statusCode), .none):
-                onEventCallback(.complete(completion: .server(statusCode: statusCode)))
             case (.none, .some(let error)):
-                onEventCallback(.complete(completion: .client(error: error)))
+                onEventCallback(.complete(error: .client(error: error)))
+            case (.some(let statusCode), .none):
+                onEventCallback(.complete(error: .server(statusCode: statusCode)))
             default:
                 break
             }

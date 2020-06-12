@@ -10,7 +10,7 @@ import Foundation
 public enum SubscribeEvent {
     
     case success
-    case failure(SubscribeError)
+    case failure(Error)
     case message(Any)
     case quit
     

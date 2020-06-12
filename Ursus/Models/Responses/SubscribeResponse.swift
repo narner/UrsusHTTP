@@ -10,12 +10,7 @@ import Foundation
 struct SubscribeResponse: Decodable {
 
     var id: Int
-    var result: Result
-    
-    enum Result {
-        case success
-        case failure(String)
-    }
+    var result: Result<Void, SubscribeError>
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -28,9 +23,9 @@ struct SubscribeResponse: Decodable {
         self.id = try container.decode(Int.self, forKey: .id)
         switch container.allKeys {
         case [.id, .okay]:
-            self.result = .success
+            self.result = .success(())
         case [.id, .error]:
-            self.result = .failure(try container.decode(String.self, forKey: .error))
+            self.result = .failure(SubscribeError(description: try container.decode(String.self, forKey: .error)))
         default:
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Failed to decode \(type(of: self)); available keys: \(container.allKeys)"))
         }

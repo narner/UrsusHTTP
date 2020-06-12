@@ -110,7 +110,7 @@ extension Ursus {
                             self?.pokeHandlers[response.id]?(.success)
                             self?.pokeHandlers[response.id] = nil
                         case .failure(let error):
-                            self?.pokeHandlers[response.id]?(.failure(.response(error)))
+                            self?.pokeHandlers[response.id]?(.failure(error))
                             self?.pokeHandlers[response.id] = nil
                         }
                     case .subscribe(let response):
@@ -118,7 +118,7 @@ extension Ursus {
                         case .success:
                             self?.subscribeHandlers[response.id]?(.success)
                         case .failure(let error):
-                            self?.subscribeHandlers[response.id]?(.failure(.response(error)))
+                            self?.subscribeHandlers[response.id]?(.failure(error))
                             self?.subscribeHandlers[response.id] = nil
                         }
                     case .diff(let response):
@@ -130,12 +130,12 @@ extension Ursus {
                 } catch let error {
                     print("[Ursus] Error decoding message:", error)
                 }
-            case .complete(let completion):
+            case .complete(let error):
                 self?.pokeHandlers.values.forEach { handler in
-                    handler(.failure(.disconnection(completion)))
+                    handler(.failure(error))
                 }
                 self?.subscribeHandlers.values.forEach { handler in
-                    handler(.failure(.disconnection(completion)))
+                    handler(.failure(error))
                 }
                 
                 self?.pokeHandlers.removeAll()
@@ -162,7 +162,7 @@ extension Ursus {
         pokeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
             if let error = response.error {
-                self?.pokeHandlers[id]?(.failure(.request(error)))
+                self?.pokeHandlers[id]?(.failure(error))
                 self?.pokeHandlers[id] = nil
             }
         }
@@ -174,7 +174,7 @@ extension Ursus {
         subscribeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
             if let error = response.error {
-                self?.subscribeHandlers[id]?(.failure(.request(error)))
+                self?.subscribeHandlers[id]?(.failure(error))
                 self?.subscribeHandlers[id] = nil
             }
         }
