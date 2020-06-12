@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Ursus.xcodeproj">
+      location = "self:Ursus Demo.xcodeproj">
    </FileRef>
 </Workspace>

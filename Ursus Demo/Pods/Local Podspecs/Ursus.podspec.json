@@ -1,7 +1,7 @@
 {
   "name": "Ursus",
-  "version": "0.2.1",
-  "summary": "An Urbit client for iOS in Swift.",
+  "version": "1.0.0",
+  "summary": "An Urbit HTTP client for iOS/macOS.",
   "homepage": "https://github.com/dclelland/Ursus",
   "license": {
     "type": "MIT"
@@ -11,27 +11,27 @@
   },
   "source": {
     "git": "https://github.com/dclelland/Ursus.git",
-    "tag": "0.2.1"
+    "tag": "1.0.0"
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "13.0",
+    "osx": "10.13"
   },
   "ios": {
     "source_files": "Ursus/**/*.swift"
   },
-  "requires_arc": true,
+  "osx": {
+    "source_files": "Ursus/**/*.swift"
+  },
   "dependencies": {
     "Alamofire": [
-      "~> 3.4"
+      "~> 5.2"
     ],
-    "AlamofireObjectMapper": [
+    "IKEventSource": [
       "~> 3.0"
     ],
-    "ObjectMapper": [
-      "~> 1.4"
-    ],
-    "PromiseKit": [
-      "~> 3.4"
+    "UInt128": [
+      "~> 0.8"
     ]
   }
 }
