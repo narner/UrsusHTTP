@@ -38,17 +38,6 @@ public class Ursus {
         self.code = code
     }
     
-    public func reset() {
-        deleteRequest()
-        
-        eventSource = nil
-        
-        uid = Ursus.uid()
-        
-        requestID = 0
-        lastEventID = nil
-    }
-    
     deinit {
         deleteRequest()
     }
@@ -83,7 +72,7 @@ extension Ursus {
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
         return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder(encoder: encoder)).validate().response { [weak self] _ in
-            self?.connectIfDisconnected()
+            self?.connectEventSourceIfDisconnected()
         }
     }
     
@@ -91,7 +80,7 @@ extension Ursus {
 
 extension Ursus {
     
-    private func connectIfDisconnected() {
+    private func connectEventSourceIfDisconnected() {
         guard eventSource == nil else {
             return
         }
@@ -148,10 +137,21 @@ extension Ursus {
                 self.pokeHandlers.removeAll()
                 self.subscribeHandlers.removeAll()
                 
-                self.reset()
+                self.resetEventSource()
             }
         }
         eventSource?.connect(lastEventId: lastEventID)
+    }
+    
+    private func resetEventSource() {
+        deleteRequest()
+        
+        eventSource = nil
+        
+        uid = Ursus.uid()
+        
+        requestID = 0
+        lastEventID = nil
     }
     
 }
