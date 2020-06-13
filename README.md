@@ -30,12 +30,13 @@ I can probably help set up Carthage or Swift Package Manager support if you need
 
 Things that would make this codebase nicer:
 
-- [ ] Test cases where the ship is offline or the ship disconnects
-- [ ] Add `kebab-case` instance for `JSONDecoder.KeyDecodingStrategy` (there does exist a `snake_case` instance)
-- [ ] Write our own `EventSource`, supporting a Combine publisher
+- [ ] Test cases where the ship is offline or the ship disconnects.
+- [ ] Add `kebab-case` instance for [`JSONDecoder.KeyDecodingStrategy`](https://developer.apple.com/documentation/foundation/jsondecoder/keydecodingstrategy) (there does exist a `snake_case` instance).
+- [ ] Write our own `EventSource`, supporting a Combine publisher.
 - [ ] Write Combine publishers for pokes and subscribes (see the [donnywals writeup](https://www.donnywals.com/using-promises-and-futures-in-combine/)). Should be able to include type safe JSON decoding as part of this work.
-- [ ] Split off atom manipulation utilities into their own library (see [util.js](https://github.com/urbit/urbit/blob/master/pkg/interface/chat/src/js/lib/util.js), [urbit-ob](https://github.com/urbit/urbit-ob), [urbit-hob](https://github.com/urbit/urbit-hob))
-- [ ] Split off test chat client into its own repository and work on providing chat app coverage
+- [ ] Split off atom manipulation utilities into their own library (see [util.js](https://github.com/urbit/urbit/blob/master/pkg/interface/chat/src/js/lib/util.js), [urbit-ob](https://github.com/urbit/urbit-ob), [urbit-hob](https://github.com/urbit/urbit-hob)).
+- [ ] Split off test chat client into its own repository and work on providing chat app coverage.
+- [ ] Better documentation/examples.
 
 ## Other clients
 
