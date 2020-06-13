@@ -89,13 +89,6 @@ extension Ursus {
     
 }
 
-#warning("TODO: Tidy this up")
-extension CodingUserInfoKey {
-    
-    static let json = CodingUserInfoKey(rawValue: "json")!
-    
-}
-
 extension Ursus {
     
     private func connectIfDisconnected() {
@@ -116,9 +109,7 @@ extension Ursus {
                 self.lastEventID = id
                 
                 do {
-                    #warning("TODO: Tidy this up")
-                    self.decoder.userInfo[.json] = try JSONSerialization.jsonObject(with: data)
-                    let response = try self.decoder.decode(Response.self, from: data)
+                    let response = try self.decoder.decodeJSON(Response.self, from: data)
                     switch response {
                     case .poke(let response):
                         switch response.result {
