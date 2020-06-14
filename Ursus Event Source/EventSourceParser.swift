@@ -12,13 +12,13 @@ class EventSourceParser {
     
     private static let delimiter: Data = "\n\n".data(using: .utf8)!
     
-    private var buffer = NSMutableData()
+    private var buffer = Data()
 
     func append(data: Data) -> [Event] {
         buffer.append(data)
         
-        return extractEventsFromBuffer().map { eventString in
-            return Event.parseEvent(eventString)
+        return extractEventsFromBuffer().map { string in
+            return Event.parseEvent(string)
         }
     }
     
@@ -28,32 +28,21 @@ extension EventSourceParser {
 
     private func extractEventsFromBuffer() -> [String] {
         var events = [String]()
-        var searchRange =  NSRange(location: 0, length: buffer.length)
+        var searchRange: Range<Data.Index> = buffer.startIndex..<buffer.endIndex
         
-        while let foundRange = searchFirstEventDelimiter(in: searchRange) {
-            let dataChunk = buffer.subdata(with: NSRange(location: searchRange.location, length: foundRange.location - searchRange.location))
+        while let foundRange = buffer.range(of: EventSourceParser.delimiter, in: searchRange) {
+            let dataChunk = buffer.subdata(in: searchRange.startIndex..<foundRange.endIndex)
 
             if let text = String(bytes: dataChunk, encoding: .utf8) {
                 events.append(text)
             }
 
-            searchRange.location = foundRange.location + foundRange.length
-            searchRange.length = buffer.length - searchRange.location
+            searchRange = foundRange.endIndex..<buffer.endIndex
         }
 
-        buffer.replaceBytes(in: NSRange(location: 0, length: searchRange.location), withBytes: nil, length: 0)
+        buffer.removeSubrange(buffer.startIndex..<searchRange.startIndex)
 
         return events
-    }
-
-    private func searchFirstEventDelimiter(in range: NSRange) -> NSRange? {
-        let foundRange = buffer.range(of: EventSourceParser.delimiter, in: range)
-
-        if foundRange.location != NSNotFound {
-            return foundRange
-        }
-        
-        return nil
     }
     
 }
