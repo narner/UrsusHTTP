@@ -1,5 +1,5 @@
 //
-//  EventStreamParser.swift
+//  EventSourceParser.swift
 //  EventSource
 //
 //  Created by Andres on 30/05/2019.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class EventStreamParser {
+class EventSourceParser {
 
     private static let validNewlineCharacters = ["\r\n", "\n", "\r"]
     
@@ -23,7 +23,7 @@ class EventStreamParser {
         dataBuffer.append(data)
 
         let events = extractEventsFromBuffer().compactMap { eventString in
-            return Event(eventString: eventString, newLineCharacters: EventStreamParser.validNewlineCharacters)
+            return Event(eventString: eventString, newlineCharacters: EventSourceParser.validNewlineCharacters)
         }
 
         return events
@@ -31,7 +31,7 @@ class EventStreamParser {
     
 }
 
-extension EventStreamParser {
+extension EventSourceParser {
 
     private func extractEventsFromBuffer() -> [String] {
         var events = [String]()
@@ -54,7 +54,7 @@ extension EventStreamParser {
     }
 
     private func searchFirstEventDelimiter(in range: NSRange) -> NSRange? {
-        let delimiters = EventStreamParser.validNewlineCharacters.compactMap { "\($0)\($0)".data(using: .utf8) }
+        let delimiters = EventSourceParser.validNewlineCharacters.compactMap { "\($0)\($0)".data(using: .utf8) }
 
         for delimiter in delimiters {
             let foundRange = dataBuffer.range( of: delimiter, in: range)

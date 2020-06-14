@@ -12,14 +12,14 @@ enum Event {
     
     case event(id: String?, event: String?, data: String?, time: String?)
 
-    init?(eventString: String?, newLineCharacters: [String]) {
+    init?(eventString: String?, newlineCharacters: [String]) {
         guard let eventString = eventString else { return nil }
 
         if eventString.hasPrefix(":") {
             return nil
         }
 
-        self = Event.parseEvent(eventString, newLineCharacters: newLineCharacters)
+        self = Event.parseEvent(eventString, newlineCharacters: newlineCharacters)
     }
 
     var id: String? {
@@ -57,11 +57,11 @@ enum Event {
 
 private extension Event {
 
-    static func parseEvent(_ eventString: String, newLineCharacters: [String]) -> Event {
+    static func parseEvent(_ eventString: String, newlineCharacters: [String]) -> Event {
         var event: [String: String?] = [:]
 
         for line in eventString.components(separatedBy: CharacterSet.newlines) as [String] {
-            let (akey, value) = Event.parseLine(line, newLineCharacters: newLineCharacters)
+            let (akey, value) = Event.parseLine(line, newlineCharacters: newlineCharacters)
             guard let key = akey else { continue }
 
             if let value = value, let previousValue = event[key] ?? nil {
@@ -82,13 +82,13 @@ private extension Event {
         )
     }
 
-    static func parseLine(_ line: String, newLineCharacters: [String]) -> (key: String?, value: String?) {
+    static func parseLine(_ line: String, newlineCharacters: [String]) -> (key: String?, value: String?) {
         var key: NSString?, value: NSString?
         let scanner = Scanner(string: line)
         scanner.scanUpTo(":", into: &key)
         scanner.scanString(":", into: nil)
 
-        for newline in newLineCharacters {
+        for newline in newlineCharacters {
             if scanner.scanUpTo(newline, into: &value) {
                 break
             }
