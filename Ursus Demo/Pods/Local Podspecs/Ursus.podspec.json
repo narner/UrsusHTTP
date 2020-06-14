@@ -30,9 +30,6 @@
   "dependencies": {
     "Alamofire": [
       "~> 5.2"
-    ],
-    "IKEventSource": [
-      "~> 3.0"
     ]
   },
   "subspecs": [
