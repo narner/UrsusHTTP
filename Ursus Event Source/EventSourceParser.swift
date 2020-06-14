@@ -14,18 +14,12 @@ class EventSourceParser {
     
     private let buffer = NSMutableData()
 
-    var currentBuffer: String? {
-        return NSString(data: buffer as Data, encoding: String.Encoding.utf8.rawValue) as String?
-    }
-
     func append(data: Data) -> [Event] {
         buffer.append(data)
-
-        let events = extractEventsFromBuffer().compactMap { eventString in
-            return Event(eventString: eventString, newlineCharacters: EventSourceParser.validNewlineCharacters)
+        
+        return extractEventsFromBuffer().map { eventString in
+            return Event.parseEvent(eventString, newlineCharacters: EventSourceParser.validNewlineCharacters)
         }
-
-        return events
     }
     
 }

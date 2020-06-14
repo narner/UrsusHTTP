@@ -142,12 +142,12 @@ extension Ursus: EventSourceDelegate {
                 print("[Ursus] Error decoding message:", error)
             }
         case .complete(let result):
-//            pokeHandlers.values.forEach { handler in
-//                handler(.failure(error))
-//            }
-//            subscribeHandlers.values.forEach { handler in
-//                handler(.failure(error))
-//            }
+            pokeHandlers.values.forEach { handler in
+                handler(.failure(error))
+            }
+            subscribeHandlers.values.forEach { handler in
+                handler(.failure(error))
+            }
             
             pokeHandlers.removeAll()
             subscribeHandlers.removeAll()

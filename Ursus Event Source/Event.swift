@@ -12,30 +12,15 @@ struct Event {
     
     var id: String?
     var data: String?
-    
-    init(id: String?, data: String?) {
-        self.id = id
-        self.data = data
-    }
-
-    init?(eventString: String?, newlineCharacters: [String]) {
-        guard let eventString = eventString else { return nil }
-
-        if eventString.hasPrefix(":") {
-            return nil
-        }
-
-        self = Event.parseEvent(eventString, newlineCharacters: newlineCharacters)
-    }
 
 }
 
-private extension Event {
+extension Event {
 
-    static func parseEvent(_ eventString: String, newlineCharacters: [String]) -> Event {
+    static func parseEvent(_ string: String, newlineCharacters: [String]) -> Event {
         var event: [String: String?] = [:]
 
-        for line in eventString.components(separatedBy: CharacterSet.newlines) as [String] {
+        for line in string.components(separatedBy: CharacterSet.newlines) as [String] {
             let (akey, value) = Event.parseLine(line, newlineCharacters: newlineCharacters)
             guard let key = akey else { continue }
 
