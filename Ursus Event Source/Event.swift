@@ -11,12 +11,10 @@ import Foundation
 struct Event {
     
     var id: String?
-    var event: String?
     var data: String?
     
-    init(id: String?, event: String?, data: String?) {
+    init(id: String?, data: String?) {
         self.id = id
-        self.event = event
         self.data = data
     }
 
@@ -53,19 +51,19 @@ private extension Event {
         // the only possible field names for events are: id, event and data. Everything else is ignored.
         return Event(
             id: event["id"] ?? nil,
-            event: event["event"] ?? nil,
             data: event["data"] ?? nil
         )
     }
 
     static func parseLine(_ line: String, newlineCharacters: [String]) -> (key: String?, value: String?) {
-        var key: NSString?, value: NSString?
+        var key: String?, value: String?
         let scanner = Scanner(string: line)
-        scanner.scanUpTo(":", into: &key)
-        scanner.scanString(":", into: nil)
+        key = scanner.scanUpToString(":")
+        _ = scanner.scanString(":")
 
         for newline in newlineCharacters {
-            if scanner.scanUpTo(newline, into: &value) {
+            value = scanner.scanUpToString(newline)
+            if value != nil {
                 break
             }
         }
@@ -75,6 +73,6 @@ private extension Event {
             value = ""
         }
 
-        return (key as String?, value as String?)
+        return (key, value)
     }
 }
