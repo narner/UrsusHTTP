@@ -10,6 +10,8 @@ import Foundation
 
 class EventSourceParser {
     
+    private static let delimiter: Data = "\n\n".data(using: .utf8)!
+    
     private var buffer = NSMutableData()
 
     func append(data: Data) -> [Event] {
@@ -45,9 +47,7 @@ extension EventSourceParser {
     }
 
     private func searchFirstEventDelimiter(in range: NSRange) -> NSRange? {
-        let delimiter = "\n\n".data(using: .utf8)!
-
-        let foundRange = buffer.range(of: delimiter, in: range)
+        let foundRange = buffer.range(of: EventSourceParser.delimiter, in: range)
 
         if foundRange.location != NSNotFound {
             return foundRange
