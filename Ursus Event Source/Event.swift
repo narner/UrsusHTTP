@@ -8,14 +8,6 @@
 
 import Foundation
 
-public enum EventSourceEvent {
-    
-    case open
-    case message(id: String, data: Data)
-    case complete(result: Result<HTTPURLResponse, Error>)
-    
-}
-
 enum Event {
     
     case event(id: String?, event: String?, data: String?, time: String?)

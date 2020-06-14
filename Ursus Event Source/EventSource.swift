@@ -14,6 +14,14 @@ public protocol EventSourceDelegate: class {
     
 }
 
+public enum EventSourceEvent {
+    
+    case open
+    case message(id: String, data: Data)
+    case complete(result: Result<HTTPURLResponse, Error>)
+    
+}
+
 public enum EventSourceState {
     
     case connecting
@@ -23,23 +31,19 @@ public enum EventSourceState {
 }
 
 open class EventSource: NSObject {
-    static let DefaultRetryTime = 3000
 
     public let url: URL
     public weak var delegate: EventSourceDelegate?
-    private(set) public var retryTime = EventSource.DefaultRetryTime
-    private(set) public var headers: [String: String]
-    private(set) public var readyState: EventSourceState
+    private(set) public var state: EventSourceState
 
     private var eventStreamParser: EventStreamParser?
     private var operationQueue: OperationQueue
-    private var urlSession: URLSession?
+    private var session: URLSession?
 
-    public init(url: URL, headers: [String: String] = [:]) {
+    public init(url: URL) {
         self.url = url
-        self.headers = headers
 
-        readyState = .closed
+        state = .closed
         operationQueue = OperationQueue()
         operationQueue.maxConcurrentOperationCount = 1
 
@@ -48,16 +52,15 @@ open class EventSource: NSObject {
 
     public func connect(lastEventID: String? = nil) {
         eventStreamParser = EventStreamParser()
-        readyState = .connecting
+        state = .connecting
 
-        let configuration = sessionConfiguration(lastEventID: lastEventID)
-        urlSession = URLSession(configuration: configuration, delegate: self, delegateQueue: operationQueue)
-        urlSession?.dataTask(with: url).resume()
+        session = URLSession(configuration: .eventSource(lastEventID: lastEventID), delegate: self, delegateQueue: operationQueue)
+        session?.dataTask(with: url).resume()
     }
 
     public func disconnect() {
-        readyState = .closed
-        urlSession?.invalidateAndCancel()
+        state = .closed
+        session?.invalidateAndCancel()
     }
     
 }
@@ -77,18 +80,25 @@ extension EventSource {
 extension EventSource: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        if readyState != .open {
+        if state != .open {
             return
         }
 
         if let events = eventStreamParser?.append(data: data) {
-            notifyReceivedEvents(events)
+            for event in events {
+                switch (event.id, event.data?.data(using: .utf8)) {
+                case (.some(let id), .some(let data)):
+                    didReceiveEvent(.message(id: id, data: data))
+                default:
+                    break
+                }
+            }
         }
     }
 
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         completionHandler(.allow)
-        readyState = .open
+        state = .open
         didReceiveEvent(.open)
     }
 
@@ -102,58 +112,5 @@ extension EventSource: URLSessionDataDelegate {
             break
         }
     }
-
-    public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Void) {
-        var newRequest = request
-        headers.forEach { newRequest.setValue($1, forHTTPHeaderField: $0) }
-        completionHandler(newRequest)
-    }
     
-}
-
-internal extension EventSource {
-
-    func sessionConfiguration(lastEventID: String?) -> URLSessionConfiguration {
-        var additionalHeaders = headers
-        
-        if let lastEventID = lastEventID {
-            additionalHeaders["Last-Event-Id"] = lastEventID
-        }
-
-        additionalHeaders["Accept"] = "text/event-stream"
-        additionalHeaders["Cache-Control"] = "no-cache"
-
-        let sessionConfiguration = URLSessionConfiguration.default
-        sessionConfiguration.timeoutIntervalForRequest = TimeInterval(INT_MAX)
-        sessionConfiguration.timeoutIntervalForResource = TimeInterval(INT_MAX)
-        sessionConfiguration.httpAdditionalHeaders = additionalHeaders
-
-        return sessionConfiguration
-    }
-
-    func readyStateOpen() {
-        readyState = .open
-    }
-    
-}
-
-private extension EventSource {
-
-    func notifyReceivedEvents(_ events: [Event]) {
-        for event in events {
-            retryTime = event.retryTime ?? EventSource.DefaultRetryTime
-
-            if event.onlyRetryEvent == true {
-                continue
-            }
-            
-            switch (event.id, event.data?.data(using: .utf8)) {
-            case (.some(let id), .some(let data)):
-                didReceiveEvent(.message(id: id, data: data))
-            default:
-                break
-            }
-        }
-    }
-
 }
