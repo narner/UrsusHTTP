@@ -10,6 +10,8 @@ import Foundation
 
 public struct Event {
     
+    #warning("Should have the fields event (String), id (String), data (Data), retry (Integer milliseconds)")
+    
     var id: String?
     var data: Data
 
@@ -60,4 +62,5 @@ extension Event {
 
         return (key, value)
     }
+    
 }

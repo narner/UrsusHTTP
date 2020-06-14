@@ -12,7 +12,7 @@ class EventSourceParser {
 
     private static let validNewlineCharacters = ["\r\n", "\n", "\r"]
     
-    private let buffer = NSMutableData()
+    private var buffer = NSMutableData()
 
     func append(data: Data) -> [Event] {
         buffer.append(data)
