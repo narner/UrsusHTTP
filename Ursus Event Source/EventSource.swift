@@ -36,22 +36,22 @@ open class EventSource: NSObject {
     public weak var delegate: EventSourceDelegate?
     private(set) public var state: EventSourceState
 
-    private var eventStreamParser: EventStreamParser?
     private var operationQueue: OperationQueue
     private var session: URLSession?
+    
+    private var parser = EventSourceParser()
 
     public init(url: URL) {
         self.url = url
 
-        state = .closed
-        operationQueue = OperationQueue()
-        operationQueue.maxConcurrentOperationCount = 1
+        self.state = .closed
+        self.operationQueue = OperationQueue()
+        self.operationQueue.maxConcurrentOperationCount = 1
 
         super.init()
     }
 
     public func connect(lastEventID: String? = nil) {
-        eventStreamParser = EventStreamParser()
         state = .connecting
 
         session = URLSession(configuration: .eventSource(lastEventID: lastEventID), delegate: self, delegateQueue: operationQueue)
@@ -83,15 +83,13 @@ extension EventSource: URLSessionDataDelegate {
         if state != .open {
             return
         }
-
-        if let events = eventStreamParser?.append(data: data) {
-            for event in events {
-                switch (event.id, event.data?.data(using: .utf8)) {
-                case (.some(let id), .some(let data)):
-                    didReceiveEvent(.message(id: id, data: data))
-                default:
-                    break
-                }
+        
+        for event in parser.append(data: data) {
+            switch (event.id, event.data?.data(using: .utf8)) {
+            case (.some(let id), .some(let data)):
+                didReceiveEvent(.message(id: id, data: data))
+            default:
+                break
             }
         }
     }
