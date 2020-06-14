@@ -74,7 +74,6 @@
 		D31FC7FDD450C4CDD633ECBAD27C6221 /* URLEncodedFormEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3AB355B68B0DF13F351CD3F42D7FB3 /* URLEncodedFormEncoder.swift */; };
 		D5EAAFB6FAD77A8F0699345149BA3CBB /* URLRequest+Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = B111FDD86B38B70CCD99CDA08B696AA0 /* URLRequest+Alamofire.swift */; };
 		DC627AFC5B585686898B014184AFCABD /* AuthenticationInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D96B450E2AEC9DE3F7BE8B7D6F717ADB /* AuthenticationInterceptor.swift */; };
-		DDC4D8CE071878175414A834EAAAE94D /* EventSource+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7B7763B69EA81173BC72F304CD1FBE4 /* EventSource+Extensions.swift */; };
 		DE23EBBCF6548756A60EAD4D6E9EA1AE /* Ursus-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BE5F01E9BE1867C63B08E772D7B9027 /* Ursus-dummy.m */; };
 		E7E67EFA99D574C6EFF357705387782E /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 798F461C1B1169ED7730AF776F4FCAF1 /* Event.swift */; };
 		EDC93BD7B9262119AE145E4C7A9D0212 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92DF3D0D9BF34ADA0E3316FC0218228 /* Request.swift */; };
@@ -140,7 +139,7 @@
 
 /* Begin PBXFileReference section */
 		016D2357AC9CBC4AFB7B4E691C182010 /* Pods-Ursus Demo-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Ursus Demo-frameworks.sh"; sourceTree = "<group>"; };
-		019DD4A2F224D8DC28EE436B3618E8F1 /* Ursus.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Ursus.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		019DD4A2F224D8DC28EE436B3618E8F1 /* Ursus.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = Ursus.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		036A55AC42293CD10CE8F64FCF03B245 /* HTTPHeaders.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPHeaders.swift; path = Source/HTTPHeaders.swift; sourceTree = "<group>"; };
 		069BA2DAC279720606384443ED770E27 /* EventSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventSource.swift; path = "Ursus Event Source/EventSource.swift"; sourceTree = "<group>"; };
 		0D8B476C045053209BBD3F2D63219367 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
@@ -176,9 +175,9 @@
 		588AA5ACBB0EB532F02EB07A65FAF9E0 /* SessionDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = SessionDelegate.swift; path = Source/SessionDelegate.swift; sourceTree = "<group>"; };
 		5A5DBF58942C3A0B87CE5E9A805CCB53 /* Ursus.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Ursus.modulemap; sourceTree = "<group>"; };
 		5ADF386DFCF82D86BC0AF696CC4E431B /* Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Source/Alamofire.swift; sourceTree = "<group>"; };
-		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Alamofire.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5D797E9A5C5782CE845840781FA1CC81 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		63265AD6A76691C185252B88D98AC121 /* Alamofire-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Alamofire-umbrella.h"; sourceTree = "<group>"; };
-		6BF3580DD02AF86AA3809975A6273182 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		6BF3580DD02AF86AA3809975A6273182 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		6C028F565B711F4BD71223C3665BB686 /* UInt128-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UInt128-dummy.m"; sourceTree = "<group>"; };
 		7373D7855BB85569EEDE1ABFDDAC2195 /* Ursus-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Ursus-Info.plist"; sourceTree = "<group>"; };
 		73B290CE087748B1C716E27B32328202 /* DeleteRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DeleteRequest.swift; sourceTree = "<group>"; };
@@ -194,7 +193,7 @@
 		827554335E3EA2E72838E00056C8644F /* SubscribeError.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubscribeError.swift; sourceTree = "<group>"; };
 		82C9A2DF328A2C6DBE3AD54884CF4F9A /* EventMonitor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventMonitor.swift; path = Source/EventMonitor.swift; sourceTree = "<group>"; };
 		83E07E7F59EFAD220529273886F2FA75 /* UInt128-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "UInt128-Info.plist"; sourceTree = "<group>"; };
-		847DCCAEBAF5B5E9426E22C79AB8A8B1 /* AlamofireLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AlamofireLogger.framework; path = AlamofireLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		847DCCAEBAF5B5E9426E22C79AB8A8B1 /* AlamofireLogger.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AlamofireLogger.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		853975FEBA1C4B4CD6AA4412E1906EDC /* SubscribeRequest.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubscribeRequest.swift; sourceTree = "<group>"; };
 		88AC6B7E994E2DEA4BB01895E21A312D /* Alamofire.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Alamofire.modulemap; sourceTree = "<group>"; };
 		89F5DBBE4511D4F3E7E504A84C2D02F3 /* AlamofireLogger-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AlamofireLogger-prefix.pch"; sourceTree = "<group>"; };
@@ -205,11 +204,11 @@
 		909E8D185CEA5D87E4771450C6D2C7C1 /* RequestTaskMap.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RequestTaskMap.swift; path = Source/RequestTaskMap.swift; sourceTree = "<group>"; };
 		915AFAC64145F0F8BE25E596AFAE8127 /* Validation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Validation.swift; path = Source/Validation.swift; sourceTree = "<group>"; };
 		91F484F66C92CD6727365C82AB89EEC3 /* AlamofireLogger.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AlamofireLogger.xcconfig; sourceTree = "<group>"; };
-		99C990E52EF81E2B8D8578F82958764D /* Ursus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Ursus.framework; path = Ursus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A1D097E17853DD315EB002C5CA1DE11 /* Pods_Ursus_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_Ursus_Demo.framework; path = "Pods-Ursus Demo.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		99C990E52EF81E2B8D8578F82958764D /* Ursus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Ursus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A1D097E17853DD315EB002C5CA1DE11 /* Pods_Ursus_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Ursus_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AFAC4800E10F18789A5D37945BCD2E0 /* AlamofireLogger-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AlamofireLogger-umbrella.h"; sourceTree = "<group>"; };
 		9BE5F01E9BE1867C63B08E772D7B9027 /* Ursus-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Ursus-dummy.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9F3AB355B68B0DF13F351CD3F42D7FB3 /* URLEncodedFormEncoder.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = URLEncodedFormEncoder.swift; path = Source/URLEncodedFormEncoder.swift; sourceTree = "<group>"; };
 		A0979C8DE58EF5279162409FD4C9D11D /* SubscribeEvent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubscribeEvent.swift; sourceTree = "<group>"; };
 		A18536A2132BF23AF2B811603D868F5D /* JSONDecoder+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "JSONDecoder+Extensions.swift"; sourceTree = "<group>"; };
@@ -220,7 +219,7 @@
 		ADD024545519F9254ED8F64D4EC5AFA9 /* CachedResponseHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CachedResponseHandler.swift; path = Source/CachedResponseHandler.swift; sourceTree = "<group>"; };
 		AF07349F0C61C4445C56F8BCF6C45A21 /* AlamofireLogger-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AlamofireLogger-Info.plist"; sourceTree = "<group>"; };
 		B111FDD86B38B70CCD99CDA08B696AA0 /* URLRequest+Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "URLRequest+Alamofire.swift"; path = "Source/URLRequest+Alamofire.swift"; sourceTree = "<group>"; };
-		B3A1120BCFEAFBD74EADD3CE2B899A9C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		B3A1120BCFEAFBD74EADD3CE2B899A9C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B70B9C7585D9E9862DA0BBB74CEF35BD /* UInt128.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = UInt128.xcconfig; sourceTree = "<group>"; };
 		B91675A286326B9129768827BA26B4E2 /* Pods-Ursus Demo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Ursus Demo-umbrella.h"; sourceTree = "<group>"; };
 		BD2C5AA4530E88394DDD9EEDC6721160 /* Alamofire-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Alamofire-prefix.pch"; sourceTree = "<group>"; };
@@ -238,10 +237,9 @@
 		EA5ED9ABE022D5645BA903A43B0C6624 /* AlamofireExtended.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AlamofireExtended.swift; path = Source/AlamofireExtended.swift; sourceTree = "<group>"; };
 		EA8D017F9F78648D2A11552808BE18FB /* Pods-Ursus Demo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Ursus Demo-acknowledgements.plist"; sourceTree = "<group>"; };
 		EAB71BDDE747F199C87A602FC7CC23DA /* Notifications.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Notifications.swift; path = Source/Notifications.swift; sourceTree = "<group>"; };
-		ECF9EA674639F5643AA8815C3A7263E2 /* UInt128.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = UInt128.framework; path = UInt128.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ECF9EA674639F5643AA8815C3A7263E2 /* UInt128.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UInt128.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EFEE75106A85AE021A026A6EE54550D7 /* OperationQueue+Alamofire.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "OperationQueue+Alamofire.swift"; path = "Source/OperationQueue+Alamofire.swift"; sourceTree = "<group>"; };
 		F7443B52421616715CCD97088FE291B4 /* HTTPMethod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HTTPMethod.swift; path = Source/HTTPMethod.swift; sourceTree = "<group>"; };
-		F7B7763B69EA81173BC72F304CD1FBE4 /* EventSource+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "EventSource+Extensions.swift"; path = "Ursus Event Source/EventSource+Extensions.swift"; sourceTree = "<group>"; };
 		F920B59C47B7F2CEF2AC4046BB03BE04 /* UUID+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UUID+Extensions.swift"; path = "Ursus Utilities/Extensions/UUID+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -311,7 +309,6 @@
 				E4DC2FB8581345CBC4923FFE0409E72B /* AlamofireLogger.swift */,
 				B7B61A1C33859BF1CFD32AAEE4E9C1EC /* Support Files */,
 			);
-			name = AlamofireLogger;
 			path = AlamofireLogger;
 			sourceTree = "<group>";
 		};
@@ -324,7 +321,6 @@
 				75DB841200DA884056B0210874F87DCF /* Response.swift */,
 				7F245387B8C463E2A40E16883BF6AB5D /* SubscribeResponse.swift */,
 			);
-			name = Responses;
 			path = Responses;
 			sourceTree = "<group>";
 		};
@@ -389,7 +385,6 @@
 				268ED991B2C74A1A9D7338B83AC9B5D9 /* PokeEvent.swift */,
 				A0979C8DE58EF5279162409FD4C9D11D /* SubscribeEvent.swift */,
 			);
-			name = Events;
 			path = Events;
 			sourceTree = "<group>";
 		};
@@ -399,7 +394,6 @@
 				8D9DCC32289F8567B4877F00DBF6FFAE /* UInt128.swift */,
 				CF8E5D5B7E3BA1F1CA058A90D80A28FB /* Support Files */,
 			);
-			name = UInt128;
 			path = UInt128;
 			sourceTree = "<group>";
 		};
@@ -443,7 +437,6 @@
 				915AFAC64145F0F8BE25E596AFAE8127 /* Validation.swift */,
 				955166DF04B82B530B80092DECD19B60 /* Support Files */,
 			);
-			name = Alamofire;
 			path = Alamofire;
 			sourceTree = "<group>";
 		};
@@ -453,7 +446,6 @@
 				3536D5AA7ABF203DDBB4CB0499894F83 /* PokeError.swift */,
 				827554335E3EA2E72838E00056C8644F /* SubscribeError.swift */,
 			);
-			name = Errors;
 			path = Errors;
 			sourceTree = "<group>";
 		};
@@ -548,7 +540,6 @@
 			children = (
 				798F461C1B1169ED7730AF776F4FCAF1 /* Event.swift */,
 				069BA2DAC279720606384443ED770E27 /* EventSource.swift */,
-				F7B7763B69EA81173BC72F304CD1FBE4 /* EventSource+Extensions.swift */,
 				A307E669242327720EC07A3FCE099DEA /* EventStreamParser.swift */,
 			);
 			name = EventSource;
@@ -606,7 +597,6 @@
 				853975FEBA1C4B4CD6AA4412E1906EDC /* SubscribeRequest.swift */,
 				78B944FB6460E0EF0CE7A16F7A443D16 /* UnsubscribeRequest.swift */,
 			);
-			name = Requests;
 			path = Requests;
 			sourceTree = "<group>";
 		};
@@ -830,7 +820,6 @@
 				F0D622C9E0BAA5409AB6DDFBCC4B468A /* DeleteRequest.swift in Sources */,
 				C564F78C332688DC0B88E5D5BF6E29BF /* DiffResponse.swift in Sources */,
 				E7E67EFA99D574C6EFF357705387782E /* Event.swift in Sources */,
-				DDC4D8CE071878175414A834EAAAE94D /* EventSource+Extensions.swift in Sources */,
 				CF017EA31A24B92412299513FF973FC6 /* EventSource.swift in Sources */,
 				C4F7CBEC7024C608DEF8C58182743D08 /* EventStreamParser.swift in Sources */,
 				511DED1A0D6ECF73A2199285BD92B949 /* JSONDecoder+Extensions.swift in Sources */,
