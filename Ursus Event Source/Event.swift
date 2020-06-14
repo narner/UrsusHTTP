@@ -8,9 +8,17 @@
 
 import Foundation
 
-enum Event {
+struct Event {
     
-    case event(id: String?, event: String?, data: String?, time: String?)
+    var id: String?
+    var event: String?
+    var data: String?
+    
+    init(id: String?, event: String?, data: String?) {
+        self.id = id
+        self.event = event
+        self.data = data
+    }
 
     init?(eventString: String?, newlineCharacters: [String]) {
         guard let eventString = eventString else { return nil }
@@ -22,37 +30,6 @@ enum Event {
         self = Event.parseEvent(eventString, newlineCharacters: newlineCharacters)
     }
 
-    var id: String? {
-        guard case let .event(eventId, _, _, _) = self else { return nil }
-        return eventId
-    }
-
-    var event: String? {
-        guard case let .event(_, eventName, _, _) = self else { return nil }
-        return eventName
-    }
-
-    var data: String? {
-        guard case let .event(_, _, eventData, _) = self else { return nil }
-        return eventData
-    }
-
-    var retryTime: Int? {
-        guard case let .event(_, _, _, aTime) = self, let time = aTime else { return nil }
-        return Int(time.trimmingCharacters(in: CharacterSet.whitespaces))
-    }
-
-    var onlyRetryEvent: Bool? {
-        guard case let .event(id, name, data, time) = self else { return nil }
-        let otherThanTime = id ?? name ?? data
-
-        if otherThanTime == nil && time != nil {
-            return true
-        }
-
-        return false
-
-    }
 }
 
 private extension Event {
@@ -74,11 +51,10 @@ private extension Event {
         }
 
         // the only possible field names for events are: id, event and data. Everything else is ignored.
-        return .event(
+        return Event(
             id: event["id"] ?? nil,
             event: event["event"] ?? nil,
-            data: event["data"] ?? nil,
-            time: event["retry"] ?? nil
+            data: event["data"] ?? nil
         )
     }
 
