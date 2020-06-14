@@ -9,8 +9,6 @@
 import Foundation
 
 class EventSourceParser {
-
-    private static let validNewlineCharacters = ["\r\n", "\n", "\r"]
     
     private var buffer = NSMutableData()
 
@@ -18,7 +16,7 @@ class EventSourceParser {
         buffer.append(data)
         
         return extractEventsFromBuffer().map { eventString in
-            return Event.parseEvent(eventString, newlineCharacters: EventSourceParser.validNewlineCharacters)
+            return Event.parseEvent(eventString)
         }
     }
     
@@ -47,16 +45,14 @@ extension EventSourceParser {
     }
 
     private func searchFirstEventDelimiter(in range: NSRange) -> NSRange? {
-        let delimiters = EventSourceParser.validNewlineCharacters.compactMap { "\($0)\($0)".data(using: .utf8) }
+        let delimiter = "\n\n".data(using: .utf8)!
 
-        for delimiter in delimiters {
-            let foundRange = buffer.range( of: delimiter, in: range)
+        let foundRange = buffer.range(of: delimiter, in: range)
 
-            if foundRange.location != NSNotFound {
-                return foundRange
-            }
+        if foundRange.location != NSNotFound {
+            return foundRange
         }
-
+        
         return nil
     }
     
