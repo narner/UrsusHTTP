@@ -8,10 +8,10 @@
 
 import Foundation
 
-struct Event {
+public struct Event {
     
     var id: String?
-    var data: String?
+    var data: Data
 
 }
 
@@ -36,7 +36,7 @@ extension Event {
         // the only possible field names for events are: id, event and data. Everything else is ignored.
         return Event(
             id: event["id"] ?? nil,
-            data: event["data"] ?? nil
+            data: event["data"]??.data(using: .utf8) ?? Data()
         )
     }
 

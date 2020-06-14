@@ -84,8 +84,7 @@ extension Ursus {
             return
         }
         
-        eventSource = EventSource(url: channelURL)
-        eventSource?.delegate = self
+        eventSource = EventSource(url: channelURL, delegate: self)
         eventSource?.connect(lastEventID: lastEventID)
     }
     
@@ -105,55 +104,53 @@ extension Ursus {
 
 extension Ursus: EventSourceDelegate {
     
-    public func eventSource(_ eventSource: EventSource, didReceiveEvent event: EventSourceEvent) {
-        switch event {
-        case .open:
-            break
-        case .message(let id, let data):
-            self.lastEventID = id
-            
-            do {
-                let response = try decoder.decodeJSON(Response.self, from: data)
-                switch response {
-                case .poke(let response):
-                    switch response.result {
-                    case .success:
-                        pokeHandlers[response.id]?(.success)
-                        pokeHandlers[response.id] = nil
-                    case .failure(let error):
-                        pokeHandlers[response.id]?(.failure(error))
-                        pokeHandlers[response.id] = nil
-                    }
-                case .subscribe(let response):
-                    switch response.result {
-                    case .success:
-                        subscribeHandlers[response.id]?(.success)
-                    case .failure(let error):
-                        subscribeHandlers[response.id]?(.failure(error))
-                        subscribeHandlers[response.id] = nil
-                    }
-                case .diff(let response):
-                    subscribeHandlers[response.id]?(.message(response.json))
-                case .quit(let response):
-                    subscribeHandlers[response.id]?(.quit)
+    public func eventSource(_ eventSource: EventSource, didReceiveEvent event: Event) {
+        self.lastEventID = event.id
+        
+        do {
+            let response = try decoder.decodeJSON(Response.self, from: event.data)
+            switch response {
+            case .poke(let response):
+                switch response.result {
+                case .success:
+                    pokeHandlers[response.id]?(.success)
+                    pokeHandlers[response.id] = nil
+                case .failure(let error):
+                    pokeHandlers[response.id]?(.failure(error))
+                    pokeHandlers[response.id] = nil
+                }
+            case .subscribe(let response):
+                switch response.result {
+                case .success:
+                    subscribeHandlers[response.id]?(.success)
+                case .failure(let error):
+                    subscribeHandlers[response.id]?(.failure(error))
                     subscribeHandlers[response.id] = nil
                 }
-            } catch let error {
-                print("[Ursus] Error decoding message:", error)
+            case .diff(let response):
+                subscribeHandlers[response.id]?(.message(response.json))
+            case .quit(let response):
+                subscribeHandlers[response.id]?(.quit)
+                subscribeHandlers[response.id] = nil
             }
-        case .complete(let result):
-            pokeHandlers.values.forEach { handler in
-                handler(.failure(error))
-            }
-            subscribeHandlers.values.forEach { handler in
-                handler(.failure(error))
-            }
-            
-            pokeHandlers.removeAll()
-            subscribeHandlers.removeAll()
-            
-            resetEventSource()
+        } catch let error {
+            print("[Ursus] Error decoding message:", error)
         }
+    }
+    
+    public func eventSource(_ eventSource: EventSource, didCompleteWithError error: Error?) {
+        #warning("Do something about this; e.g. 404s should get logged")
+//        pokeHandlers.values.forEach { handler in
+//            handler(.failure(error))
+//        }
+//        subscribeHandlers.values.forEach { handler in
+//            handler(.failure(error))
+//        }
+            
+        pokeHandlers.removeAll()
+        subscribeHandlers.removeAll()
+        
+        resetEventSource()
     }
     
 }
