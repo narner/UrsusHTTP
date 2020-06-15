@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DeleteRequest: Encodable {
+internal struct DeleteRequest: Encodable {
     
     var action: String = "delete"
     

@@ -2,15 +2,15 @@ PODS:
   - Alamofire (5.2.1)
   - AlamofireLogger (0.3.0):
     - Alamofire (~> 5.0)
-  - IKEventSource (3.0.1)
   - UInt128 (0.8.0)
   - Ursus (1.0.1):
     - Alamofire (~> 5.2)
-    - IKEventSource (~> 3.0)
+    - Ursus/EventSource (= 1.0.1)
     - Ursus/Utilities (= 1.0.1)
+  - Ursus/EventSource (1.0.1):
+    - Alamofire (~> 5.2)
   - Ursus/Utilities (1.0.1):
     - Alamofire (~> 5.2)
-    - IKEventSource (~> 3.0)
     - UInt128 (~> 0.8)
 
 DEPENDENCIES:
@@ -22,7 +22,6 @@ SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AlamofireLogger
-    - IKEventSource
     - UInt128
 
 EXTERNAL SOURCES:
@@ -32,9 +31,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Alamofire: e911732990610fe89af59ac0077f923d72dc3dfd
   AlamofireLogger: 8843aafdf632a7358ca347bc1811f2eaf04cf45a
-  IKEventSource: ababa323587c6b0c250dd54d4a48ab68fd845e8e
   UInt128: e9071ed709268d1ef273b6b6dd9c893d0560ba4a
-  Ursus: 3b62b8f375c99bc1b45e4e985f514e76ab860141
+  Ursus: 53c884b8d8da0db68c27c394037d4deecef18654
 
 PODFILE CHECKSUM: 9fef8e35c622cf2de0f397268b522c6f5b96d5e7
 

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AckRequest: Encodable {
+internal struct AckRequest: Encodable {
     
     var action: String = "ack"
     var eventID: Int

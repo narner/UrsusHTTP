@@ -7,7 +7,6 @@
 
 import Foundation
 import Alamofire
-import IKEventSource
 
 public class Ursus {
     
@@ -85,62 +84,8 @@ extension Ursus {
             return
         }
         
-        eventSource = EventSource(url: channelURL)
-        eventSource?.onEvent { [weak self] event in
-            guard let `self` = self else {
-                return
-            }
-            
-            switch event {
-            case .open:
-                break
-            case .message(let id, let data):
-                self.lastEventID = id
-                
-                do {
-                    let response = try self.decoder.decodeJSON(Response.self, from: data)
-                    switch response {
-                    case .poke(let response):
-                        switch response.result {
-                        case .success:
-                            self.pokeHandlers[response.id]?(.success)
-                            self.pokeHandlers[response.id] = nil
-                        case .failure(let error):
-                            self.pokeHandlers[response.id]?(.failure(error))
-                            self.pokeHandlers[response.id] = nil
-                        }
-                    case .subscribe(let response):
-                        switch response.result {
-                        case .success:
-                            self.subscribeHandlers[response.id]?(.success)
-                        case .failure(let error):
-                            self.subscribeHandlers[response.id]?(.failure(error))
-                            self.subscribeHandlers[response.id] = nil
-                        }
-                    case .diff(let response):
-                        self.subscribeHandlers[response.id]?(.message(response.json))
-                    case .quit(let response):
-                        self.subscribeHandlers[response.id]?(.quit)
-                        self.subscribeHandlers[response.id] = nil
-                    }
-                } catch let error {
-                    print("[Ursus] Error decoding message:", error)
-                }
-            case .complete(let error):
-                self.pokeHandlers.values.forEach { handler in
-                    handler(.failure(error))
-                }
-                self.subscribeHandlers.values.forEach { handler in
-                    handler(.failure(error))
-                }
-                
-                self.pokeHandlers.removeAll()
-                self.subscribeHandlers.removeAll()
-                
-                self.resetEventSource()
-            }
-        }
-        eventSource?.connect(lastEventId: lastEventID)
+        eventSource = EventSource(url: channelURL, delegate: self)
+        eventSource?.connect(lastEventID: lastEventID)
     }
     
     private func resetEventSource() {
@@ -152,6 +97,62 @@ extension Ursus {
         
         requestID = 0
         lastEventID = nil
+    }
+    
+}
+
+extension Ursus: EventSourceDelegate {
+    
+    public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
+        self.lastEventID = message.id
+        
+        guard let data = message.data?.data(using: .utf8) else {
+            return
+        }
+
+        switch Result(catching: { try decoder.decodeJSON(Response.self, from: data) }) {
+        case .success(let response):
+            switch response {
+            case .poke(let response):
+                switch response.result {
+                case .success:
+                    pokeHandlers[response.id]?(.success)
+                    pokeHandlers[response.id] = nil
+                case .failure(let error):
+                    pokeHandlers[response.id]?(.failure(error))
+                    pokeHandlers[response.id] = nil
+                }
+            case .subscribe(let response):
+                switch response.result {
+                case .success:
+                    subscribeHandlers[response.id]?(.success)
+                case .failure(let error):
+                    subscribeHandlers[response.id]?(.failure(error))
+                    subscribeHandlers[response.id] = nil
+                }
+            case .diff(let response):
+                subscribeHandlers[response.id]?(.message(response.json))
+            case .quit(let response):
+                subscribeHandlers[response.id]?(.quit)
+                subscribeHandlers[response.id] = nil
+            }
+        case .failure(let error):
+            print("[Ursus] Error decoding message:", message, error)
+        }
+    }
+    
+    public func eventSource(_ eventSource: EventSource, didCompleteWithError error: EventSourceError) {
+        pokeHandlers.values.forEach { handler in
+            handler(.failure(error))
+        }
+        subscribeHandlers.values.forEach { handler in
+            handler(.failure(error))
+        }
+            
+        pokeHandlers.removeAll()
+        subscribeHandlers.removeAll()
+        
+        resetEventSource()
     }
     
 }

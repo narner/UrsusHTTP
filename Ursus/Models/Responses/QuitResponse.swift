@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct QuitResponse: Decodable {
+internal struct QuitResponse: Decodable {
     
     var id: Int
     

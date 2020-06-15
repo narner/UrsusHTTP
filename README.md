@@ -33,7 +33,6 @@ Things that would make this codebase nicer:
 - [ ] Test cases where the ship is offline or the ship disconnects.
 - [ ] Test `AckRequest`, `UnsubscribeRequest`, `DeleteRequest` properly.
 - [ ] Add `kebab-case` instance for [`JSONDecoder.KeyDecodingStrategy`](https://developer.apple.com/documentation/foundation/jsondecoder/keydecodingstrategy) (there does exist a `snake_case` instance).
-- [ ] Write our own `EventSource`, supporting a Combine publisher.
 - [ ] Write Combine publishers for pokes and subscribes (see the [donnywals writeup](https://www.donnywals.com/using-promises-and-futures-in-combine/)). Should be able to include type safe JSON decoding as part of this work.
 - [ ] Split off test chat client into its own repository and work on providing chat app coverage.
 - [ ] Better documentation/examples.
