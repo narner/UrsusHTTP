@@ -59,11 +59,11 @@ extension EventSource: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         DispatchQueue.main.async { [weak self] in
             if let `self` = self {
-                switch (task.response as? HTTPURLResponse, error) {
-                case (.some(let response), .none):
-                    self.delegate?.eventSource(self, didCompleteWithError: .server(response: response))
-                case (.none, .some(let error)):
-                    self.delegate?.eventSource(self, didCompleteWithError: .client(error: error))
+                switch (error, task.response as? HTTPURLResponse) {
+                case (.some(let error), .none):
+                    self.delegate?.eventSource(self, didCompleteWithError: .connectionFailed(error: error))
+                case (.none, .some(let response)):
+                    self.delegate?.eventSource(self, didCompleteWithError: .connectionDisconnected(response: response))
                 default:
                     break
                 }

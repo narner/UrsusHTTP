@@ -9,7 +9,7 @@ import Foundation
 
 public enum EventSourceError: Error {
     
-    case server(response: HTTPURLResponse)
-    case client(error: Error)
+    case connectionFailed(error: Error)
+    case connectionDisconnected(response: HTTPURLResponse)
     
 }
