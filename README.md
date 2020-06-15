@@ -2,7 +2,7 @@
 
 An Urbit HTTP/`%eyre` client for iOS/macOS in Swift.
 
-See my [Urchat](https://github.com/dclelland/Urchat) repository for a demo project.
+See my [Ursus Chat](https://github.com/dclelland/UrsusChat) repository for a demo project.
 
 ## Usage
 
