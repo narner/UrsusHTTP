@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SubscribeResponse: Decodable {
+internal struct SubscribeResponse: Decodable {
 
     var id: Int
     var result: Result<Void, SubscribeError>

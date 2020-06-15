@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Response: Decodable {
+internal enum Response: Decodable {
     
     case poke(PokeResponse)
     case subscribe(SubscribeResponse)

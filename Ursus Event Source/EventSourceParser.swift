@@ -8,11 +8,13 @@
 
 import Foundation
 
-class EventSourceParser {
+internal class EventSourceParser {
+    
+    private let delimiter: Data = "\n\n".data(using: .utf8)!
     
     private var buffer = Data()
 
-    func append(data: Data) -> [Event] {
+    internal func append(data: Data) -> [Event] {
         buffer.append(data)
         
         return extractEventsFromBuffer().map { string in
@@ -23,14 +25,12 @@ class EventSourceParser {
 }
 
 extension EventSourceParser {
-    
-    private let delimiter: Data = "\n\n".data(using: .utf8)!
 
     private func extractEventsFromBuffer() -> [String] {
         var events = [String]()
         var searchRange: Range<Data.Index> = buffer.startIndex..<buffer.endIndex
         
-        while let foundRange = buffer.range(of: EventSourceParser.delimiter, in: searchRange) {
+        while let foundRange = buffer.range(of: delimiter, in: searchRange) {
             let subdata = buffer.subdata(in: searchRange.startIndex..<foundRange.endIndex)
 
             if let event = String(bytes: subdata, encoding: .utf8) {

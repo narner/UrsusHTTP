@@ -9,7 +9,7 @@ import Foundation
 
 extension URLSessionConfiguration {
     
-    static func eventSource(lastEventID: String? = nil) -> URLSessionConfiguration {
+    internal static func eventSource(lastEventID: String? = nil) -> URLSessionConfiguration {
         let sessionConfiguration = URLSessionConfiguration.default
         
         sessionConfiguration.timeoutIntervalForRequest = TimeInterval(Int32.max)

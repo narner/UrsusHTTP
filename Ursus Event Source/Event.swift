@@ -12,14 +12,14 @@ public struct Event {
     
     #warning("Should have the fields event (String), id (String), data (Data), retry (Integer milliseconds)")
     
-    var id: String?
-    var data: Data
+    public var id: String?
+    public var data: Data
 
 }
 
 extension Event {
 
-    static func parseEvent(_ string: String) -> Event {
+    internal static func parseEvent(_ string: String) -> Event {
         var event: [String: String?] = [:]
 
         for line in string.components(separatedBy: CharacterSet.newlines) as [String] {
@@ -42,7 +42,7 @@ extension Event {
         )
     }
 
-    static func parseLine(_ line: String) -> (key: String?, value: String?) {
+    internal static func parseLine(_ line: String) -> (key: String?, value: String?) {
         var key: String?, value: String?
         let scanner = Scanner(string: line)
         key = scanner.scanUpToString(":")

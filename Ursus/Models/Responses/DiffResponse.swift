@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DiffResponse: Decodable {
+internal struct DiffResponse: Decodable {
     
     var id: Int
     var json: Data

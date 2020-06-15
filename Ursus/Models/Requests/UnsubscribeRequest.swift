@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UnsubscribeRequest: Encodable {
+internal struct UnsubscribeRequest: Encodable {
     
     var action: String = "unsubscribe"
     var id: Int

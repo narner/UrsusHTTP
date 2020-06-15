@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PokeRequest<JSON: Encodable>: Encodable {
+internal struct PokeRequest<JSON: Encodable>: Encodable {
     
     var action: String = "poke"
     var id: Int

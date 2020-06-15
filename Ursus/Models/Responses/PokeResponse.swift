@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PokeResponse: Decodable {
+internal struct PokeResponse: Decodable {
     
     var id: Int
     var result: Result<Void, PokeError>
