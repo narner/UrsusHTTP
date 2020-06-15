@@ -10,8 +10,6 @@ import Foundation
 
 class EventSourceParser {
     
-    private static let delimiter: Data = "\n\n".data(using: .utf8)!
-    
     private var buffer = Data()
 
     func append(data: Data) -> [Event] {
@@ -25,16 +23,18 @@ class EventSourceParser {
 }
 
 extension EventSourceParser {
+    
+    private let delimiter: Data = "\n\n".data(using: .utf8)!
 
     private func extractEventsFromBuffer() -> [String] {
         var events = [String]()
         var searchRange: Range<Data.Index> = buffer.startIndex..<buffer.endIndex
         
         while let foundRange = buffer.range(of: EventSourceParser.delimiter, in: searchRange) {
-            let dataChunk = buffer.subdata(in: searchRange.startIndex..<foundRange.endIndex)
+            let subdata = buffer.subdata(in: searchRange.startIndex..<foundRange.endIndex)
 
-            if let text = String(bytes: dataChunk, encoding: .utf8) {
-                events.append(text)
+            if let event = String(bytes: subdata, encoding: .utf8) {
+                events.append(event)
             }
 
             searchRange = foundRange.endIndex..<buffer.endIndex
