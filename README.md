@@ -51,5 +51,4 @@ Things that would make this codebase nicer:
 ## Dependencies
 
 - [Alamofire](https://github.com/Alamofire/Alamofire)
-- [IKEventSource](https://github.com/inaka/EventSource)
-- [UInt128](https://github.com/Jitsusama/UInt128)
+- [BigInt](https://github.com/attaswift/BigInt)
