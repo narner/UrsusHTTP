@@ -107,7 +107,7 @@ extension Ursus: EventSourceDelegate {
         self.lastEventID = message.id
         
         do {
-            let response = try decoder.decodeJSON(Response.self, from: message.data)
+            let response = try decoder.decodeJSON(Response.self, from: message.data?.data(using: .utf8) ?? Data())
             switch response {
             case .poke(let response):
                 switch response.result {
@@ -133,7 +133,7 @@ extension Ursus: EventSourceDelegate {
                 subscribeHandlers[response.id] = nil
             }
         } catch let error {
-            print("[Ursus] Error decoding message:", error)
+            print("[Ursus] Error decoding message:", message, error)
         }
     }
     

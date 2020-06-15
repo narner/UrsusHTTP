@@ -10,51 +10,44 @@ import Foundation
 
 public struct EventSourceMessage {
     
-    #warning("Should have the fields event (String), id (String), data (Data), retry (Integer milliseconds)")
-    
+    public var event: String?
     public var id: String?
-    public var data: Data
-
-}
-
-extension EventSourceMessage {
-
-    internal static func parse(_ string: String) -> EventSourceMessage {
-        var event: [String: String?] = [:]
-
-        for line in string.components(separatedBy: CharacterSet.newlines) as [String] {
-            let (akey, value) = EventSourceMessage.parseLine(line)
-            guard let key = akey else { continue }
-
-            if let value = value, let previousValue = event[key] ?? nil {
-                event[key] = "\(previousValue)\n\(value)"
-            } else if let value = value {
-                event[key] = value
-            } else {
-                event[key] = nil
+    public var data: String?
+    public var retry: String?
+    
+    internal init?(parsing string: String) {
+        let fields = string.components(separatedBy: "\n").compactMap { string in
+            return EventSourceMessageField(parsing: string)
+        }
+        
+        for field in fields {
+            switch field {
+            case .event(let string):
+                if let event = self.event {
+                    self.event = event + "\n" + string
+                } else {
+                    self.event = string
+                }
+            case .id(let string):
+                if let id = self.id {
+                    self.id = id + "\n" + string
+                } else {
+                    self.id = string
+                }
+            case .data(let string):
+                if let data = self.data {
+                    self.data = data + "\n" + string
+                } else {
+                    self.data = string
+                }
+            case .retry(let string):
+                if let retry = self.retry {
+                    self.retry = retry + "\n" + string
+                } else {
+                    self.retry = string
+                }
             }
         }
-
-        // the only possible field names for events are: id, event and data. Everything else is ignored.
-        return EventSourceMessage(
-            id: event["id"] ?? nil,
-            data: event["data"]??.data(using: .utf8) ?? Data()
-        )
     }
 
-    internal static func parseLine(_ line: String) -> (key: String?, value: String?) {
-        var key: String?, value: String?
-        let scanner = Scanner(string: line)
-        key = scanner.scanUpToString(":")
-        _ = scanner.scanString(":")
-        value = scanner.scanUpToString("\n")
-
-        // for id and data if they come empty they should return an empty string value.
-        if key != "event" && value == nil {
-            value = ""
-        }
-
-        return (key, value)
-    }
-    
 }
