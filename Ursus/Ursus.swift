@@ -89,9 +89,6 @@ extension Ursus {
     }
     
     private func resetEventSource() {
-        #warning("This triggers an infinite reconnection loop")
-//        deleteRequest()
-        
         eventSource = nil
         
         uid = Ursus.uid()
