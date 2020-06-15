@@ -10,7 +10,7 @@ import Foundation
 
 public protocol EventSourceDelegate: class {
     
-    func eventSource(_ eventSource: EventSource, didReceiveEvent event: Event)
+    func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage)
     
     func eventSource(_ eventSource: EventSource, didCompleteWithError error: Error?)
     
@@ -47,10 +47,10 @@ public class EventSource: NSObject {
 extension EventSource: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        for event in parser.append(data: data) {
+        for message in parser.append(data: data) {
             DispatchQueue.main.async { [weak self] in
                 if let `self` = self {
-                    self.delegate?.eventSource(self, didReceiveEvent: event)
+                    self.delegate?.eventSource(self, didReceiveMessage: message)
                 }
             }
         }

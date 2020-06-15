@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Event {
+public struct EventSourceMessage {
     
     #warning("Should have the fields event (String), id (String), data (Data), retry (Integer milliseconds)")
     
@@ -17,13 +17,13 @@ public struct Event {
 
 }
 
-extension Event {
+extension EventSourceMessage {
 
-    internal static func parseEvent(_ string: String) -> Event {
+    internal static func parse(_ string: String) -> EventSourceMessage {
         var event: [String: String?] = [:]
 
         for line in string.components(separatedBy: CharacterSet.newlines) as [String] {
-            let (akey, value) = Event.parseLine(line)
+            let (akey, value) = EventSourceMessage.parseLine(line)
             guard let key = akey else { continue }
 
             if let value = value, let previousValue = event[key] ?? nil {
@@ -36,7 +36,7 @@ extension Event {
         }
 
         // the only possible field names for events are: id, event and data. Everything else is ignored.
-        return Event(
+        return EventSourceMessage(
             id: event["id"] ?? nil,
             data: event["data"]??.data(using: .utf8) ?? Data()
         )

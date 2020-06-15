@@ -89,7 +89,6 @@ extension Ursus {
     }
     
     private func resetEventSource() {
-        print("RESETTING")
         deleteRequest()
         
         eventSource = nil
@@ -104,11 +103,11 @@ extension Ursus {
 
 extension Ursus: EventSourceDelegate {
     
-    public func eventSource(_ eventSource: EventSource, didReceiveEvent event: Event) {
-        self.lastEventID = event.id
+    public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
+        self.lastEventID = message.id
         
         do {
-            let response = try decoder.decodeJSON(Response.self, from: event.data)
+            let response = try decoder.decodeJSON(Response.self, from: message.data)
             switch response {
             case .poke(let response):
                 switch response.result {

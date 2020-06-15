@@ -14,11 +14,11 @@ internal class EventSourceParser {
     
     private var buffer = Data()
 
-    internal func append(data: Data) -> [Event] {
+    internal func append(data: Data) -> [EventSourceMessage] {
         buffer.append(data)
         
-        return extractEventsFromBuffer().map { string in
-            return Event.parseEvent(string)
+        return extractMessagesFromBuffer().map { string in
+            return EventSourceMessage.parse(string)
         }
     }
     
@@ -26,23 +26,23 @@ internal class EventSourceParser {
 
 extension EventSourceParser {
 
-    private func extractEventsFromBuffer() -> [String] {
-        var events = [String]()
+    private func extractMessagesFromBuffer() -> [String] {
+        var messages = [String]()
         var searchRange: Range<Data.Index> = buffer.startIndex..<buffer.endIndex
         
-        while let foundRange = buffer.range(of: delimiter, in: searchRange) {
-            let subdata = buffer.subdata(in: searchRange.startIndex..<foundRange.endIndex)
+        while let delimiterRange = buffer.range(of: delimiter, in: searchRange) {
+            let subdata = buffer.subdata(in: searchRange.startIndex..<delimiterRange.endIndex)
 
-            if let event = String(bytes: subdata, encoding: .utf8) {
-                events.append(event)
+            if let message = String(bytes: subdata, encoding: .utf8) {
+                messages.append(message)
             }
 
-            searchRange = foundRange.endIndex..<buffer.endIndex
+            searchRange = delimiterRange.endIndex..<buffer.endIndex
         }
 
         buffer.removeSubrange(buffer.startIndex..<searchRange.startIndex)
 
-        return events
+        return messages
     }
     
 }
