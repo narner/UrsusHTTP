@@ -16,36 +16,17 @@ public struct EventSourceMessage {
     public var retry: String?
     
     internal init?(parsing string: String) {
-        let fields = string.components(separatedBy: "\n").compactMap { string in
-            return EventSourceMessageField(parsing: string)
-        }
-        
+        let fields = string.components(separatedBy: "\n").compactMap(EventSourceMessageField.init(parsing:))
         for field in fields {
-            switch field {
-            case .event(let string):
-                if let event = self.event {
-                    self.event = event + "\n" + string
-                } else {
-                    self.event = string
-                }
-            case .id(let string):
-                if let id = self.id {
-                    self.id = id + "\n" + string
-                } else {
-                    self.id = string
-                }
-            case .data(let string):
-                if let data = self.data {
-                    self.data = data + "\n" + string
-                } else {
-                    self.data = string
-                }
-            case .retry(let string):
-                if let retry = self.retry {
-                    self.retry = retry + "\n" + string
-                } else {
-                    self.retry = string
-                }
+            switch field.key {
+            case .event:
+                self.event = self.event.map { $0 + "\n" + field.value } ?? field.value
+            case .id:
+                self.id = self.id.map { $0 + "\n" + field.value } ?? field.value
+            case .data:
+                self.data = self.data.map { $0 + "\n" + field.value } ?? field.value
+            case .retry:
+                self.retry = self.retry.map { $0 + "\n" + field.value } ?? field.value
             }
         }
     }

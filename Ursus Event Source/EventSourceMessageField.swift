@@ -7,30 +7,35 @@
 
 import Foundation
 
-internal enum EventSourceMessageField {
+internal struct EventSourceMessageField {
     
-    case event(String)
-    case id(String)
-    case data(String)
-    case retry(String)
+    internal enum Key: String {
+        
+        case event
+        case id
+        case data
+        case retry
+        
+    }
+    
+    internal var key: Key
+    internal var value: String
     
     internal init?(parsing string: String) {
         let scanner = Scanner(string: string)
-        let key = scanner.scanUpToString(":")
-        _ = scanner.scanString(":")
-        let value = scanner.scanUpToString("\n") ?? ""
-        switch key {
-        case "event":
-            self = .event(value)
-        case "id":
-            self = .id(value)
-        case "data":
-            self = .data(value)
-        case "retry":
-            self = .retry(value)
-        default:
+        
+        guard let key = scanner.scanUpToString(":").flatMap(Key.init(rawValue:)) else {
             return nil
         }
+        
+        _ = scanner.scanString(":")
+        
+        guard let value = scanner.scanUpToString("\n") else {
+            return nil
+        }
+        
+        self.key = key
+        self.value = value
     }
     
 }

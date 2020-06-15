@@ -106,8 +106,12 @@ extension Ursus: EventSourceDelegate {
     public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
         self.lastEventID = message.id
         
-        do {
-            let response = try decoder.decodeJSON(Response.self, from: message.data?.data(using: .utf8) ?? Data())
+        guard let data = message.data?.data(using: .utf8) else {
+            return
+        }
+
+        switch Result(catching: { try decoder.decodeJSON(Response.self, from: data) }) {
+        case .success(let response):
             switch response {
             case .poke(let response):
                 switch response.result {
@@ -132,7 +136,7 @@ extension Ursus: EventSourceDelegate {
                 subscribeHandlers[response.id]?(.quit)
                 subscribeHandlers[response.id] = nil
             }
-        } catch let error {
+        case .failure(let error):
             print("[Ursus] Error decoding message:", message, error)
         }
     }

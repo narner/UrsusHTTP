@@ -16,10 +16,7 @@ internal class EventSourceParser {
 
     internal func append(data: Data) -> [EventSourceMessage] {
         buffer.append(data)
-        
-        return extractMessagesFromBuffer().compactMap { string in
-            return EventSourceMessage(parsing: string)
-        }
+        return extractMessagesFromBuffer().compactMap(EventSourceMessage.init(parsing:))
     }
     
 }
