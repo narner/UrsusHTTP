@@ -141,14 +141,13 @@ extension Ursus: EventSourceDelegate {
         }
     }
     
-    public func eventSource(_ eventSource: EventSource, didCompleteWithError error: Error?) {
-        #warning("Do something about this; e.g. 404s should get logged")
-//        pokeHandlers.values.forEach { handler in
-//            handler(.failure(error))
-//        }
-//        subscribeHandlers.values.forEach { handler in
-//            handler(.failure(error))
-//        }
+    public func eventSource(_ eventSource: EventSource, didCompleteWithError error: EventSourceError) {
+        pokeHandlers.values.forEach { handler in
+            handler(.failure(error))
+        }
+        subscribeHandlers.values.forEach { handler in
+            handler(.failure(error))
+        }
             
         pokeHandlers.removeAll()
         subscribeHandlers.removeAll()

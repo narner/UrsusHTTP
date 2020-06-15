@@ -12,7 +12,7 @@ public protocol EventSourceDelegate: class {
     
     func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage)
     
-    func eventSource(_ eventSource: EventSource, didCompleteWithError error: Error?)
+    func eventSource(_ eventSource: EventSource, didCompleteWithError error: EventSourceError)
     
 }
 
@@ -59,7 +59,14 @@ extension EventSource: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         DispatchQueue.main.async { [weak self] in
             if let `self` = self {
-                self.delegate?.eventSource(self, didCompleteWithError: error)
+                switch (task.response as? HTTPURLResponse, error) {
+                case (.some(let response), .none):
+                    self.delegate?.eventSource(self, didCompleteWithError: .server(response: response))
+                case (.none, .some(let error)):
+                    self.delegate?.eventSource(self, didCompleteWithError: .client(error: error))
+                default:
+                    break
+                }
             }
         }
     }
