@@ -10,8 +10,8 @@ import Alamofire
 
 extension Ursus {
     
-    public func app<App: UrsusApp>(ship: String? = nil, app: String) -> App {
-        return App(ursus: self, ship: ship ?? self.ship, app: app)
+    public func app<App: UrsusApp>(ship: String, app: String) -> App {
+        return App(ursus: self, ship: ship, app: app)
     }
     
 }

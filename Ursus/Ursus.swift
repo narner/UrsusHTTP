@@ -30,12 +30,10 @@ final public class Ursus {
     private var lastEventID: String? = nil
     
     public var url: URL
-    public var ship: String
     public var code: String
     
-    public init(url: URL, ship: String, code: String) {
+    public init(url: URL, code: String) {
         self.url = url
-        self.ship = ship
         self.code = code
     }
     
@@ -66,9 +64,8 @@ extension Ursus {
         return channelRequest(request)
     }
     
-    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String? = nil, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
-        let ship = ship ?? self.ship
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         pokeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
@@ -79,9 +76,8 @@ extension Ursus {
         }
     }
     
-    @discardableResult public func subscribeRequest(ship: String? = nil, app: String, path: String, handler: @escaping (SubscribeEvent) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
-        let ship = ship ?? self.ship
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         subscribeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
