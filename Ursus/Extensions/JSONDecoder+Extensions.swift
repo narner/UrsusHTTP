@@ -9,6 +9,16 @@ import Foundation
 
 extension JSONDecoder {
     
+    public static var ursusDecoder: JSONDecoder {
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .millisecondsSince1970
+        return decoder
+    }
+    
+}
+
+extension JSONDecoder {
+    
     internal func decodeJSON<T>(_ type: T.Type, from data: Data, options: JSONSerialization.ReadingOptions = []) throws -> T where T : Decodable {
         userInfo[.json] = try JSONSerialization.jsonObject(with: data, options: options)
         let result = try decode(type, from: data)

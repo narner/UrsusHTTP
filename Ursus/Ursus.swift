@@ -13,8 +13,8 @@ final public class Ursus {
     private var session: Session = .default
     private var eventSource: EventSource? = nil
     
-    private var encoder: JSONEncoder = .init()
-    private var decoder: JSONDecoder = .init()
+    private var encoder: JSONEncoder = .ursusEncoder
+    private var decoder: JSONDecoder = .ursusDecoder
     
     private var pokeHandlers: [Int: (PokeEvent) -> Void] = [:]
     private var subscribeHandlers: [Int: (SubscribeEvent) -> Void] = [:]
