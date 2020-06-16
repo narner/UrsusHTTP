@@ -19,9 +19,7 @@ extension Ursus {
 open class UrsusApp {
     
     public var ursus: Ursus
-    
     public var ship: String
-    
     public var app: String
     
     required public init(ursus: Ursus, ship: String, app: String) {
