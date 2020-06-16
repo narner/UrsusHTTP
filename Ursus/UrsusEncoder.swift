@@ -54,7 +54,7 @@ private struct KebabCasedCodingKey: CodingKey {
 extension String {
     
     internal var convertToKebabCase: String {
-        return self
+        return replacingOccurrences(of: "([a-z])([A-Z])", with: "$1-$2", options: .regularExpression).lowercased()
     }
     
 }
