@@ -24,14 +24,6 @@ open class UrsusApp {
     
 }
 
-extension Ursus {
-    
-    public func app<App: UrsusApp>(ship: String, app: String) -> App {
-        return App(ursus: self, ship: ship, app: app)
-    }
-    
-}
-
 extension UrsusApp {
     
     @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
