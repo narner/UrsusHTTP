@@ -8,7 +8,7 @@
 import Foundation
 import Alamofire
 
-public class Ursus {
+final public class Ursus {
     
     private var session: Session = .default
     private var eventSource: EventSource? = nil
@@ -162,7 +162,7 @@ extension Ursus {
         return channelRequest(request)
     }
     
-    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String, json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         pokeHandlers[id] = handler
