@@ -8,6 +8,14 @@
 import Foundation
 import Alamofire
 
+extension Ursus {
+    
+    public func app<App: UrsusApp>(ship: String, app: String) -> App {
+        return App(ursus: self, ship: ship, app: app)
+    }
+    
+}
+
 open class UrsusApp {
     
     public var ursus: Ursus
