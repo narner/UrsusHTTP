@@ -81,12 +81,8 @@ private struct CamelCasedCodingKey: CodingKey {
 extension String {
     
     internal var convertFromKebabCase: String {
-        let components = split(separator: "-").map(String.init)
-        let head = components.first ?? ""
-        let tail = components.dropFirst()
-        return tail.reduce(head) { result, component in
-            return result + component.capitalized
-        }
+        let pascalCase = capitalized.replacingOccurrences(of: "-", with: "")
+        return pascalCase.first?.lowercased().appending(pascalCase.dropFirst()) ?? ""
     }
     
 }
