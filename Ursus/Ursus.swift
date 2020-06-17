@@ -17,7 +17,7 @@ final public class Ursus {
     private var decoder = UrsusDecoder()
     
     private var pokeHandlers = [Int: (PokeEvent) -> Void]()
-    private var subscribeHandlers = [Int: (SubscribeEvent) -> Void]()
+    private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
     private var uid: String = Ursus.uid()
     
@@ -87,7 +87,7 @@ extension Ursus {
         }
     }
     
-    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<Data>) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         subscribeHandlers[id] = handler
@@ -124,7 +124,7 @@ extension Ursus: EventSourceDelegate {
         case .success(.poke(let response)):
             switch response.result {
             case .okay:
-                pokeHandlers[response.id]?(.success)
+                pokeHandlers[response.id]?(.finished)
                 pokeHandlers[response.id] = nil
             case .error(let message):
                 pokeHandlers[response.id]?(.failure(.pokeFailure(message)))
@@ -133,7 +133,7 @@ extension Ursus: EventSourceDelegate {
         case .success(.subscribe(let response)):
             switch response.result {
             case .okay:
-                subscribeHandlers[response.id]?(.success)
+                subscribeHandlers[response.id]?(.started)
             case .error(let message):
                 subscribeHandlers[response.id]?(.failure(.subscribeFailure(message)))
                 subscribeHandlers[response.id] = nil

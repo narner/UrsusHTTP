@@ -9,7 +9,7 @@ import Foundation
 
 public enum PokeEvent {
     
-    case success
+    case finished
     case failure(PokeError)
     
 }

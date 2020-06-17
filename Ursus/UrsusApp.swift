@@ -40,7 +40,7 @@ extension UrsusApp {
         return ursus.pokeRequest(ship: ship, app: app, mark: mark, json: json, handler: handler)
     }
     
-    @discardableResult public func subscribeRequest(path: String, handler: @escaping (SubscribeEvent) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest(path: String, handler: @escaping (SubscribeEvent<Data>) -> Void) -> DataRequest {
         return ursus.subscribeRequest(ship: ship, app: app, path: path, handler: handler)
     }
     
