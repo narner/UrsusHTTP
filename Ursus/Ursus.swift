@@ -127,7 +127,7 @@ extension Ursus: EventSourceDelegate {
                 pokeHandlers[response.id]?(.success)
                 pokeHandlers[response.id] = nil
             case .error(let message):
-                pokeHandlers[response.id]?(.failure(.pokeError(message)))
+                pokeHandlers[response.id]?(.failure(.pokeFailure(message)))
                 pokeHandlers[response.id] = nil
             }
         case .success(.subscribe(let response)):
@@ -135,13 +135,13 @@ extension Ursus: EventSourceDelegate {
             case .okay:
                 subscribeHandlers[response.id]?(.success)
             case .error(let message):
-                subscribeHandlers[response.id]?(.failure(.subscribeError(message)))
+                subscribeHandlers[response.id]?(.failure(.subscribeFailure(message)))
                 subscribeHandlers[response.id] = nil
             }
         case .success(.diff(let response)):
-            subscribeHandlers[response.id]?(.message(response.json))
+            subscribeHandlers[response.id]?(.update(response.json))
         case .success(.quit(let response)):
-            subscribeHandlers[response.id]?(.quit)
+            subscribeHandlers[response.id]?(.finished)
             subscribeHandlers[response.id] = nil
         case .failure(let error):
             print("[Ursus] Error decoding message:", message, error)
@@ -152,10 +152,10 @@ extension Ursus: EventSourceDelegate {
         switch error {
         case .requestFailed(let error):
             pokeHandlers.values.forEach { handler in
-                handler(.failure(.channelRequestFailed(error)))
+                handler(.failure(.channelRequestFailure(error)))
             }
             subscribeHandlers.values.forEach { handler in
-                handler(.failure(.channelRequestFailed(error)))
+                handler(.failure(.channelRequestFailure(error)))
             }
         case .requestFinished(let response):
             pokeHandlers.values.forEach { handler in
