@@ -28,9 +28,6 @@ I can probably help set up Carthage or Swift Package Manager support if you need
 Things that would make this codebase nicer:
 
 - [ ] Pass IDs back through to the event handlers so unsubscribe requests can be made.
-- [ ] Add methods for type safe JSON decoding.
-- [ ] Add Combine publishers for pokes and subscribes.
-    - See: https://www.donnywals.com/understanding-combines-publishers-and-subscribers/
 - [ ] Test `AckRequest`, `UnsubscribeRequest`, `DeleteRequest` properly.
 - [ ] Better documentation/examples.
 
