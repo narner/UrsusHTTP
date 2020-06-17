@@ -7,9 +7,9 @@
 
 import Foundation
 
-public enum PokeEvent {
+public enum PokeEvent<Failure: Error> {
     
     case finished
-    case failure(PokeError)
+    case failure(Failure)
     
 }

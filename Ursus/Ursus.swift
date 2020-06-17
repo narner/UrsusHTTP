@@ -16,8 +16,8 @@ final public class Ursus {
     private var encoder = UrsusEncoder()
     private var decoder = UrsusDecoder()
     
-    private var pokeHandlers = [Int: (PokeEvent) -> Void]()
-    private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
+    private var pokeHandlers = [Int: (PokeEvent<PokeError>) -> Void]()
+    private var subscribeHandlers = [Int: (SubscribeEvent<Data, SubscribeError>) -> Void]()
     
     private var uid: String = Ursus.uid()
     
@@ -76,7 +76,7 @@ extension Ursus {
         return channelRequest(request)
     }
     
-    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent<PokeError>) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         pokeHandlers[id] = handler
@@ -87,7 +87,7 @@ extension Ursus {
         }
     }
     
-    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<Data>) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<Data, SubscribeError>) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         subscribeHandlers[id] = handler
@@ -95,6 +95,15 @@ extension Ursus {
             if response.error != nil {
                 self?.subscribeHandlers[id] = nil
             }
+        }
+    }
+    
+    @discardableResult public func subscribeRequest<JSON: Decodable>(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<JSON, Error>) -> Void) -> DataRequest {
+        let decoder = self.decoder
+        return subscribeRequest(ship: ship, app: app, path: path) { event in
+            handler(event.map { data in
+                return try decoder.decode(JSON.self, from: data)
+            })
         }
     }
     
