@@ -32,6 +32,7 @@ I can probably help set up Carthage or Swift Package Manager support if you need
 
 Things that would make this codebase nicer:
 
+- [ ] `authenticationRequest` should retrieve the ship name using `response.response?.value(forHTTPHeaderField: "Set-Cookie")`
 - [ ] Write Combine publishers for pokes and subscribes (see the [donnywals writeup](https://www.donnywals.com/using-promises-and-futures-in-combine/)). Should be able to include type safe JSON decoding as part of this work.
 - [ ] Test `AckRequest`, `UnsubscribeRequest`, `DeleteRequest` properly.
 - [ ] Better documentation/examples.
