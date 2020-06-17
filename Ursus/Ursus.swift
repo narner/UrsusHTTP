@@ -16,8 +16,8 @@ final public class Ursus {
     private var encoder = UrsusEncoder()
     private var decoder = UrsusDecoder()
     
-    private var pokeHandlers = [Int: (PokeEvent<PokeError>) -> Void]()
-    private var subscribeHandlers = [Int: (SubscribeEvent<Data, SubscribeError>) -> Void]()
+    private var pokeHandlers = [Int: (PokeEvent) -> Void]()
+    private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
     private var uid: String = Ursus.uid()
     
@@ -76,7 +76,7 @@ extension Ursus {
         return channelRequest(request)
     }
     
-    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent<PokeError>) -> Void) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(ship: String, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         pokeHandlers[id] = handler
@@ -87,7 +87,7 @@ extension Ursus {
         }
     }
     
-    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<Data, SubscribeError>) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<Data>) -> Void) -> DataRequest {
         let id = nextRequestID
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         subscribeHandlers[id] = handler
@@ -98,7 +98,7 @@ extension Ursus {
         }
     }
     
-    @discardableResult public func subscribeRequest<JSON: Decodable>(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<JSON, Error>) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest<JSON: Decodable>(ship: String, app: String, path: String, handler: @escaping (SubscribeEvent<JSON>) -> Void) -> DataRequest {
         let decoder = self.decoder
         return subscribeRequest(ship: ship, app: app, path: path) { event in
             handler(event.map { data in
@@ -136,7 +136,7 @@ extension Ursus: EventSourceDelegate {
                 pokeHandlers[response.id]?(.finished)
                 pokeHandlers[response.id] = nil
             case .error(let message):
-                pokeHandlers[response.id]?(.failure(.pokeFailure(message)))
+                pokeHandlers[response.id]?(.failure(PokeError.pokeFailure(message)))
                 pokeHandlers[response.id] = nil
             }
         case .success(.subscribe(let response)):
@@ -144,7 +144,7 @@ extension Ursus: EventSourceDelegate {
             case .okay:
                 subscribeHandlers[response.id]?(.started)
             case .error(let message):
-                subscribeHandlers[response.id]?(.failure(.subscribeFailure(message)))
+                subscribeHandlers[response.id]?(.failure(SubscribeError.subscribeFailure(message)))
                 subscribeHandlers[response.id] = nil
             }
         case .success(.diff(let response)):
@@ -158,24 +158,14 @@ extension Ursus: EventSourceDelegate {
     }
     
     public func eventSource(_ eventSource: EventSource, didCompleteWithError error: EventSourceError) {
-        switch error {
-        case .requestFailed(let error):
-            pokeHandlers.values.forEach { handler in
-                handler(.failure(.channelRequestFailure(error)))
-            }
-            subscribeHandlers.values.forEach { handler in
-                handler(.failure(.channelRequestFailure(error)))
-            }
-        case .requestFinished(let response):
-            pokeHandlers.values.forEach { handler in
-                handler(.failure(.channelRequestFinished(response)))
-            }
-            subscribeHandlers.values.forEach { handler in
-                handler(.failure(.channelRequestFinished(response)))
-            }
+        pokeHandlers.values.forEach { handler in
+            handler(.failure(error))
         }
-        
         pokeHandlers.removeAll()
+        
+        subscribeHandlers.values.forEach { handler in
+            handler(.failure(error))
+        }
         subscribeHandlers.removeAll()
         
         resetEventSource()

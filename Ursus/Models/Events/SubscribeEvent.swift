@@ -7,24 +7,24 @@
 
 import Foundation
 
-public enum SubscribeEvent<Input, Failure: Error> {
+public enum SubscribeEvent<Value> {
 
     case started
-    case update(Input)
+    case update(Value)
     case finished
-    case failure(Failure)
+    case failure(Error)
 
 }
 
 extension SubscribeEvent {
     
-    internal func map<T>(_ transform: (Input) throws -> T) -> SubscribeEvent<T, Error> {
+    internal func map<T>(_ transform: (Value) throws -> T) -> SubscribeEvent<T> {
         switch self {
         case .started:
             return .started
-        case .update(let input):
+        case .update(let value):
             do {
-                return .update(try transform(input))
+                return .update(try transform(value))
             } catch let error {
                 return .failure(error)
             }

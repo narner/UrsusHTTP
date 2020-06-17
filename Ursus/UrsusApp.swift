@@ -36,15 +36,15 @@ extension UrsusApp {
         return ursus.ackRequest(eventID: eventID)
     }
     
-    @discardableResult public func pokeRequest<JSON: Encodable>(mark: String = "json", json: JSON, handler: @escaping (PokeEvent<PokeError>) -> Void) -> DataRequest {
+    @discardableResult public func pokeRequest<JSON: Encodable>(mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         return ursus.pokeRequest(ship: ship, app: app, mark: mark, json: json, handler: handler)
     }
     
-    @discardableResult public func subscribeRequest(path: String, handler: @escaping (SubscribeEvent<Data, SubscribeError>) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest(path: String, handler: @escaping (SubscribeEvent<Data>) -> Void) -> DataRequest {
         return ursus.subscribeRequest(ship: ship, app: app, path: path, handler: handler)
     }
     
-    @discardableResult public func subscribeRequest<JSON: Decodable>(path: String, handler: @escaping (SubscribeEvent<JSON, Error>) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest<JSON: Decodable>(path: String, handler: @escaping (SubscribeEvent<JSON>) -> Void) -> DataRequest {
         return ursus.subscribeRequest(ship: ship, app: app, path: path, handler: handler)
     }
     

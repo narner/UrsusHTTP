@@ -9,8 +9,6 @@ import Foundation
 
 public enum PokeError: Error {
     
-    case channelRequestFailure(Error)
-    case channelRequestFinished(HTTPURLResponse)
     case pokeFailure(String)
     
 }

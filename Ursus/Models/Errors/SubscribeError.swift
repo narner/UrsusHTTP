@@ -9,8 +9,6 @@ import Foundation
 
 public enum SubscribeError: Error {
     
-    case channelRequestFailure(Error)
-    case channelRequestFinished(HTTPURLResponse)
     case subscribeFailure(String)
     
 }
