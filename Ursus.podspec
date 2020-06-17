@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "Ursus"
-  s.version = "1.0.6"
+  s.version = "1.0.7"
   s.summary = "An Urbit HTTP/`%eyre` client for iOS/macOS."
   s.homepage = "https://github.com/dclelland/Ursus"
   s.license = { type: 'MIT' }
