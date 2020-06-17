@@ -45,8 +45,19 @@ final public class Ursus {
 
 extension Ursus {
     
-    @discardableResult public func authenticationRequest() -> DataRequest {
-        return session.request(authenticationURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default).validate()
+    @discardableResult public func authenticationRequest(handler: @escaping (String) -> Void) -> DataRequest {
+        return session.request(authenticationURL, method: .post, parameters: ["password": code], encoder: URLEncodedFormParameterEncoder.default).validate().response { response in
+            guard let urbauth = response.response?.value(forHTTPHeaderField: "Set-Cookie") else {
+                print("[Ursus] Error retrieving urbauth")
+            }
+            
+            guard let ship = urbauth.split(separator: "=").first?.replacingOccurrences(of: "urbauth-~", with: "") else {
+                print("[Ursus] Error decoding urbauth:", urbauth)
+                return
+            }
+            
+            handler(ship)
+        }
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
