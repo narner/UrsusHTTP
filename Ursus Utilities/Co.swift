@@ -233,6 +233,16 @@ public struct PatQ {
 //      . T.filter isAsciiLower
 //      $ p
 
+public func parse(_ string: String) throws -> [UInt8] {
+    let syllables = string.trimmingCharacters(in: CharacterSet.lowercaseLetters.inverted).chunked(by: 3)
+    return try syllables.reversed().enumerated().map { index, syllable in
+        if index.isMultiple(of: 2) {
+            return try fromSuffix(syllable)
+        } else {
+            return try fromPrefix(syllable)
+        }
+    }
+}
 
 internal let prefixes: [String] = ["doz", "mar", "bin", "wan", "sam", "lit", "sig", "hid", "fid", "lis", "sog", "dir", "wac", "sab", "wis", "sib",
                                   "rig", "sol", "dop", "mod", "fog", "lid", "hop", "dar", "dor", "lor", "hod", "fol", "rin", "tog", "sil", "mir",
@@ -255,14 +265,13 @@ internal func prefix(_ index: UInt8) -> String {
     return prefixes[Int(index)]
 }
 
-internal func fromPrefix(_ prefix: String) throws -> UInt8 {
-    guard let index = prefixes.firstIndex(of: prefix) else {
-        throw CoError.invalidPrefix(prefix)
+internal func fromPrefix(_ syllable: String) throws -> UInt8 {
+    guard let index = prefixes.firstIndex(of: syllable) else {
+        throw CoError.invalidPrefix(syllable)
     }
     
     return UInt8(index)
 }
-
 
 internal let suffixes: [String] = ["zod", "nec", "bud", "wes", "sev", "per", "sut", "let", "ful", "pen", "syt", "dur", "wep", "ser", "wyl", "sun",
                                   "ryp", "syx", "dyr", "nup", "heb", "peg", "lup", "dep", "dys", "put", "lug", "hec", "ryt", "tyv", "syd", "nex",
@@ -285,9 +294,9 @@ internal func suffix(_ index: UInt8) -> String {
     return suffixes[Int(index)]
 }
 
-internal func fromSuffix(_ suffix: String) throws -> UInt8 {
-    guard let index = suffixes.firstIndex(of: suffix) else {
-        throw CoError.invalidSuffix(suffix)
+internal func fromSuffix(_ syllable: String) throws -> UInt8 {
+    guard let index = suffixes.firstIndex(of: syllable) else {
+        throw CoError.invalidSuffix(syllable)
     }
     
     return UInt8(index)

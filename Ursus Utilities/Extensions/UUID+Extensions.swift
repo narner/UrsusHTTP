@@ -49,14 +49,3 @@ extension String {
     }
     
 }
-
-extension Array {
-    
-    internal func chunked(by distance: Int) -> [[Element]] {
-        return stride(from: startIndex, to: endIndex, by: distance).map { index in
-            let newIndex = index.advanced(by: distance) > endIndex ? endIndex : index.advanced(by: distance)
-            return Array(self[index..<newIndex])
-        }
-    }
-    
-}
