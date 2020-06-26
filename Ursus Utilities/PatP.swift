@@ -39,7 +39,7 @@ extension PatP {
         
     }
     
-    var title: Title {
+    public var title: Title {
         switch bitWidth {
         case 0...8:
             return .galaxy
