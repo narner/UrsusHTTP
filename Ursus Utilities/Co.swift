@@ -7,6 +7,7 @@
 
 import Foundation
 import BigInt
+import Parity
 
 public enum CoError: Error {
     
@@ -175,19 +176,47 @@ public struct PatQ {
 //--
 //parsePatq :: T.Text -> Either T.Text Patq
 //parsePatq = fmap Patq . parse
-//
-//-- Padding option for rendering.
-//data Padding =
-//    Padding
-//  | NoPadding
-//  deriving Eq
-//
-//-- Spacing option for rendering.
-//data Spacing =
-//    LongSpacing
-//  | ShortSpacing
-//  deriving Eq
-//
+
+public enum Padding {
+    
+    case padding
+    case noPadding
+    
+    func padCondition(bytes: [UInt8]) -> Bool {
+        switch self {
+        case .noPadding:
+            return bytes.count == 0
+        case .padding:
+            return bytes.count == 0 || (bytes.count.isOdd && bytes.count > 2)
+        }
+    }
+    
+    func pad(bytes: [UInt8]) -> [UInt8] {
+        if padCondition(bytes: bytes) {
+            return [0] + bytes
+        } else {
+            return bytes
+        }
+    }
+    
+}
+
+public enum Spacing {
+    
+    case longSpacing
+    case shortSpacing
+    
+    var dash: String {
+        switch self {
+        case .longSpacing:
+            return "--"
+        case .shortSpacing:
+            return "-"
+        }
+    }
+    
+}
+
 //-- General-purpose renderer.
 //render :: Padding -> Spacing -> BS.ByteString -> T.Text
 //render padding spacing bs =
@@ -217,7 +246,44 @@ public struct PatQ {
 //      in  case padding of
 //            NoPadding -> len == 0
 //            Padding   -> (odd len && len > 2) || len == 0
-//
+
+public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String {
+    return "~" + padding.pad(bytes: bytes).reversed().enumerated().reduce("") { result, element in
+        let (index, byte) = element
+        let syllable: String = {
+            switch index.parity {
+            case .even:
+                return suffix(byte)
+            case .odd:
+                return prefix(byte)
+            }
+        }()
+        
+        let glue: String = {
+            if index % 8 == 0 {
+                return index == 0 ? "" : spacing.dash
+            } else if index.isEven {
+                return "-"
+            } else {
+                return ""
+            }
+        }()
+        
+        return syllable + glue + result
+    }
+    
+    
+//    let syllables = bytes.reversed().enumerated().map { index, byte in
+//        switch index.parity {
+//        case .even:
+//            return suffix(byte)
+//        case .odd:
+//            return prefix(byte)
+//        }
+//    }
+    
+}
+
 //-- General-purpose (non-strict) parser.
 //parse :: T.Text -> Either T.Text BS.ByteString
 //parse p =
@@ -236,9 +302,10 @@ public struct PatQ {
 public func parse(_ string: String) throws -> [UInt8] {
     let syllables = string.trimmingCharacters(in: CharacterSet.lowercaseLetters.inverted).chunked(by: 3)
     return try syllables.reversed().enumerated().map { index, syllable in
-        if index.isMultiple(of: 2) {
+        switch index.parity {
+        case .even:
             return try fromSuffix(syllable)
-        } else {
+        case .odd:
             return try fromPrefix(syllable)
         }
     }
@@ -261,16 +328,16 @@ internal let prefixes: [String] = ["doz", "mar", "bin", "wan", "sam", "lit", "si
                                   "nim", "lar", "fit", "wal", "rap", "sar", "nal", "mos", "lan", "don", "dan", "lad", "dov", "riv", "bac", "pol",
                                   "lap", "tal", "pit", "nam", "bon", "ros", "ton", "fod", "pon", "sov", "noc", "sor", "lav", "mat", "mip", "fip"]
 
-internal func prefix(_ index: UInt8) -> String {
-    return prefixes[Int(index)]
+internal func prefix(_ byte: UInt8) -> String {
+    return prefixes[Int(byte)]
 }
 
 internal func fromPrefix(_ syllable: String) throws -> UInt8 {
-    guard let index = prefixes.firstIndex(of: syllable) else {
+    guard let byte = prefixes.firstIndex(of: syllable) else {
         throw CoError.invalidPrefix(syllable)
     }
     
-    return UInt8(index)
+    return UInt8(byte)
 }
 
 internal let suffixes: [String] = ["zod", "nec", "bud", "wes", "sev", "per", "sut", "let", "ful", "pen", "syt", "dur", "wep", "ser", "wyl", "sun",
@@ -290,14 +357,14 @@ internal let suffixes: [String] = ["zod", "nec", "bud", "wes", "sev", "per", "su
                                   "rem", "lys", "fyn", "wer", "ryc", "sug", "nys", "nyl", "lyn", "dyn", "dem", "lux", "fed", "sed", "bec", "mun",
                                   "lyr", "tes", "mud", "nyt", "byr", "sen", "weg", "fyr", "mur", "tel", "rep", "teg", "pec", "nel", "nev", "fes"]
 
-internal func suffix(_ index: UInt8) -> String {
-    return suffixes[Int(index)]
+internal func suffix(_ byte: UInt8) -> String {
+    return suffixes[Int(byte)]
 }
 
 internal func fromSuffix(_ syllable: String) throws -> UInt8 {
-    guard let index = suffixes.firstIndex(of: syllable) else {
+    guard let byte = suffixes.firstIndex(of: syllable) else {
         throw CoError.invalidSuffix(syllable)
     }
     
-    return UInt8(index)
+    return UInt8(byte)
 }

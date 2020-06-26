@@ -10,7 +10,7 @@ import Foundation
 extension String {
     
     internal func chunked(by size: Int) -> [String] {
-        return Array(self).chunked(by: size).map { String{$0} }
+        return Array(self).chunked(by: size).map { String($0) }
     }
     
 }

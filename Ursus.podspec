@@ -22,5 +22,6 @@ Pod::Spec.new do |s|
   s.subspec 'Utilities' do |ss|
     ss.source_files = 'Ursus Utilities/**/*.swift'
     ss.dependency 'BigInt', '~> 5.0'
+    ss.dependency 'Parity', '~> 2.0'
   end
 end
