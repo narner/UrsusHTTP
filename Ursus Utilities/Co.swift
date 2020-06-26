@@ -16,40 +16,6 @@ public enum CoError: Error {
     
 }
 
-//-- | Convert a 'Natural' to \@p.
-//--
-//--   >>> patp 0
-//--   ~zod
-//--   >>> patp 256
-//--   ~marzod
-//--   >>> patp 65536
-//--   ~dapnep-ronmyl
-//--   >>> patp 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-//--   ~fipfes-fipfes-fipfes-fipfes--fipfes-fipfes-fipfes-fipfes
-//--
-//patp :: Natural -> Patp
-//patp = Patp . BS.reverse . C.unroll . Ob.fein
-
-//-- | Convert a \@p value to its corresponding 'Natural'.
-//--
-//--   >>> let zod = patp 0
-//--   >>> fromPatp zod
-//--   0
-//--
-//fromPatp :: Patp -> Natural
-//fromPatp = Ob.fynd . C.roll . BS.reverse . unPatp
-
-//-- | Render a \@p value as 'T.Text'.
-//--
-//--   >>> renderPatp (patp 0)
-//--   "~zod"
-//--   >>> renderPatp (patp 15663360)
-//--   "~nidsut-tomdun"
-//renderPatp :: Patp -> T.Text
-//renderPatp (Patp bs) = render Padding LongSpacing bs
-
-#warning("Finish obfuscation")
-
 public struct PatP: CustomStringConvertible {
     
     internal var value: BigUInt
@@ -64,11 +30,11 @@ public struct PatP: CustomStringConvertible {
     
     public init(string: String) throws {
         let bytes = try parse(string)
-        self.init(BigUInt(Data(bytes)))
+        self.init(fein(BigUInt(Data(bytes))))
     }
     
     public var description: String {
-        let bytes: [UInt8] = Array(value.serialize())
+        let bytes: [UInt8] = Array(fynd(value).serialize())
         return render(bytes: bytes, padding: .padding, spacing: .longSpacing)
     }
     
