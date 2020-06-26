@@ -301,12 +301,13 @@ public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String
 
 public func parse(_ string: String) throws -> [UInt8] {
     let syllables = string.trimmingCharacters(in: CharacterSet.lowercaseLetters.inverted).chunked(by: 3)
-    return try syllables.reversed().enumerated().map { index, syllable in
+    return try syllables.reversed().enumerated().reduce([]) { result, element in
+        let (index, syllable) = element
         switch index.parity {
         case .even:
-            return try fromSuffix(syllable)
+            return [try fromSuffix(syllable)] + result
         case .odd:
-            return try fromPrefix(syllable)
+            return [try fromPrefix(syllable)] + result
         }
     }
 }
