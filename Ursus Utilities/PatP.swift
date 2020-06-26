@@ -27,6 +27,35 @@ public struct PatP {
     
 }
 
+extension PatP {
+    
+    public enum Title {
+        
+        case galaxy
+        case star
+        case planet
+        case moon
+        case comet
+        
+    }
+    
+    var title: Title {
+        switch bitWidth {
+        case 0...8:
+            return .galaxy
+        case 9...16:
+            return .star
+        case 17...32:
+            return .planet
+        case 33...64:
+            return .moon
+        default:
+            return .comet
+        }
+    }
+    
+}
+
 extension PatP: CustomStringConvertible {
     
     public var description: String {
