@@ -8,6 +8,30 @@
 import Foundation
 import BigInt
 
+public enum CoError: Error {
+    
+    case invalidPrefix(String)
+    case invalidSuffix(String)
+    
+}
+
+//module Urbit.Ob.Co (
+//  Patp(..)
+//, Patq(..)
+//
+//, patp
+//, patq
+//
+//, fromPatp
+//, fromPatq
+//
+//, renderPatp
+//, renderPatq
+//
+//, parsePatp
+//, parsePatq
+//) where
+
 //-- | Hoon's \@p encoding.
 //--
 //--   This encoding is an /obfuscated/ representation of some underlying number,
@@ -210,7 +234,7 @@ public struct PatQ {
 //      $ p
 
 
-private let prefixes: [String] = ["doz", "mar", "bin", "wan", "sam", "lit", "sig", "hid", "fid", "lis", "sog", "dir", "wac", "sab", "wis", "sib",
+internal let prefixes: [String] = ["doz", "mar", "bin", "wan", "sam", "lit", "sig", "hid", "fid", "lis", "sog", "dir", "wac", "sab", "wis", "sib",
                                   "rig", "sol", "dop", "mod", "fog", "lid", "hop", "dar", "dor", "lor", "hod", "fol", "rin", "tog", "sil", "mir",
                                   "hol", "pas", "lac", "rov", "liv", "dal", "sat", "lib", "tab", "han", "tic", "pid", "tor", "bol", "fos", "dot",
                                   "los", "dil", "for", "pil", "ram", "tir", "win", "tad", "bic", "dif", "roc", "wid", "bis", "das", "mid", "lop",
@@ -227,17 +251,20 @@ private let prefixes: [String] = ["doz", "mar", "bin", "wan", "sam", "lit", "sig
                                   "nim", "lar", "fit", "wal", "rap", "sar", "nal", "mos", "lan", "don", "dan", "lad", "dov", "riv", "bac", "pol",
                                   "lap", "tal", "pit", "nam", "bon", "ros", "ton", "fod", "pon", "sov", "noc", "sor", "lav", "mat", "mip", "fip"]
 
-//prefix :: Integral a => a -> T.Text
-//prefix = V.unsafeIndex prefixes . fromIntegral
-//
-//fromPrefix :: T.Text -> Either T.Text Word8
-//fromPrefix syl = case V.findIndex (== syl) prefixes of
-//    Nothing -> Left msg
-//    Just x  -> Right (fromIntegral x :: Word8)
-//  where
-//    msg = "urbit-hob (fromPrefix): invalid prefix \"" <> syl <> "\""
+internal func prefix(_ index: UInt8) -> String {
+    return prefixes[Int(index)]
+}
 
-private let suffixes: [String] = ["zod", "nec", "bud", "wes", "sev", "per", "sut", "let", "ful", "pen", "syt", "dur", "wep", "ser", "wyl", "sun",
+internal func fromPrefix(_ prefix: String) throws -> UInt8 {
+    guard let index = prefixes.firstIndex(of: prefix) else {
+        throw CoError.invalidPrefix(prefix)
+    }
+    
+    return UInt8(index)
+}
+
+
+internal let suffixes: [String] = ["zod", "nec", "bud", "wes", "sev", "per", "sut", "let", "ful", "pen", "syt", "dur", "wep", "ser", "wyl", "sun",
                                   "ryp", "syx", "dyr", "nup", "heb", "peg", "lup", "dep", "dys", "put", "lug", "hec", "ryt", "tyv", "syd", "nex",
                                   "lun", "mep", "lut", "sep", "pes", "del", "sul", "ped", "tem", "led", "tul", "met", "wen", "byn", "hex", "feb",
                                   "pyl", "dul", "het", "mev", "rut", "tyl", "wyd", "tep", "bes", "dex", "sef", "wyc", "bur", "der", "nep", "pur",
@@ -254,12 +281,14 @@ private let suffixes: [String] = ["zod", "nec", "bud", "wes", "sev", "per", "sut
                                   "rem", "lys", "fyn", "wer", "ryc", "sug", "nys", "nyl", "lyn", "dyn", "dem", "lux", "fed", "sed", "bec", "mun",
                                   "lyr", "tes", "mud", "nyt", "byr", "sen", "weg", "fyr", "mur", "tel", "rep", "teg", "pec", "nel", "nev", "fes"]
 
-//suffix :: Integral a => a -> T.Text
-//suffix = V.unsafeIndex suffixes . fromIntegral
-//
-//fromSuffix :: T.Text -> Either T.Text Word8
-//fromSuffix syl = case V.findIndex (== syl) suffixes of
-//    Nothing -> Left msg
-//    Just x  -> Right (fromIntegral x :: Word8)
-//  where
-//    msg = "urbit-hob (fromSuffix): invalid suffix \"" <> syl <> "\""
+internal func suffix(_ index: UInt8) -> String {
+    return suffixes[Int(index)]
+}
+
+internal func fromSuffix(_ suffix: String) throws -> UInt8 {
+    guard let index = suffixes.firstIndex(of: suffix) else {
+        throw CoError.invalidSuffix(suffix)
+    }
+    
+    return UInt8(index)
+}
