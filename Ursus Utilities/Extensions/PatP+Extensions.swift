@@ -18,44 +18,30 @@ extension PatP: ExpressibleByIntegerLiteral {
 
 extension PatP: ExpressibleByStringLiteral {
     
-    #warning("Convert PatP ExpressibleByStringLiteral implementation to use the phonetic base")
-    
-    public init(unicodeScalarLiteral value: UnicodeScalar) {
-        self.init(BigInt(unicodeScalarLiteral: value))
+    public init(unicodeScalarLiteral value: String.ExtendedGraphemeClusterLiteralType) {
+        try! self.init(string: String(unicodeScalarLiteral: value))
     }
     
     public init(extendedGraphemeClusterLiteral value: String) {
-        self.init(BigInt(extendedGraphemeClusterLiteral: value))
+        try! self.init(string: String(extendedGraphemeClusterLiteral: value))
     }
 
     public init(stringLiteral value: StringLiteralType) {
-        self.init(BigInt(stringLiteral: value))
-    }
-    
-}
-
-extension PatP: CustomStringConvertible {
-    
-    #warning("Convert PatP CustomStringConvertible functions to use the phonetic base")
-    
-    public var description: String {
-        return value.description
+        try! self.init(string: String(stringLiteral: value))
     }
     
 }
 
 extension PatP: Codable {
     
-    #warning("Convert PatP Codable functions to use the phonetic base")
-    
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
-        self.init(try container.decode(BigUInt.self))
+        try self.init(string: try container.decode(String.self))
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.unkeyedContainer()
-        try container.encode(value)
+        try container.encode(description)
     }
     
 }

@@ -11,12 +11,16 @@ import BigInt
 extension UUID {
     
     public var base32String: String {
-        return BigUInt(words: [upperBits, lowerBits]).base32String
+        return BigUInt(words: words).base32String
     }
     
 }
 
 extension UUID {
+    
+    internal var words: [UInt] {
+        return [upperBits, lowerBits]
+    }
     
     internal var upperBits: UInt {
         let upperBytes = [uuid.0, uuid.1, uuid.2, uuid.3, uuid.4, uuid.5, uuid.6, uuid.7]

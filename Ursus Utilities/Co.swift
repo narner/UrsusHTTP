@@ -64,6 +64,24 @@ public struct PatP {
     
 }
 
+//-- | Parse a \@p value existing as 'T.Text'.
+//--
+//--   >>> parsePatp "~nidsut-tomdun"
+//--   Right ~nidsut-tomdun
+//--   > parsePatp "~fipfes-fipfes-fipfes-doznec"
+//--   Right ~fipfes-fipfes-fipfes-doznec
+//--
+//parsePatp :: T.Text -> Either T.Text Patp
+//parsePatp = fmap Patp . parse
+
+extension PatP {
+    
+    public init(string: String) throws {
+        fatalError()
+    }
+    
+}
+
 //-- | Hoon's \@q encoding.
 //--
 //--   Unlike \@p, the \@q encoding is a /non-obfuscated/ representation of an
@@ -93,6 +111,24 @@ public struct PatQ {
     
 }
 
+//-- | Parse a \@q value existing as 'T.Text'.
+//--
+//--   >>> parsePatq "~nec-dozzod"
+//--   Right ~nec-dozzod
+//--   > parsePatq "~fipfes-fipfes-fipfes-doznec"
+//--   Right ~fipfes-fipfes-fipfes-doznec
+//--
+//parsePatq :: T.Text -> Either T.Text Patq
+//parsePatq = fmap Patq . parse
+
+extension PatQ {
+    
+    public init(string: String) throws {
+        fatalError()
+    }
+    
+}
+
 //-- | Convert a 'Natural' to \@p.
 //--
 //--   >>> patp 0
@@ -106,7 +142,11 @@ public struct PatQ {
 //--
 //patp :: Natural -> Patp
 //patp = Patp . BS.reverse . C.unroll . Ob.fein
-//
+
+func patP(_ value: BigUInt) -> PatP {
+    fatalError()
+}
+
 //-- | Convert a 'Natural' to \@q.
 //--
 //--   >>> patq 0
@@ -120,7 +160,11 @@ public struct PatQ {
 //--
 //patq :: Natural -> Patq
 //patq = Patq . BS.reverse . C.unroll
-//
+
+func patQ(_ value: BigUInt) -> PatQ {
+    fatalError()
+}
+
 //-- | Convert a \@p value to its corresponding 'Natural'.
 //--
 //--   >>> let zod = patp 0
@@ -129,7 +173,11 @@ public struct PatQ {
 //--
 //fromPatp :: Patp -> Natural
 //fromPatp = Ob.fynd . C.roll . BS.reverse . unPatp
-//
+
+func fromPatP(_ patP: PatP) -> BigUInt {
+    fatalError()
+}
+
 //-- | Convert a \@q value to its corresponding 'Natural'.
 //--
 //--   >>> let zod = patq 0
@@ -138,7 +186,11 @@ public struct PatQ {
 //--
 //fromPatq :: Patq -> Natural
 //fromPatq = C.roll . BS.reverse . unPatq
-//
+
+func fromPatQ(_ patQ: PatQ) -> BigUInt {
+    fatalError()
+}
+
 //-- | Render a \@p value as 'T.Text'.
 //--
 //--   >>> renderPatp (patp 0)
@@ -147,7 +199,15 @@ public struct PatQ {
 //--   "~nidsut-tomdun"
 //renderPatp :: Patp -> T.Text
 //renderPatp (Patp bs) = render Padding LongSpacing bs
-//
+
+extension PatP: CustomStringConvertible {
+    
+    public var description: String {
+        fatalError()
+    }
+    
+}
+
 //-- | Render a \@p value as 'T.Text'.
 //--
 //--   >>> renderPatq (patq 0)
@@ -156,26 +216,14 @@ public struct PatQ {
 //--   "~mun-marzod"
 //renderPatq :: Patq -> T.Text
 //renderPatq (Patq bs) = render NoPadding ShortSpacing bs
-//
-//-- | Parse a \@p value existing as 'T.Text'.
-//--
-//--   >>> parsePatp "~nidsut-tomdun"
-//--   Right ~nidsut-tomdun
-//--   > parsePatp "~fipfes-fipfes-fipfes-doznec"
-//--   Right ~fipfes-fipfes-fipfes-doznec
-//--
-//parsePatp :: T.Text -> Either T.Text Patp
-//parsePatp = fmap Patp . parse
-//
-//-- | Parse a \@q value existing as 'T.Text'.
-//--
-//--   >>> parsePatq "~nec-dozzod"
-//--   Right ~nec-dozzod
-//--   > parsePatq "~fipfes-fipfes-fipfes-doznec"
-//--   Right ~fipfes-fipfes-fipfes-doznec
-//--
-//parsePatq :: T.Text -> Either T.Text Patq
-//parsePatq = fmap Patq . parse
+
+extension PatQ: CustomStringConvertible {
+    
+    public var description: String {
+        fatalError()
+    }
+    
+}
 
 public enum Padding {
     
