@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import BigInt
 
 //-- | Conceal structure v3.
 //fein :: (Integral a, Bits a) => a -> a
@@ -19,7 +20,11 @@ import Foundation
 //        else if   pyn >= 0x100000000 && pyn <= 0xFFFFFFFFFFFFFFFF
 //             then hi .|. loop lo
 //             else pyn
-//
+
+internal func fein(_ value: BigUInt) -> BigUInt {
+    return value
+}
+
 //-- | Restore structure v3.
 //fynd :: (Integral a, Bits a) => a -> a
 //fynd = loop where
@@ -32,7 +37,11 @@ import Foundation
 //        else if   cry >= 0x100000000 && cry <= 0xFFFFFFFFFFFFFFFF
 //             then hi .|. loop lo
 //             else cry
-//
+
+internal func fynd(_ value: BigUInt) -> BigUInt {
+    return value
+}
+
 //-- | Generalised Feistel cipher.
 //--
 //--   See: Black and Rogaway (2002), "Ciphers with arbitrary finite domains."
