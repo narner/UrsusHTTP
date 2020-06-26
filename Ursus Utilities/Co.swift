@@ -138,36 +138,6 @@ public enum Spacing {
     
 }
 
-//-- General-purpose renderer.
-//render :: Padding -> Spacing -> BS.ByteString -> T.Text
-//render padding spacing bs =
-//      T.cons '~'
-//    . snd
-//    . BS.foldr alg (0 :: Int, mempty)
-//    $ padded
-//  where
-//    alg val (idx, acc) =
-//      let syl = if even idx then suffix val else prefix val
-//          glue
-//            | idx `mod` 8 == 0 = if idx == 0 then mempty else dash
-//            | even idx         = "-"
-//            | otherwise        = mempty
-//      in  (succ idx, syl <> glue <> acc)
-//
-//    padded
-//      | padCondition = BS.cons 0 bs
-//      | otherwise    = bs
-//
-//    dash = case spacing of
-//      LongSpacing  -> "--"
-//      ShortSpacing -> "-"
-//
-//    padCondition =
-//      let len = BS.length bs
-//      in  case padding of
-//            NoPadding -> len == 0
-//            Padding   -> (odd len && len > 2) || len == 0
-
 public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String {
     return "~" + padding.pad(bytes: bytes).reversed().enumerated().reduce("") { result, element in
         let (index, byte) = element
@@ -193,32 +163,11 @@ public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String
         return syllable + glue + result
     }
     
-    
-//    let syllables = bytes.reversed().enumerated().map { index, byte in
-//        switch index.parity {
-//        case .even:
-//            return suffix(byte)
-//        case .odd:
-//            return prefix(byte)
-//        }
-//    }
-    
 }
 
-//-- General-purpose (non-strict) parser.
-//parse :: T.Text -> Either T.Text BS.ByteString
-//parse p =
-//      fmap snd
-//    $ foldrM alg (0 :: Int, mempty) syls
-//  where
-//    alg syl (idx, acc) = do
-//      word <- if even idx then fromSuffix syl else fromPrefix syl
-//      return (succ idx, BS.cons word acc)
-//
-//    syls =
-//        T.chunksOf 3
-//      . T.filter isAsciiLower
-//      $ p
+#warning("Stricter validation")
+
+let regex = try! NSRegularExpression(pattern: "^(~*([a-z]{1,3})-{0,2})*$")
 
 public func parse(_ string: String) throws -> [UInt8] {
     let syllables = string.filter({ $0 != "~" && $0 != "-" }).lowercased().chunked(by: 3)
