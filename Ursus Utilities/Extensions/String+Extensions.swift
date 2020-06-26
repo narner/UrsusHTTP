@@ -15,7 +15,6 @@ extension String {
     
 }
 
-
 extension Collection where Index == Int {
     
     internal func chunked(by size: Index.Stride) -> [SubSequence] {

@@ -11,6 +11,7 @@ import Parity
 
 public enum CoError: Error {
     
+    case invalidString(String)
     case invalidPrefix(String)
     case invalidSuffix(String)
     
@@ -165,12 +166,13 @@ public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String
     
 }
 
-#warning("Stricter validation")
-
-let regex = try! NSRegularExpression(pattern: "^(~*([a-z]{1,3})-{0,2})*$")
-
 public func parse(_ string: String) throws -> [UInt8] {
     let syllables = string.filter({ $0 != "~" && $0 != "-" }).chunked(by: 3)
+    
+    guard syllables.isEmpty == false else {
+        throw CoError.invalidString(string)
+    }
+    
     return try syllables.reversed().enumerated().reduce([]) { result, element in
         let (index, syllable) = element
         switch index.parity {
