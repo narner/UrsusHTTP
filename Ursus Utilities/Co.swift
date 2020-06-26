@@ -6,65 +6,16 @@
 //
 
 import Foundation
-import BigInt
 import Parity
 
-public enum CoError: Error {
+public enum ParseError: Error {
     
     case invalidPrefix(String)
     case invalidSuffix(String)
     
 }
 
-public struct PatP: CustomStringConvertible {
-    
-    internal var value: BigUInt
-
-    internal init(_ value: BigUInt) {
-        self.value = value
-    }
-
-    public init() {
-        self.value = .zero
-    }
-    
-    public init(string: String) throws {
-        let bytes = try parse(string)
-        self.init(fein(BigUInt(Data(bytes))))
-    }
-    
-    public var description: String {
-        let bytes: [UInt8] = Array(fynd(value).serialize())
-        return render(bytes: bytes, padding: .padding, spacing: .longSpacing)
-    }
-    
-}
-
-public struct PatQ: CustomStringConvertible {
-    
-    internal var value: BigUInt
-
-    internal init(_ value: BigUInt) {
-        self.value = value
-    }
-
-    public init() {
-        self.value = .zero
-    }
-    
-    public init(string: String) throws {
-        let bytes = try parse(string)
-        self.init(BigUInt(Data(bytes)))
-    }
-    
-    public var description: String {
-        let bytes: [UInt8] = Array(value.serialize())
-        return render(bytes: bytes, padding: .noPadding, spacing: .shortSpacing)
-    }
-    
-}
-
-public enum Padding {
+internal enum Padding {
     
     case padding
     case noPadding
@@ -88,7 +39,7 @@ public enum Padding {
     
 }
 
-public enum Spacing {
+internal enum Spacing {
     
     case longSpacing
     case shortSpacing
@@ -104,7 +55,7 @@ public enum Spacing {
     
 }
 
-public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String {
+internal func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String {
     return "~" + padding.pad(bytes: bytes).reversed().enumerated().reduce("") { result, element in
         let (index, byte) = element
         let syllable: String = {
@@ -131,7 +82,7 @@ public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String
     
 }
 
-public func parse(_ string: String) throws -> [UInt8] {
+internal func parse(_ string: String) throws -> [UInt8] {
     let syllables = string.filter({ $0 != "~" && $0 != "-" }).chunked(by: 3)
     return try syllables.reversed().enumerated().reduce([]) { result, element in
         let (index, syllable) = element
@@ -167,7 +118,7 @@ internal func prefix(_ byte: UInt8) -> String {
 
 internal func fromPrefix(_ syllable: String) throws -> UInt8 {
     guard let byte = prefixes.firstIndex(of: syllable) else {
-        throw CoError.invalidPrefix(syllable)
+        throw ParseError.invalidPrefix(syllable)
     }
     
     return UInt8(byte)
@@ -196,7 +147,7 @@ internal func suffix(_ byte: UInt8) -> String {
 
 internal func fromSuffix(_ syllable: String) throws -> UInt8 {
     guard let byte = suffixes.firstIndex(of: syllable) else {
-        throw CoError.invalidSuffix(syllable)
+        throw ParseError.invalidSuffix(syllable)
     }
     
     return UInt8(byte)

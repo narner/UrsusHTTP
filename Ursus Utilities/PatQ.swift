@@ -1,12 +1,40 @@
 //
-//  PatQ+Extensions.swift
+//  PatQ.swift
 //  Alamofire
 //
-//  Created by Daniel Clelland on 26/06/20.
+//  Created by Daniel Clelland on 27/06/20.
 //
 
 import Foundation
 import BigInt
+
+public struct PatQ {
+    
+    internal var value: BigUInt
+
+    internal init(_ value: BigUInt) {
+        self.value = value
+    }
+
+    public init() {
+        self.value = .zero
+    }
+    
+    public init(string: String) throws {
+        let bytes = try parse(string)
+        self.init(BigUInt(Data(bytes)))
+    }
+    
+}
+
+extension PatQ: CustomStringConvertible {
+    
+    public var description: String {
+        let bytes: [UInt8] = Array(value.serialize())
+        return render(bytes: bytes, padding: .noPadding, spacing: .shortSpacing)
+    }
+    
+}
 
 extension PatQ: ExpressibleByIntegerLiteral {
     

@@ -1,12 +1,40 @@
 //
-//  PatP+Extensions.swift
+//  PatP.swift
 //  Alamofire
 //
-//  Created by Daniel Clelland on 26/06/20.
+//  Created by Daniel Clelland on 27/06/20.
 //
 
 import Foundation
 import BigInt
+
+public struct PatP {
+    
+    internal var value: BigUInt
+
+    internal init(_ value: BigUInt) {
+        self.value = value
+    }
+
+    public init() {
+        self.value = .zero
+    }
+    
+    public init(string: String) throws {
+        let bytes = try parse(string)
+        self.init(fein(BigUInt(Data(bytes))))
+    }
+    
+}
+
+extension PatP: CustomStringConvertible {
+    
+    public var description: String {
+        let bytes: [UInt8] = Array(fynd(value).serialize())
+        return render(bytes: bytes, padding: .padding, spacing: .longSpacing)
+    }
+    
+}
 
 extension PatP: ExpressibleByIntegerLiteral {
     
