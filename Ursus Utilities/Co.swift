@@ -16,119 +16,6 @@ public enum CoError: Error {
     
 }
 
-//module Urbit.Ob.Co (
-//  Patp(..)
-//, Patq(..)
-//
-//, patp
-//, patq
-//
-//, fromPatp
-//, fromPatq
-//
-//, renderPatp
-//, renderPatq
-//
-//, parsePatp
-//, parsePatq
-//) where
-
-//-- | Hoon's \@p encoding.
-//--
-//--   This encoding is an /obfuscated/ representation of some underlying number,
-//--   but a pronounceable, memorable, and unique one.
-//--
-//--   The representation exists for any natural number, but it's typically used
-//--   only for naming Azimuth points, and thus normal 32-bit Urbit ships.
-//--
-//--   (It's also used for naming comets, i.e. self-signed 128-bit Urbit ships.)
-//--
-//newtype Patp = Patp {
-//    unPatp :: BS.ByteString
-//  } deriving (Eq, Ord, Generic)
-//
-//instance Show Patp where
-//  show = T.unpack . renderPatp
-
-public struct PatP {
-    
-    internal var value: BigUInt
-
-    public init() {
-        self.value = .zero
-    }
-
-    public init(_ value: BigUInt) {
-        self.value = value
-    }
-    
-}
-
-//-- | Parse a \@p value existing as 'T.Text'.
-//--
-//--   >>> parsePatp "~nidsut-tomdun"
-//--   Right ~nidsut-tomdun
-//--   > parsePatp "~fipfes-fipfes-fipfes-doznec"
-//--   Right ~fipfes-fipfes-fipfes-doznec
-//--
-//parsePatp :: T.Text -> Either T.Text Patp
-//parsePatp = fmap Patp . parse
-
-extension PatP {
-    
-    public init(string: String) throws {
-        fatalError()
-    }
-    
-}
-
-//-- | Hoon's \@q encoding.
-//--
-//--   Unlike \@p, the \@q encoding is a /non-obfuscated/ representation of an
-//--   atom.
-//--
-//--   It's typically used for serializing arbitrary data in a memorable and
-//--   pronounceable fashion.
-//--
-//newtype Patq = Patq {
-//    unPatq :: BS.ByteString
-//  } deriving (Eq, Ord, Generic)
-//
-//instance Show Patq where
-//  show = T.unpack . renderPatq
-
-public struct PatQ {
-    
-    internal var value: BigUInt
-
-    public init() {
-        self.value = .zero
-    }
-
-    public init(_ value: BigUInt) {
-        self.value = value
-    }
-    
-}
-
-//-- | Parse a \@q value existing as 'T.Text'.
-//--
-//--   >>> parsePatq "~nec-dozzod"
-//--   Right ~nec-dozzod
-//--   > parsePatq "~fipfes-fipfes-fipfes-doznec"
-//--   Right ~fipfes-fipfes-fipfes-doznec
-//--
-//parsePatq :: T.Text -> Either T.Text Patq
-//parsePatq = fmap Patq . parse
-
-extension PatQ {
-    
-    public init(string: String) throws {
-        fatalError()
-    }
-    
-}
-
 //-- | Convert a 'Natural' to \@p.
 //--
 //--   >>> patp 0
@@ -143,28 +30,6 @@ extension PatQ {
 //patp :: Natural -> Patp
 //patp = Patp . BS.reverse . C.unroll . Ob.fein
 
-func patP(_ value: BigUInt) -> PatP {
-    fatalError()
-}
-
-//-- | Convert a 'Natural' to \@q.
-//--
-//--   >>> patq 0
-//--   ~zod
-//--   >>> patp 256
-//--   ~marzod
-//--   >>> patp 65536
-//--   ~nec-dozzod
-//--   >>> patp 0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-//--   ~fipfes-fipfes-fipfes-fipfes-fipfes-fipfes-fipfes-fipfes
-//--
-//patq :: Natural -> Patq
-//patq = Patq . BS.reverse . C.unroll
-
-func patQ(_ value: BigUInt) -> PatQ {
-    fatalError()
-}
-
 //-- | Convert a \@p value to its corresponding 'Natural'.
 //--
 //--   >>> let zod = patp 0
@@ -173,23 +38,6 @@ func patQ(_ value: BigUInt) -> PatQ {
 //--
 //fromPatp :: Patp -> Natural
 //fromPatp = Ob.fynd . C.roll . BS.reverse . unPatp
-
-func fromPatP(_ patP: PatP) -> BigUInt {
-    fatalError()
-}
-
-//-- | Convert a \@q value to its corresponding 'Natural'.
-//--
-//--   >>> let zod = patq 0
-//--   >>> fromPatq zod
-//--   0
-//--
-//fromPatq :: Patq -> Natural
-//fromPatq = C.roll . BS.reverse . unPatq
-
-func fromPatQ(_ patQ: PatQ) -> BigUInt {
-    fatalError()
-}
 
 //-- | Render a \@p value as 'T.Text'.
 //--
@@ -200,27 +48,52 @@ func fromPatQ(_ patQ: PatQ) -> BigUInt {
 //renderPatp :: Patp -> T.Text
 //renderPatp (Patp bs) = render Padding LongSpacing bs
 
-extension PatP: CustomStringConvertible {
+#warning("Finish obfuscation")
+
+public struct PatP: CustomStringConvertible {
+    
+    internal var value: BigUInt
+
+    internal init(_ value: BigUInt) {
+        self.value = value
+    }
+
+    public init() {
+        self.value = .zero
+    }
+    
+    public init(string: String) throws {
+        let bytes = try parse(string)
+        self.init(BigUInt(Data(bytes)))
+    }
     
     public var description: String {
-        fatalError()
+        let bytes: [UInt8] = Array(value.serialize())
+        return render(bytes: bytes, padding: .padding, spacing: .longSpacing)
     }
     
 }
 
-//-- | Render a \@p value as 'T.Text'.
-//--
-//--   >>> renderPatq (patq 0)
-//--   "~zod"
-//--   >>> renderPatq (patq 15663360)
-//--   "~mun-marzod"
-//renderPatq :: Patq -> T.Text
-//renderPatq (Patq bs) = render NoPadding ShortSpacing bs
+public struct PatQ: CustomStringConvertible {
+    
+    internal var value: BigUInt
 
-extension PatQ: CustomStringConvertible {
+    internal init(_ value: BigUInt) {
+        self.value = value
+    }
+
+    public init() {
+        self.value = .zero
+    }
+    
+    public init(string: String) throws {
+        let bytes = try parse(string)
+        self.init(BigUInt(Data(bytes)))
+    }
     
     public var description: String {
-        fatalError()
+        let bytes: [UInt8] = Array(value.serialize())
+        return render(bytes: bytes, padding: .noPadding, spacing: .shortSpacing)
     }
     
 }
@@ -348,7 +221,7 @@ public func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String
 //      $ p
 
 public func parse(_ string: String) throws -> [UInt8] {
-    let syllables = string.trimmingCharacters(in: CharacterSet.lowercaseLetters.inverted).chunked(by: 3)
+    let syllables = string.filter({ $0 != "~" && $0 != "-" }).lowercased().chunked(by: 3)
     return try syllables.reversed().enumerated().reduce([]) { result, element in
         let (index, syllable) = element
         switch index.parity {
