@@ -54,6 +54,20 @@ public struct PatP {
 //instance Show Patq where
 //  show = T.unpack . renderPatq
 
+public struct PatQ {
+    
+    internal var value: BigUInt
+
+    public init() {
+        self.value = .zero
+    }
+
+    public init(_ value: BigUInt) {
+        self.value = value
+    }
+    
+}
+
 //-- | Convert a 'Natural' to \@p.
 //--
 //--   >>> patp 0
