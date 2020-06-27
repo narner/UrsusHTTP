@@ -20,16 +20,6 @@ public struct PatP: WrappedUnsignedInteger {
 
 extension PatP {
     
-    public init(string: String) throws {
-        let bytes = try PhoneticBaseParser.parse(string)
-        let obfuscatedValue = PhoneticBaseObfuscator.obfuscate(BigUInt(Data(bytes)))
-        self.init(obfuscatedValue)
-    }
-    
-}
-
-extension PatP {
-    
     public enum Title {
         
         case galaxy
@@ -53,6 +43,16 @@ extension PatP {
         default:
             return .comet
         }
+    }
+    
+}
+
+extension PatP {
+    
+    public init(string: String) throws {
+        let bytes = try PhoneticBaseParser.parse(string)
+        let obfuscatedValue = PhoneticBaseObfuscator.obfuscate(BigUInt(Data(bytes)))
+        self.init(obfuscatedValue)
     }
     
 }
