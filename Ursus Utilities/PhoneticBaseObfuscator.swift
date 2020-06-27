@@ -57,34 +57,19 @@ extension PhoneticBaseObfuscator {
 
 extension PhoneticBaseObfuscator {
     
-    private static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
-        let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
-        return muk(seeds[j], r)
+    private static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
+        let low = key & 0x00FF
+        let high = key & 0xFF00 / 0x0100
+        return MurmurHash3.hashBytesLittleEndian([UInt8(low), UInt8(high)], seed)
     }
     
 }
 
 extension PhoneticBaseObfuscator {
     
-    //-- | A specific murmur3 variant.
-    //muk :: Word32 -> Word32 -> Word32
-    //muk syd key = M.murmur3 syd kee where
-    //  kee = chr lo `B8.cons` chr hi `B8.cons` mempty
-    //  lo  = fromIntegral (key .&. 0xFF)
-    //  hi  = fromIntegral (key .&. 0xFF00 `div` 0x0100)
-    
-    // https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
-    // https://github.com/PeterScott/murmur3/blob/master/murmur3.c
-    // https://github.com/jpedrosa/sua/blob/master/Sources/murmurhash3.swift
-    // https://github.com/albacorelabs/murmurhash3/blob/master/Sources/murmurhash3/murmurhash3.swift
-    // https://github.com/jwerle/murmurhash.c/blob/master/murmurhash.c
-    
-    private static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
-        #warning("Finish `muk(_:_:)`")
-        let lo = key & 0x00FF
-        let hi = key & 0xFF00 / 0x0100
-        let kee = [UInt8(lo), UInt8(hi)]
-        fatalError()
+    private static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
+        let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
+        return muk(seeds[j], r)
     }
     
 }
