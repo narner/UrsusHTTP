@@ -10,39 +10,39 @@ import BigInt
 
 internal struct PhoneticBaseObfuscator {
 
-    //-- | Conceal structure v3.
-    //fein :: (Integral a, Bits a) => a -> a
-    //fein = loop where
-    //  loop !pyn =
-    //    let lo  = pyn .&. 0xFFFFFFFF
-    //        hi  = pyn .&. 0xFFFFFFFF00000000
-    //        p32 = fromIntegral pyn :: Word32
-    //    in  if   pyn >= 0x10000 && pyn <= 0xFFFFFFFF
-    //        then 0x10000 + fromIntegral (feis (p32 - 0x10000))
-    //        else if   pyn >= 0x100000000 && pyn <= 0xFFFFFFFFFFFFFFFF
-    //             then hi .|. loop lo
-    //             else pyn
-
     internal static func obfuscate(_ value: BigUInt) -> BigUInt {
-        return value
+        switch value.bitWidth {
+        case 17...32:
+            let p32 = UInt32(value)
+            return 0x10000 + BigUInt(feistelCipher(p32 - 0x10000))
+        case 33...64:
+            let low = value & 0x00000000FFFFFFFF
+            let high = value & 0xFFFFFFFF00000000
+            return high | obfuscate(low)
+        default:
+            return value
+        }
     }
-
-    //-- | Restore structure v3.
-    //fynd :: (Integral a, Bits a) => a -> a
-    //fynd = loop where
-    //  loop !cry =
-    //    let lo  = cry .&. 0xFFFFFFFF
-    //        hi  = cry .&. 0xFFFFFFFF00000000
-    //        c32 = fromIntegral cry :: Word32
-    //    in  if   cry >= 0x10000 && cry <= 0xFFFFFFFF
-    //        then 0x10000 + fromIntegral (tail (c32 - 0x10000))
-    //        else if   cry >= 0x100000000 && cry <= 0xFFFFFFFFFFFFFFFF
-    //             then hi .|. loop lo
-    //             else cry
 
     internal static func deobfuscate(_ value: BigUInt) -> BigUInt {
+        switch value.bitWidth {
+        case 17...32:
+            let p32 = UInt32(value)
+            return 0x10000 + BigUInt(reverseFeistelCipher(p32 - 0x10000))
+        case 33...64:
+            let low = value & 0x00000000FFFFFFFF
+            let high = value & 0xFFFFFFFF00000000
+            return high | obfuscate(low)
+        default:
+            break
+        }
+        
         return value
     }
+    
+}
+
+extension PhoneticBaseObfuscator {
 
     //-- | Generalised Feistel cipher.
     //--
@@ -52,7 +52,11 @@ internal struct PhoneticBaseObfuscator {
     //--   support some legacy behaviour.
     //feis :: Word32 -> Word32
     //feis = capFe 4 0xFFFF 0x10000 0xFFFFFFFF capF
-    //
+
+    internal static func feistelCipher(_ value: UInt32) -> UInt32 {
+        return value
+    }
+
     //-- | Reverse 'feis'.
     //--
     //--   See: Black and Rogaway (2002), "Ciphers with arbitrary finite domains."
@@ -61,7 +65,11 @@ internal struct PhoneticBaseObfuscator {
     //--   support some legacy behaviour.
     //tail :: Word32 -> Word32
     //tail = capFen 4 0xFFFF 0x10000 0xFFFFFFFF capF
-    //
+    
+    internal static func reverseFeistelCipher(_ value: UInt32) -> UInt32 {
+        return value
+    }
+    
     //-- | A PRF for j in [0, .., 3]
     //capF :: Int -> Word32 -> Word32
     //capF j key = fromIntegral (muk seed key) where
