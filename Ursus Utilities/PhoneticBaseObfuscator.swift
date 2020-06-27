@@ -54,7 +54,7 @@ extension PhoneticBaseObfuscator {
     //feis = capFe 4 0xFFFF 0x10000 0xFFFFFFFF capF
 
     internal static func feistelCipher(_ value: UInt32) -> UInt32 {
-        return value
+        return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
     }
 
     //-- | Reverse 'feis'.
@@ -67,8 +67,12 @@ extension PhoneticBaseObfuscator {
     //tail = capFen 4 0xFFFF 0x10000 0xFFFFFFFF capF
     
     internal static func reverseFeistelCipher(_ value: UInt32) -> UInt32 {
-        return value
+        return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
     }
+    
+}
+
+extension PhoneticBaseObfuscator {
     
     //-- | A PRF for j in [0, .., 3]
     //capF :: Int -> Word32 -> Word32
@@ -80,7 +84,27 @@ extension PhoneticBaseObfuscator {
     //    , 0x85bcae01
     //    , 0x4b387af7
     //    ]
-    //
+    
+    internal static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
+        let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
+        return muk(seed: seeds[j], key: r)
+    }
+    
+    //-- | A specific murmur3 variant.
+    //muk :: Word32 -> Word32 -> Word32
+    //muk syd key = M.murmur3 syd kee where
+    //  kee = chr lo `B8.cons` chr hi `B8.cons` mempty
+    //  lo  = fromIntegral (key .&. 0xFF)
+    //  hi  = fromIntegral (key .&. 0xFF00 `div` 0x0100)
+    
+    internal static func muk(seed: UInt32, key: UInt32) -> UInt32 {
+        fatalError()
+    }
+    
+}
+
+extension PhoneticBaseObfuscator {
+    
     //-- | 'Fe' in B&R (2002).
     //capFe
     //  :: Int
@@ -95,7 +119,12 @@ extension PhoneticBaseObfuscator {
     //    | otherwise = fe r a b f c
     //  where
     //    c = fe r a b f m
-    //
+    
+    internal static func capFe(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+        let c = fe(r, a, b, f, m)
+        return c < k ? c : fe(r, a, b, f, c)
+    }
+    
     //-- | 'fe' in B&R (2002).
     //fe
     //  :: Int
@@ -126,7 +155,15 @@ extension PhoneticBaseObfuscator {
     //                   else (ell `mod` b + eff `mod` b) `mod` b
     //
     //        in  loop (succ j) arr tmp
-    //
+    
+    internal static func fe(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+        fatalError()
+    }
+    
+}
+
+extension PhoneticBaseObfuscator {
+    
     //-- | 'Fen' in B&R (2002).
     //capFen
     //  :: Int
@@ -141,7 +178,12 @@ extension PhoneticBaseObfuscator {
     //    | otherwise = fen r a b f c
     //  where
     //    c = fen r a b f m
-    //
+    
+    internal static func capFen(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+        let c = fen(r, a, b, f, m)
+        return c <= k ? c : fen(r, a, b, f, c)
+    }
+    
     //-- | 'fen' in B&R (2002).
     //fen
     //  :: Int
@@ -186,5 +228,8 @@ extension PhoneticBaseObfuscator {
     //                  else (arr + b - (eff `mod` b)) `mod` b
     //        in  loop (pred j) tmp ell
 
+    internal static func fen(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+        fatalError()
+    }
     
 }
