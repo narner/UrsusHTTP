@@ -43,6 +43,22 @@ internal struct PhoneticBaseObfuscator {
 }
 
 extension PhoneticBaseObfuscator {
+    
+    //-- | A specific murmur3 variant.
+    //muk :: Word32 -> Word32 -> Word32
+    //muk syd key = M.murmur3 syd kee where
+    //  kee = chr lo `B8.cons` chr hi `B8.cons` mempty
+    //  lo  = fromIntegral (key .&. 0xFF)
+    //  hi  = fromIntegral (key .&. 0xFF00 `div` 0x0100)
+    
+    internal static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
+        #warning("Finish `muk(_:_:)`")
+        fatalError()
+    }
+    
+}
+
+extension PhoneticBaseObfuscator {
 
     //-- | Generalised Feistel cipher.
     //--
@@ -87,18 +103,7 @@ extension PhoneticBaseObfuscator {
     
     internal static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
         let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
-        return muk(seed: seeds[j], key: r)
-    }
-    
-    //-- | A specific murmur3 variant.
-    //muk :: Word32 -> Word32 -> Word32
-    //muk syd key = M.murmur3 syd kee where
-    //  kee = chr lo `B8.cons` chr hi `B8.cons` mempty
-    //  lo  = fromIntegral (key .&. 0xFF)
-    //  hi  = fromIntegral (key .&. 0xFF00 `div` 0x0100)
-    
-    internal static func muk(seed: UInt32, key: UInt32) -> UInt32 {
-        fatalError()
+        return muk(seeds[j], r)
     }
     
 }
@@ -157,7 +162,8 @@ extension PhoneticBaseObfuscator {
     //        in  loop (succ j) arr tmp
     
     internal static func fe(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
-        fatalError()
+        #warning("Finish `fe(_:_:_:_:_:)`")
+        return m
     }
     
 }
@@ -229,7 +235,8 @@ extension PhoneticBaseObfuscator {
     //        in  loop (pred j) tmp ell
 
     internal static func fen(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
-        fatalError()
+        #warning("Finish `fen(_:_:_:_:_:)`")
+        return m
     }
     
 }
