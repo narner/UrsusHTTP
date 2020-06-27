@@ -63,12 +63,12 @@ extension PatQ: ExpressibleByStringLiteral {
 extension PatQ: Codable {
     
     public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
+        let container = try decoder.singleValueContainer()
         try self.init(string: try container.decode(String.self))
     }
     
     public func encode(to encoder: Encoder) throws {
-        var container = encoder.unkeyedContainer()
+        var container = encoder.singleValueContainer()
         try container.encode(description)
     }
     

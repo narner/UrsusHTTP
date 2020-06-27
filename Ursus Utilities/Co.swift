@@ -56,7 +56,7 @@ internal enum Spacing {
 }
 
 internal func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String {
-    return "~" + padding.pad(bytes: bytes).reversed().enumerated().reduce("") { result, element in
+    return padding.pad(bytes: bytes).reversed().enumerated().reduce("") { result, element in
         let (index, byte) = element
         let syllable: String = {
             switch index.parity {
