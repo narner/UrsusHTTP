@@ -147,7 +147,10 @@ extension PhoneticBaseObfuscator {
             }
         }
         
-        return loop(1, m % a, m / a)
+        let capL = m % a
+        let capR = m / a
+        
+        return loop(1, capL, capR)
     }
     
 }
@@ -204,16 +207,11 @@ extension PhoneticBaseObfuscator {
     //        in  loop (pred j) tmp ell
 
     private static func fen(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
-        let ahh = r.isOdd ? m / a : m % a
-        let ale = r.isOdd ? m % a : m / a
-        let capL = ale == a ? ahh : ale
-        let capR = ale == a ? ale : ahh
-        
         func loop(_ j: Int, ell: UInt32, arr: UInt32) -> UInt32 {
             if j < 1 {
                 return a * arr + ell
             } else {
-                let eff = f(j - 1, ell)
+                let eff: UInt32 = f(j - 1, ell)
                 let tmp: UInt32 = {
                     switch j.parity {
                     case .odd:
@@ -225,6 +223,11 @@ extension PhoneticBaseObfuscator {
                 return loop(j - 1, ell: tmp, arr: ell)
             }
         }
+        
+        let ahh = r.isOdd ? m / a : m % a
+        let ale = r.isOdd ? m % a : m / a
+        let capL = ale == a ? ahh : ale
+        let capR = ale == a ? ale : ahh
         
         return loop(r, ell: capL, arr: capR)
     }
