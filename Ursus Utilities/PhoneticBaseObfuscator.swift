@@ -44,19 +44,19 @@ internal struct PhoneticBaseObfuscator {
 
 extension PhoneticBaseObfuscator {
 
-    internal static func feistelCipher(_ value: UInt32) -> UInt32 {
-        return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
+    private static func feistelCipher(_ m: UInt32) -> UInt32 {
+        return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, m)
     }
     
-    internal static func reverseFeistelCipher(_ value: UInt32) -> UInt32 {
-        return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
+    private static func reverseFeistelCipher(_ m: UInt32) -> UInt32 {
+        return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, m)
     }
     
 }
 
 extension PhoneticBaseObfuscator {
     
-    internal static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
+    private static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
         let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
         return muk(seeds[j], r)
     }
@@ -78,7 +78,7 @@ extension PhoneticBaseObfuscator {
     // https://github.com/albacorelabs/murmurhash3/blob/master/Sources/murmurhash3/murmurhash3.swift
     // https://github.com/jwerle/murmurhash.c/blob/master/murmurhash.c
     
-    internal static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
+    private static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
         #warning("Finish `muk(_:_:)`")
         fatalError()
     }
@@ -87,7 +87,7 @@ extension PhoneticBaseObfuscator {
 
 extension PhoneticBaseObfuscator {
     
-    internal static func capFe(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+    private static func capFe(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
         let c = fe(r, a, b, f, m)
         return c < k ? c : fe(r, a, b, f, c)
     }
@@ -123,7 +123,7 @@ extension PhoneticBaseObfuscator {
     //
     //        in  loop (succ j) arr tmp
     
-    internal static func fe(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+    private static func fe(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
         #warning("Finish `fe(_:_:_:_:_:)`")
         return m
     }
@@ -132,7 +132,7 @@ extension PhoneticBaseObfuscator {
 
 extension PhoneticBaseObfuscator {
     
-    internal static func capFen(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+    private static func capFen(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
         let c = fen(r, a, b, f, m)
         return c <= k ? c : fen(r, a, b, f, c)
     }
@@ -181,7 +181,7 @@ extension PhoneticBaseObfuscator {
     //                  else (arr + b - (eff `mod` b)) `mod` b
     //        in  loop (pred j) tmp ell
 
-    internal static func fen(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
+    private static func fen(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
         #warning("Finish `fen(_:_:_:_:_:)`")
         return m
     }
