@@ -43,6 +43,27 @@ internal struct PhoneticBaseObfuscator {
 }
 
 extension PhoneticBaseObfuscator {
+
+    internal static func feistelCipher(_ value: UInt32) -> UInt32 {
+        return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
+    }
+    
+    internal static func reverseFeistelCipher(_ value: UInt32) -> UInt32 {
+        return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
+    }
+    
+}
+
+extension PhoneticBaseObfuscator {
+    
+    internal static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
+        let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
+        return muk(seeds[j], r)
+    }
+    
+}
+
+extension PhoneticBaseObfuscator {
     
     //-- | A specific murmur3 variant.
     //muk :: Word32 -> Word32 -> Word32
@@ -60,27 +81,6 @@ extension PhoneticBaseObfuscator {
     internal static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
         #warning("Finish `muk(_:_:)`")
         fatalError()
-    }
-    
-}
-
-extension PhoneticBaseObfuscator {
-
-    internal static func feistelCipher(_ value: UInt32) -> UInt32 {
-        return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
-    }
-    
-    internal static func reverseFeistelCipher(_ value: UInt32) -> UInt32 {
-        return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
-    }
-    
-}
-
-extension PhoneticBaseObfuscator {
-    
-    internal static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
-        let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
-        return muk(seeds[j], r)
     }
     
 }
