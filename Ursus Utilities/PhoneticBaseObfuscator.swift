@@ -125,8 +125,29 @@ extension PhoneticBaseObfuscator {
     //        in  loop (succ j) arr tmp
     
     private static func fe(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
-        #warning("Finish `fe(_:_:_:_:_:)`")
-        return m
+        func loop(_ j: Int, _ ell: UInt32, _ arr: UInt32) -> UInt32 {
+            if j > r {
+                if r.isOdd || r == a {
+                    return a * arr + ell
+                } else {
+                    return a * ell + arr
+                }
+            } else {
+                let eff: UInt32 = f(j - 1, arr)
+                let tmp: UInt32 = {
+                    switch j.parity {
+                    case .odd:
+                        return (ell % a + eff % a) % a
+                    case .even:
+                        return (ell % b + eff % b) % b
+                    }
+                }()
+                
+                return loop(j + 1, arr, tmp)
+            }
+        }
+        
+        return loop(1, m % a, m / a)
     }
     
 }
@@ -183,8 +204,29 @@ extension PhoneticBaseObfuscator {
     //        in  loop (pred j) tmp ell
 
     private static func fen(_ r: Int, _ a: UInt32, _ b: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
-        #warning("Finish `fen(_:_:_:_:_:)`")
-        return m
+        let ahh = r.isOdd ? m / a : m % a
+        let ale = r.isOdd ? m % a : m / a
+        let capL = ale == a ? ahh : ale
+        let capR = ale == a ? ale : ahh
+        
+        func loop(_ j: Int, ell: UInt32, arr: UInt32) -> UInt32 {
+            if j < 1 {
+                return a * arr + ell
+            } else {
+                let eff = f(j - 1, ell)
+                let tmp: UInt32 = {
+                    switch j.parity {
+                    case .odd:
+                        return (arr + a - (eff % a)) % a
+                    case .even:
+                        return (arr + b - (eff % b)) % b
+                    }
+                }()
+                return loop(j - 1, ell: tmp, arr: ell)
+            }
+        }
+        
+        return loop(r, ell: capL, arr: capR)
     }
     
 }
