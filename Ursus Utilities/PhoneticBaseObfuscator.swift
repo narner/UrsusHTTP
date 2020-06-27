@@ -60,7 +60,7 @@ extension PhoneticBaseObfuscator {
     private static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
         let low = key & 0x00FF
         let high = key & 0xFF00 / 0x0100
-        return MurmurHash3.hashBytesLittleEndian([UInt8(low), UInt8(high)], seed)
+        return MurmurHash3.hash(bytes: [UInt8(low), UInt8(high)], seed: seed)
     }
     
 }
