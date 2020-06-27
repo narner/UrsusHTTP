@@ -87,11 +87,14 @@ extension PhoneticBaseParser {
             }()
             
             let glue: String = {
-                if index % 8 == 0 {
+                guard index.isMultiple(of: 8) == false else {
                     return index == 0 ? "" : spacing.dash
-                } else if index.isEven {
+                }
+                
+                switch index.parity {
+                case .even:
                     return "-"
-                } else {
+                case .odd:
                     return ""
                 }
             }()
