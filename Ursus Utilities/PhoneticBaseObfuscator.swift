@@ -51,6 +51,12 @@ extension PhoneticBaseObfuscator {
     //  lo  = fromIntegral (key .&. 0xFF)
     //  hi  = fromIntegral (key .&. 0xFF00 `div` 0x0100)
     
+    // https://github.com/aappleby/smhasher/blob/master/src/MurmurHash3.cpp
+    // https://github.com/PeterScott/murmur3/blob/master/murmur3.c
+    // https://github.com/jpedrosa/sua/blob/master/Sources/murmurhash3.swift
+    // https://github.com/albacorelabs/murmurhash3/blob/master/Sources/murmurhash3/murmurhash3.swift
+    // https://github.com/jwerle/murmurhash.c/blob/master/murmurhash.c
+    
     internal static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
         #warning("Finish `muk(_:_:)`")
         fatalError()
