@@ -10,11 +10,11 @@ import BigInt
 
 internal struct PhoneticBaseObfuscator {
 
-    internal static func obfuscate(_ value: BigUInt) -> BigUInt {
+    internal static func obfuscate<T: UnsignedInteger>(_ value: T) -> T {
         switch value.bitWidth {
         case 17...32:
             let p32 = UInt32(value)
-            return 0x10000 + BigUInt(feistelCipher(p32 - 0x10000))
+            return 0x10000 + T(feistelCipher(p32 - 0x10000))
         case 33...64:
             let low = value & 0x00000000FFFFFFFF
             let high = value & 0xFFFFFFFF00000000
@@ -24,11 +24,11 @@ internal struct PhoneticBaseObfuscator {
         }
     }
 
-    internal static func deobfuscate(_ value: BigUInt) -> BigUInt {
+    internal static func deobfuscate<T: UnsignedInteger>(_ value: T) -> T {
         switch value.bitWidth {
         case 17...32:
             let p32 = UInt32(value)
-            return 0x10000 + BigUInt(reverseFeistelCipher(p32 - 0x10000))
+            return 0x10000 + T(reverseFeistelCipher(p32 - 0x10000))
         case 33...64:
             let low = value & 0x00000000FFFFFFFF
             let high = value & 0xFFFFFFFF00000000
