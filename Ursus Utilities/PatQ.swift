@@ -36,6 +36,14 @@ extension PatQ: CustomStringConvertible {
     
 }
 
+extension PatQ: CustomDebugStringConvertible {
+    
+    public var debugDescription: String {
+        return ".~" + description
+    }
+    
+}
+
 extension PatQ: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: BigUInt.IntegerLiteralType) {

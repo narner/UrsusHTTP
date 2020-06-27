@@ -65,6 +65,14 @@ extension PatP: CustomStringConvertible {
     
 }
 
+extension PatP: CustomDebugStringConvertible {
+    
+    public var debugDescription: String {
+        return "~" + description
+    }
+    
+}
+
 extension PatP: ExpressibleByIntegerLiteral {
     
     public init(integerLiteral value: BigUInt.IntegerLiteralType) {
