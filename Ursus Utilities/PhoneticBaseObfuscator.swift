@@ -66,27 +66,9 @@ extension PhoneticBaseObfuscator {
 
 extension PhoneticBaseObfuscator {
 
-    //-- | Generalised Feistel cipher.
-    //--
-    //--   See: Black and Rogaway (2002), "Ciphers with arbitrary finite domains."
-    //--
-    //--   Note that this has been adjusted from the reference paper in order to
-    //--   support some legacy behaviour.
-    //feis :: Word32 -> Word32
-    //feis = capFe 4 0xFFFF 0x10000 0xFFFFFFFF capF
-
     internal static func feistelCipher(_ value: UInt32) -> UInt32 {
         return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
     }
-
-    //-- | Reverse 'feis'.
-    //--
-    //--   See: Black and Rogaway (2002), "Ciphers with arbitrary finite domains."
-    //--
-    //--   Note that this has been adjusted from the reference paper in order to
-    //--   support some legacy behaviour.
-    //tail :: Word32 -> Word32
-    //tail = capFen 4 0xFFFF 0x10000 0xFFFFFFFF capF
     
     internal static func reverseFeistelCipher(_ value: UInt32) -> UInt32 {
         return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, value)
@@ -96,17 +78,6 @@ extension PhoneticBaseObfuscator {
 
 extension PhoneticBaseObfuscator {
     
-    //-- | A PRF for j in [0, .., 3]
-    //capF :: Int -> Word32 -> Word32
-    //capF j key = fromIntegral (muk seed key) where
-    //  seed = raku !! fromIntegral j
-    //  raku = [
-    //      0xb76d5eed
-    //    , 0xee281300
-    //    , 0x85bcae01
-    //    , 0x4b387af7
-    //    ]
-    
     internal static func capF(_ j: Int, _ r: UInt32) -> UInt32 {
         let seeds: [UInt32] = [0xb76d5eed, 0xee281300, 0x85bcae01, 0x4b387af7]
         return muk(seeds[j], r)
@@ -115,21 +86,6 @@ extension PhoneticBaseObfuscator {
 }
 
 extension PhoneticBaseObfuscator {
-    
-    //-- | 'Fe' in B&R (2002).
-    //capFe
-    //  :: Int
-    //  -> Word32
-    //  -> Word32
-    //  -> Word32
-    //  -> (Int -> Word32 -> Word32)
-    //  -> Word32
-    //  -> Word32
-    //capFe r a b k f m
-    //    | c < k     = c
-    //    | otherwise = fe r a b f c
-    //  where
-    //    c = fe r a b f m
     
     internal static func capFe(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
         let c = fe(r, a, b, f, m)
@@ -175,21 +131,6 @@ extension PhoneticBaseObfuscator {
 }
 
 extension PhoneticBaseObfuscator {
-    
-    //-- | 'Fen' in B&R (2002).
-    //capFen
-    //  :: Int
-    //  -> Word32
-    //  -> Word32
-    //  -> Word32
-    //  -> (Int -> Word32 -> Word32)
-    //  -> Word32
-    //  -> Word32
-    //capFen r a b k f m
-    //    | c <= k    = c
-    //    | otherwise = fen r a b f c
-    //  where
-    //    c = fen r a b f m
     
     internal static func capFen(_ r: Int, _ a: UInt32, _ b: UInt32, _ k: UInt32, _ f: (_ j: Int, _ r: UInt32) -> UInt32, _ m: UInt32) -> UInt32 {
         let c = fen(r, a, b, f, m)
