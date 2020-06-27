@@ -107,18 +107,6 @@ extension PhoneticBaseParser {
 }
 
 extension PhoneticBaseParser {
-    
-    internal static func prefix(forByte byte: UInt8) -> String {
-        return prefixes[Int(byte)]
-    }
-
-    internal static func byte(forPrefix syllable: String) throws -> UInt8 {
-        guard let byte = prefixes.firstIndex(of: syllable) else {
-            throw PhoneticBaseParserError.invalidPrefix(syllable)
-        }
-        
-        return UInt8(byte)
-    }
 
     internal static let prefixes: [String] = ["doz", "mar", "bin", "wan", "sam", "lit", "sig", "hid", "fid", "lis", "sog", "dir", "wac", "sab", "wis", "sib",
                                               "rig", "sol", "dop", "mod", "fog", "lid", "hop", "dar", "dor", "lor", "hod", "fol", "rin", "tog", "sil", "mir",
@@ -136,7 +124,18 @@ extension PhoneticBaseParser {
                                               "mop", "hab", "nil", "nos", "mil", "fop", "fam", "dat", "nol", "din", "hat", "nac", "ris", "fot", "rib", "hoc",
                                               "nim", "lar", "fit", "wal", "rap", "sar", "nal", "mos", "lan", "don", "dan", "lad", "dov", "riv", "bac", "pol",
                                               "lap", "tal", "pit", "nam", "bon", "ros", "ton", "fod", "pon", "sov", "noc", "sor", "lav", "mat", "mip", "fip"]
+    
+    internal static func prefix(forByte byte: UInt8) -> String {
+        return prefixes[Int(byte)]
+    }
 
+    internal static func byte(forPrefix syllable: String) throws -> UInt8 {
+        guard let byte = prefixes.firstIndex(of: syllable) else {
+            throw PhoneticBaseParserError.invalidPrefix(syllable)
+        }
+        
+        return UInt8(byte)
+    }
     
 }
 
