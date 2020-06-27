@@ -23,7 +23,7 @@ internal struct PhoneticBaseObfuscator {
     //             then hi .|. loop lo
     //             else pyn
 
-    internal static func fein(_ value: BigUInt) -> BigUInt {
+    internal static func obfuscate(_ value: BigUInt) -> BigUInt {
         return value
     }
 
@@ -40,7 +40,7 @@ internal struct PhoneticBaseObfuscator {
     //             then hi .|. loop lo
     //             else cry
 
-    internal static func fynd(_ value: BigUInt) -> BigUInt {
+    internal static func deobfuscate(_ value: BigUInt) -> BigUInt {
         return value
     }
 

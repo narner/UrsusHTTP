@@ -22,7 +22,8 @@ public struct PatQ {
     
     public init(string: String) throws {
         let bytes = try PhoneticBaseParser.parse(string)
-        self.init(BigUInt(Data(bytes)))
+        let value = BigUInt(Data(bytes))
+        self.init(value)
     }
     
 }
