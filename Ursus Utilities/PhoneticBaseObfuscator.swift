@@ -81,6 +81,9 @@ extension PhoneticBaseObfuscator {
     
     private static func muk(_ seed: UInt32, _ key: UInt32) -> UInt32 {
         #warning("Finish `muk(_:_:)`")
+        let lo = key & 0x00FF
+        let hi = key & 0xFF00 / 0x0100
+        let kee = [UInt8(lo), UInt8(hi)]
         fatalError()
     }
     
