@@ -21,8 +21,8 @@ public struct PatP {
     }
     
     public init(string: String) throws {
-        let bytes = try parse(string)
-        self.init(fein(BigUInt(Data(bytes))))
+        let bytes = try PhoneticBaseParser.parse(string)
+        self.init(PhoneticBaseObfuscator.fein(BigUInt(Data(bytes))))
     }
     
 }
@@ -59,8 +59,8 @@ extension PatP {
 extension PatP: CustomStringConvertible {
     
     public var description: String {
-        let bytes: [UInt8] = Array(fynd(value).serialize())
-        return render(bytes: bytes, padding: .padding, spacing: .longSpacing)
+        let bytes: [UInt8] = Array(PhoneticBaseObfuscator.fynd(value).serialize())
+        return PhoneticBaseParser.render(bytes: bytes, padding: .padding, spacing: .longSpacing)
     }
     
 }
@@ -100,7 +100,7 @@ extension PatP: ExpressibleByStringLiteral {
 extension PatP: Codable {
     
     public init(from decoder: Decoder) throws {
-        var container = try decoder.singleValueContainer()
+        let container = try decoder.singleValueContainer()
         try self.init(string: try container.decode(String.self))
     }
     

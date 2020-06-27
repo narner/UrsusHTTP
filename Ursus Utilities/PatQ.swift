@@ -21,7 +21,7 @@ public struct PatQ {
     }
     
     public init(string: String) throws {
-        let bytes = try parse(string)
+        let bytes = try PhoneticBaseParser.parse(string)
         self.init(BigUInt(Data(bytes)))
     }
     
@@ -31,7 +31,7 @@ extension PatQ: CustomStringConvertible {
     
     public var description: String {
         let bytes: [UInt8] = Array(value.serialize())
-        return render(bytes: bytes, padding: .noPadding, spacing: .shortSpacing)
+        return PhoneticBaseParser.render(bytes: bytes, padding: .noPadding, spacing: .shortSpacing)
     }
     
 }
