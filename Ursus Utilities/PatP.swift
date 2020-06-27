@@ -51,8 +51,8 @@ extension PatP {
     
     public init(string: String) throws {
         let bytes = try PhoneticBaseParser.parse(string)
-        let obfuscatedValue = PhoneticBaseObfuscator.obfuscate(BigUInt(Data(bytes)))
-        self.init(obfuscatedValue)
+        let deobfuscatedValue = PhoneticBaseObfuscator.deobfuscate(BigUInt(Data(bytes)))
+        self.init(deobfuscatedValue)
     }
     
 }
@@ -60,8 +60,8 @@ extension PatP {
 extension PatP: CustomStringConvertible {
     
     public var description: String {
-        let deobfuscatedValue = PhoneticBaseObfuscator.deobfuscate(value)
-        let bytes: [UInt8] = Array(deobfuscatedValue.serialize())
+        let obfuscatedValue = PhoneticBaseObfuscator.obfuscate(value)
+        let bytes: [UInt8] = Array(obfuscatedValue.serialize())
         return PhoneticBaseParser.render(bytes: bytes, padding: .padding, spacing: .longSpacing)
     }
     
