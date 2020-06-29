@@ -46,3 +46,4 @@ Things that would make this codebase nicer:
 
 - [Alamofire](https://github.com/Alamofire/Alamofire)
 - [BigInt](https://github.com/attaswift/BigInt)
+- [Parity](https://github.com/dclelland/Parity)
