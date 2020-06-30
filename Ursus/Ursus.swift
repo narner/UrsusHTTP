@@ -70,10 +70,18 @@ extension Ursus {
         }
     }
     
+    @discardableResult public func logoutRequest() -> DataRequest {
+        fatalError("logoutRequest stubbed out for now")
+    }
+    
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
         return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder(encoder: encoder)).validate().response { [weak self] _ in
             self?.connectEventSourceIfDisconnected()
         }
+    }
+    
+    @discardableResult public func scryRequest() -> DataRequest {
+        fatalError("scryRequest stubbed out for now")
     }
     
 }
@@ -210,8 +218,16 @@ extension Ursus {
         return url.appendingPathComponent("/~/login")
     }
     
+    private var logoutURL: URL {
+        return url.appendingPathComponent("/~/logout")
+    }
+    
     private var channelURL: URL {
         return url.appendingPathComponent("/~/channel/\(uid)")
+    }
+    
+    private var scryURL: URL {
+        return url.appendingPathComponent("/~/scry")
     }
     
 }
