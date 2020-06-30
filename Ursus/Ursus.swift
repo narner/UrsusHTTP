@@ -71,7 +71,7 @@ extension Ursus {
     }
     
     @discardableResult public func logoutRequest() -> DataRequest {
-        fatalError("logoutRequest stubbed out for now")
+        return session.request(logoutURL, method: .post)
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
