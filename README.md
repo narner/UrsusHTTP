@@ -27,7 +27,7 @@ I can probably help set up Carthage or Swift Package Manager support if you need
 
 Things that would make this codebase nicer:
 
-- [ ] Add support for new `%logout` and `%scry` endpoints
+- [ ] Add support for new `%scry` endpoint
 - [ ] Pass IDs back through to the event handlers so unsubscribe requests can be made.
 - [ ] Test `AckRequest`, `UnsubscribeRequest`, `DeleteRequest` properly.
 - [ ] Better documentation/examples.

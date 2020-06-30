@@ -71,7 +71,7 @@ extension Ursus {
     }
     
     @discardableResult public func logoutRequest() -> DataRequest {
-        return session.request(logoutURL, method: .post)
+        return session.request(logoutURL, method: .post).validate()
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
