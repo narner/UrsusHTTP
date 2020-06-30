@@ -10,7 +10,7 @@ Ursus is very much a work in progress - better documentation and a demo app to c
 
 ```swift
 let ursus = Ursus(url: URL(string: "http://localhost")!, code: "fipfes-fipfes-fipfes-fipfes")
-ursus.authenticationRequest() { ship in
+ursus.loginRequest() { ship in
     ursus.subscribeRequest(ship: ship, app: "chat-view", path: "/primary") { event in
         print("On subscribe event:", event)
     }
@@ -27,6 +27,7 @@ I can probably help set up Carthage or Swift Package Manager support if you need
 
 Things that would make this codebase nicer:
 
+- [ ] Add support for new `%logout` and `%scry` endpoints
 - [ ] Pass IDs back through to the event handlers so unsubscribe requests can be made.
 - [ ] Test `AckRequest`, `UnsubscribeRequest`, `DeleteRequest` properly.
 - [ ] Better documentation/examples.

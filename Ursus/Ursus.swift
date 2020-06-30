@@ -49,8 +49,8 @@ public class Ursus {
 
 extension Ursus {
     
-    @discardableResult public func authenticationRequest(handler: @escaping (Ship) -> Void) -> DataRequest {
-        return session.request(authenticationURL, method: .post, parameters: ["password": code.description], encoder: URLEncodedFormParameterEncoder.default).validate().response { response in
+    @discardableResult public func loginRequest(handler: @escaping (Ship) -> Void) -> DataRequest {
+        return session.request(loginURL, method: .post, parameters: ["password": code.description], encoder: URLEncodedFormParameterEncoder.default).validate().response { response in
             guard let urbauth = response.response?.value(forHTTPHeaderField: "Set-Cookie") else {
                 print("[Ursus] Error retrieving urbauth")
                 return
@@ -206,7 +206,7 @@ extension Ursus {
 
 extension Ursus {
     
-    private var authenticationURL: URL {
+    private var loginURL: URL {
         return url.appendingPathComponent("/~/login")
     }
     
