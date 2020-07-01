@@ -19,14 +19,20 @@ ursus.loginRequest() { ship in
 
 ### Ursus Atom
 
-Ursus contains a submodule for working with atoms, with support for the urbit phonetic base:
+Ursus contains a submodule for working with [atoms and auras](https://urbit.org/docs/tutorials/hoon/atoms-auras-and-simple-cell-types/), with support for the urbit phonetic base:
 
 ```swift
 let ship = try! PatP(string: "~lanrus-rinfep")
 let point = Int(ship) // 328448
 ```
 
-There is an `Atom` protocol which can be backed by any `UnsignedInteger` type.
+There is an `Aura` protocol with an associated type `Atom` which can be any `UnsignedInteger` type, but in practice we use `BigUInt` types.
+
+Current implementations:
+
+- `PatP` (`@p`)
+- `PatQ` (`@q`)
+- `PatUV` (`@uv`)
 
 ## Installation
 
