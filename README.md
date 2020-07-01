@@ -4,7 +4,7 @@ An Urbit HTTP/`%eyre` client for iOS/macOS in Swift.
 
 See my [Ursus Chat](https://github.com/dclelland/UrsusChat) repository for a demo project.
 
-## Usage
+## Ursus
 
 Ursus is very much a work in progress - better documentation and a demo app to come. Here's a quick sketch for now:
 
@@ -17,9 +17,31 @@ ursus.loginRequest() { ship in
 }
 ```
 
+### Ursus Atom
+
+Ursus contains a submodule for working with [atoms and auras](https://urbit.org/docs/tutorials/hoon/atoms-auras-and-simple-cell-types/), with support for the urbit phonetic base:
+
+```swift
+let ship = try! PatP(string: "~lanrus-rinfep")
+let point = Int(ship) // 328448
+```
+
+There is an `Aura` protocol with an associated type `Atom` which can be any `UnsignedInteger` type, but in practice we use `BigUInt` types.
+
+Current implementations:
+
+- `PatP` (`@p`)
+- `PatQ` (`@q`)
+- `PatUV` (`@uv`)
+
 ## Installation
 
-Ursus can be installed using Cocoapods by adding `pod 'Ursus', '~> 1.2'` to your `Podfile`.
+Ursus can be installed using Cocoapods by adding the following lines to your podfile:
+
+```ruby
+pod 'Ursus', '~> 1.2'
+pod 'Ursus/Atom', '~> 1.2'
+```
 
 I can probably help set up Carthage or Swift Package Manager support if you need it.
 
@@ -36,7 +58,8 @@ Things that would make this codebase nicer:
 ## Other clients
 
 - [channel.js](https://github.com/urbit/urbit/blob/master/pkg/arvo/app/launch/js/channel.js)
-- [urlock.py](https://github.com/baudtack/urlock-py/blob/master/urlock/urlock.py)
+- [urlock-py](https://github.com/baudtack/urlock-py)
+- [urbit-airlock-ts](https://github.com/liam-fitzgerald/urbit-airlock-ts)
 
 ## Other utilities
 
