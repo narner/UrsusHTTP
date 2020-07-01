@@ -4,7 +4,7 @@ An Urbit HTTP/`%eyre` client for iOS/macOS in Swift.
 
 See my [Ursus Chat](https://github.com/dclelland/UrsusChat) repository for a demo project.
 
-## Usage
+## Ursus
 
 Ursus is very much a work in progress - better documentation and a demo app to come. Here's a quick sketch for now:
 
@@ -17,9 +17,25 @@ ursus.loginRequest() { ship in
 }
 ```
 
+## Ursus Atom
+
+Ursus contains a submodule for working with atoms, with support for the urbit phonetic base:
+
+```swift
+let ship = try! PatP(string: "~lanrus-rinfep")
+let point = Int(ship) // 328448
+```
+
+There is an `Atom` protocol which can be backed by any `UnsignedInteger` type.
+
 ## Installation
 
-Ursus can be installed using Cocoapods by adding `pod 'Ursus', '~> 1.2'` to your `Podfile`.
+Ursus can be installed using Cocoapods by adding the following lines to your podfile:
+
+```ruby
+pod 'Ursus', '~> 1.2'
+pod 'Ursus/Atom', '~> 1.2'
+```
 
 I can probably help set up Carthage or Swift Package Manager support if you need it.
 
