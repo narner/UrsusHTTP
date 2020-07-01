@@ -17,7 +17,7 @@ ursus.loginRequest() { ship in
 }
 ```
 
-## Ursus Atom
+### Ursus Atom
 
 Ursus contains a submodule for working with atoms, with support for the urbit phonetic base:
 
