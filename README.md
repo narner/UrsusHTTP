@@ -36,7 +36,8 @@ Things that would make this codebase nicer:
 ## Other clients
 
 - [channel.js](https://github.com/urbit/urbit/blob/master/pkg/arvo/app/launch/js/channel.js)
-- [urlock.py](https://github.com/baudtack/urlock-py/blob/master/urlock/urlock.py)
+- [urlock-py](https://github.com/baudtack/urlock-py)
+- [urbit-airlock-ts](https://github.com/liam-fitzgerald/urbit-airlock-ts)
 
 ## Other utilities
 
