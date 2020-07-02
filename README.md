@@ -53,6 +53,7 @@ Things that would make this codebase nicer:
 - [ ] Should the new `%logout` endpoint clear the `urbauth` cookie?
 - [ ] Pass IDs back through to the event handlers so unsubscribe requests can be made.
 - [ ] Test `AckRequest`, `UnsubscribeRequest`, `DeleteRequest` properly.
+- [ ] Unit tests for `@p` obfuscation/deobfuscation
 - [ ] Better documentation/examples.
 
 ## Other clients
