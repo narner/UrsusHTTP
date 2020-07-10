@@ -20,6 +20,11 @@ Pod::Spec.new do |s|
     ss.dependency 'BigInt', '~> 5.0'
     ss.dependency 'Parity', '~> 2.3'
   end
+
+  s.subspec 'Sigil' do |ss|
+    ss.source_files = 'Ursus Sigil/**/*.swift'
+    ss.dependency 'SwiftSVG', '~> 2.0'
+  end
   
   s.subspec 'EventSource' do |ss|
     ss.source_files = 'Ursus Event Source/**/*.swift'
