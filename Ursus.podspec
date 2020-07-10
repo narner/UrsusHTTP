@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
 
   s.subspec 'Sigil' do |ss|
     ss.source_files = 'Ursus Sigil/**/*.swift'
+    ss.resources = 'Ursus Sigil/Resources/**/*'
     ss.dependency 'SwiftSVG', '~> 2.0'
   end
   
