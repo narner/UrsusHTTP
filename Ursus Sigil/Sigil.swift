@@ -6,3 +6,23 @@
 //
 
 import Foundation
+
+public struct Sigil {
+    
+    public var ship: Ship
+    
+    public init(ship: Ship) {
+        print(Symbol.all)
+//        let index = )
+        self.ship = ship
+    }
+    
+}
+
+extension Sigil {
+    
+    var image: UIImage? {
+        return nil
+    }
+    
+}
