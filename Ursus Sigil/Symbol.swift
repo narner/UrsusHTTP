@@ -9,11 +9,14 @@ import Foundation
 
 internal struct Symbol: Decodable {
     
-    internal static var all: [String: Symbol] = {
-        let bundle = Bundle(identifier: "org.cocoapods.Ursus")!
-        let url = bundle.url(forResource: "index", withExtension: "json")!
-        let data = try! Data(contentsOf: url)
-        return try! JSONDecoder().decode([String: Symbol].self, from: data)
+    static var all: [String: Symbol] = {
+        return Bundle(identifier: "org.cocoapods.Ursus").flatMap { bundle in
+            return bundle.url(forResource: "index", withExtension: "json")
+        }.flatMap { url in
+            return try? Data(contentsOf: url)
+        }.flatMap { data in
+            return try? JSONDecoder().decode([String: Symbol].self, from: data)
+        } ?? [:]
     }()
     
     var name: String

@@ -12,8 +12,6 @@ public struct Sigil {
     public var ship: Ship
     
     public init(ship: Ship) {
-        print(Symbol.all)
-//        let index = )
         self.ship = ship
     }
     
