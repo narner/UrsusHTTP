@@ -20,9 +20,9 @@ public struct Sigil {
 
 extension Sigil {
     
-    var layer: CALayer {
+    var symbol: Symbol {
         let syllables = ship.description.replacingOccurrences(of: "[\\^~-]", with: "", options: .regularExpression).chunked(by: 3)
-        return SVGLayer(SVGData: Symbol.all[syllables.first!]!.svgData()) { _ in }
+        return Symbol.all[syllables.first!]!
     }
     
 }
