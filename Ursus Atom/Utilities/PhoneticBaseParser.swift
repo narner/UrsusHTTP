@@ -62,7 +62,7 @@ internal struct PhoneticBaseParser {
 extension PhoneticBaseParser {
 
     internal static func parse(_ string: String) throws -> [UInt8] {
-        let syllables = string.filter({ $0 != "~" && $0 != "-" }).chunked(by: 3)
+        let syllables = string.replacingOccurrences(of: "[\\^~-]", with: "", options: .regularExpression).chunked(by: 3)
         return try syllables.reversed().enumerated().reduce([]) { result, element in
             let (index, syllable) = element
             switch index.parity {

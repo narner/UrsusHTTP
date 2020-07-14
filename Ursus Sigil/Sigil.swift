@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftSVG
 
 public struct Sigil {
     
@@ -19,8 +20,9 @@ public struct Sigil {
 
 extension Sigil {
     
-    var image: UIImage? {
-        return nil
+    var layer: CALayer {
+        let syllables = ship.description.replacingOccurrences(of: "[\\^~-]", with: "", options: .regularExpression).chunked(by: 3)
+        return SVGLayer(SVGData: Symbol.all[syllables.first!]!.svgData()) { _ in }
     }
     
 }
