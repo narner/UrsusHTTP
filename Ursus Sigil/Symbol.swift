@@ -6,14 +6,12 @@
 //
 
 import Foundation
-import SwiftSVG
-//import XMLDocument
 
 internal struct Symbol: Decodable {
     
     internal static var all: [String: Symbol] = {
         let bundle = Bundle(identifier: "org.cocoapods.Ursus")!
-        let url = bundle .url(forResource: "index", withExtension: "json")!
+        let url = bundle.url(forResource: "index", withExtension: "json")!
         let data = try! Data(contentsOf: url)
         return try! JSONDecoder().decode([String: Symbol].self, from: data)
     }()
@@ -26,29 +24,33 @@ internal struct Symbol: Decodable {
 
 extension Symbol {
     
-    var wrappedElement: String {
-        return "<svg viewBox=\"0 0 128 128\">\(element)</svg>"
+    public func svgData(backgroundColor: String = "#000000", foregroundColor: String = "#FFFFFF") -> Data {
+        return svgString(backgroundColor: backgroundColor, foregroundColor: foregroundColor).data(using: .utf8) ?? Data()
     }
     
-    var element: String {
+    public func svgString(backgroundColor: String = "#000000", foregroundColor: String = "#FFFFFF") -> String {
+        return "<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 128 128\">\(svgElement(backgroundColor: backgroundColor, foregroundColor: foregroundColor))</svg>"
+    }
+    
+    private func svgElement(backgroundColor: String = "#000000", foregroundColor: String = "#FFFFFF") -> String {
         let modifiedAttributes: [String: String] = Dictionary(
             uniqueKeysWithValues: attributes.map { key, value in
                 switch (key, value) {
                 case ("fill", "@BG"):
-                    return (key, "#FFFFFF")
+                    return (key, backgroundColor)
                 case ("fill", "@FG"):
-                    return (key, "#000000")
+                    return (key, foregroundColor)
                 case ("stroke", "@BG"):
-                    return (key, "#FFFFFF")
+                    return (key, backgroundColor)
                 case ("stroke", "@FG"):
-                    return (key, "#000000")
+                    return (key, foregroundColor)
                 default:
                     return (key, value)
                 }
             }
         )
         
-        return "<\(name) \(modifiedAttributes.map { "\($0)=\"\($1)\"" }.joined(separator: " "))>\(children.map(\.element).joined())</\(name)>"
+        return "<\(name) \(modifiedAttributes.map { "\($0)=\"\($1)\"" }.joined(separator: " "))>\(children.map { $0.svgElement(backgroundColor: backgroundColor, foregroundColor: foregroundColor) }.joined())</\(name)>"
     }
     
 }
