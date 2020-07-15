@@ -29,6 +29,7 @@ Pod::Spec.new do |s|
   s.subspec 'PhoneticBase' do |ss|
     ss.source_files = 'Ursus Phonetic Base/**/*.swift'
     ss.dependency 'Parity', '~> 2.3'
+    ss.dependency 'MurmurHash-Swift', '~> 1.0'
   end
   
   s.subspec 'EventSource' do |ss|
