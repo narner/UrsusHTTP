@@ -7,10 +7,22 @@
 
 import Foundation
 
-public enum PhoneticBaseSyllable: RawRepresentable, CaseIterable {
+public enum PhoneticBaseSyllable: CaseIterable, RawRepresentable {
     
     case prefix(PhoneticBasePrefix)
     case suffix(PhoneticBaseSuffix)
+    
+    public static var allCases: [PhoneticBaseSyllable] {
+        let prefixes = PhoneticBasePrefix.allCases.map { prefix in
+            return PhoneticBaseSyllable.prefix(prefix)
+        }
+        
+        let suffixes = PhoneticBaseSuffix.allCases.map { suffix in
+            return PhoneticBaseSyllable.suffix(suffix)
+        }
+        
+        return prefixes + suffixes
+    }
     
     public init?(rawValue: String) {
         switch (PhoneticBasePrefix(rawValue: rawValue), PhoneticBaseSuffix(rawValue: rawValue)) {
@@ -32,16 +44,25 @@ public enum PhoneticBaseSyllable: RawRepresentable, CaseIterable {
         }
     }
     
-    public static var allCases: [PhoneticBaseSyllable] {
-        let prefixes = PhoneticBasePrefix.allCases.map { prefix in
-            return PhoneticBaseSyllable.prefix(prefix)
+}
+
+extension PhoneticBaseSyllable {
+    
+    public static func prefix(byte: UInt8) -> PhoneticBaseSyllable {
+        return .prefix(PhoneticBasePrefix(byte: byte))
+    }
+    
+    public static func suffix(byte: UInt8) -> PhoneticBaseSyllable {
+        return .suffix(PhoneticBaseSuffix(byte: byte))
+    }
+    
+    public var byte: UInt8 {
+        switch self {
+        case .prefix(let prefix):
+            return prefix.byte
+        case .suffix(let suffix):
+            return suffix.byte
         }
-        
-        let suffixes = PhoneticBaseSuffix.allCases.map { suffix in
-            return PhoneticBaseSyllable.suffix(suffix)
-        }
-        
-        return prefixes + suffixes
     }
     
 }
