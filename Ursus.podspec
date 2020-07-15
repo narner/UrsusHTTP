@@ -19,11 +19,9 @@ Pod::Spec.new do |s|
     ss.source_files = 'Ursus Atom/**/*.swift'
     ss.dependency 'BigInt', '~> 5.0'
   end
-
-  s.subspec 'Sigil' do |ss|
-    ss.source_files = 'Ursus Sigil/**/*.swift'
-    ss.resources = 'Ursus Sigil/Resources/**/*'
-    ss.dependency 'SwiftSVG', '~> 2.0'
+  
+  s.subspec 'EventSource' do |ss|
+    ss.source_files = 'Ursus Event Source/**/*.swift'
   end
   
   s.subspec 'PhoneticBase' do |ss|
@@ -31,8 +29,10 @@ Pod::Spec.new do |s|
     ss.dependency 'Parity', '~> 2.3'
     ss.dependency 'MurmurHash-Swift', '~> 1.0'
   end
-  
-  s.subspec 'EventSource' do |ss|
-    ss.source_files = 'Ursus Event Source/**/*.swift'
-  end
+
+  # s.subspec 'Sigil' do |ss|
+  #   ss.source_files = 'Ursus Sigil/**/*.swift'
+  #   ss.resources = 'Ursus Sigil/Resources/**/*'
+  #   ss.dependency 'SwiftSVG', '~> 2.0'
+  # end
 end
