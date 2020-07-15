@@ -71,4 +71,5 @@ Things that would make this codebase nicer:
 
 - [Alamofire](https://github.com/Alamofire/Alamofire)
 - [BigInt](https://github.com/attaswift/BigInt)
+- [MurmurHash-Swift](https://github.com/daisuke-t-jp/MurmurHash-Swift)
 - [Parity](https://github.com/dclelland/Parity)
