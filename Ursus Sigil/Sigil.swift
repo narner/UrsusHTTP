@@ -19,9 +19,18 @@ public struct Sigil {
 
 extension Sigil {
     
+    var symbols: [Symbol] {
+        return ship.syllables.map { syllable in
+            return syllable.symbol
+        }
+    }
+    
+}
+
+extension PhoneticBaseSyllable {
+    
     var symbol: Symbol {
-        let syllables = ship.description.replacingOccurrences(of: "[\\^~-]", with: "", options: .regularExpression).chunked(by: 3)
-        return Symbol.all[syllables.first!]!
+        return Symbol.all[self.rawValue]!
     }
     
 }

@@ -7,22 +7,10 @@
 
 import Foundation
 
-public enum PhoneticBaseSyllable: CaseIterable, RawRepresentable {
+public enum PhoneticBaseSyllable: RawRepresentable, CaseIterable {
     
     case prefix(PhoneticBasePrefix)
     case suffix(PhoneticBaseSuffix)
-    
-    public static var allCases: [PhoneticBaseSyllable] {
-        let prefixes = PhoneticBasePrefix.allCases.map { prefix in
-            return PhoneticBaseSyllable.prefix(prefix)
-        }
-        
-        let suffixes = PhoneticBaseSuffix.allCases.map { suffix in
-            return PhoneticBaseSyllable.suffix(suffix)
-        }
-        
-        return prefixes + suffixes
-    }
     
     public init?(rawValue: String) {
         switch (PhoneticBasePrefix(rawValue: rawValue), PhoneticBaseSuffix(rawValue: rawValue)) {
@@ -42,6 +30,18 @@ public enum PhoneticBaseSyllable: CaseIterable, RawRepresentable {
         case .suffix(let suffix):
             return suffix.rawValue
         }
+    }
+    
+    public static var allCases: [PhoneticBaseSyllable] {
+        let prefixes = PhoneticBasePrefix.allCases.map { prefix in
+            return PhoneticBaseSyllable.prefix(prefix)
+        }
+        
+        let suffixes = PhoneticBaseSuffix.allCases.map { suffix in
+            return PhoneticBaseSyllable.suffix(suffix)
+        }
+        
+        return prefixes + suffixes
     }
     
 }
