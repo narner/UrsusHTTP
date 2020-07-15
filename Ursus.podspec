@@ -18,13 +18,17 @@ Pod::Spec.new do |s|
   s.subspec 'Atom' do |ss|
     ss.source_files = 'Ursus Atom/**/*.swift'
     ss.dependency 'BigInt', '~> 5.0'
-    ss.dependency 'Parity', '~> 2.3'
   end
 
   s.subspec 'Sigil' do |ss|
     ss.source_files = 'Ursus Sigil/**/*.swift'
     ss.resources = 'Ursus Sigil/Resources/**/*'
     ss.dependency 'SwiftSVG', '~> 2.0'
+  end
+  
+  s.subspec 'PhoneticBase' do |ss|
+    ss.source_files = 'Ursus Phonetic Base/**/*.swift'
+    ss.dependency 'Parity', '~> 2.3'
   end
   
   s.subspec 'EventSource' do |ss|

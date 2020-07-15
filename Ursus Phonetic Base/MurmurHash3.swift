@@ -2,9 +2,9 @@
 // Based on https://github.com/antlr/antlr4/blob/master/runtime/Swift/Sources/Antlr4/misc/MurmurHash.swift
 // Originally written by Sam Harwell
 
-internal struct MurmurHash3 {
+public struct MurmurHash3 {
 
-    internal static func hash(bytes: [UInt8], seed: UInt32) -> UInt32 {
+    public static func hash(bytes: [UInt8], seed: UInt32) -> UInt32 {
         let byteCount = bytes.count
         var hash = seed
 

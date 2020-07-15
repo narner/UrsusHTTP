@@ -9,9 +9,9 @@ import Foundation
 import BigInt
 import Parity
 
-internal struct PhoneticBaseObfuscator {
+public struct PhoneticBaseObfuscator {
 
-    internal static func obfuscate<T: UnsignedInteger>(_ value: T) -> T {
+    public static func obfuscate<T: UnsignedInteger>(_ value: T) -> T {
         switch value.bitWidth {
         case 17...32:
             let p32 = UInt32(value)
@@ -25,7 +25,7 @@ internal struct PhoneticBaseObfuscator {
         }
     }
 
-    internal static func deobfuscate<T: UnsignedInteger>(_ value: T) -> T {
+    public static func deobfuscate<T: UnsignedInteger>(_ value: T) -> T {
         switch value.bitWidth {
         case 17...32:
             let p32 = UInt32(value)
