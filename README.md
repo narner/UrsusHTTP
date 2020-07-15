@@ -19,7 +19,7 @@ ursus.loginRequest() { ship in
 
 ## Installation
 
-Ursus can be installed using Cocoapods by adding the following lines to your podfile:
+Ursus can be installed using Cocoapods by adding the following line to your podfile:
 
 ```ruby
 pod 'Ursus', '~> 1.2'
