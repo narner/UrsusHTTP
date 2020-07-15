@@ -48,6 +48,22 @@ public enum PhoneticBaseSyllable: CaseIterable, RawRepresentable {
 
 extension PhoneticBaseSyllable {
     
+    public static func prefix(rawValue: String) -> PhoneticBaseSyllable? {
+        return PhoneticBasePrefix(rawValue: rawValue).map { prefix in
+            return .prefix(prefix)
+        }
+    }
+    
+    public static func suffix(rawValue: String) -> PhoneticBaseSyllable? {
+        return PhoneticBaseSuffix(rawValue: rawValue).map { suffix in
+            return .suffix(suffix)
+        }
+    }
+    
+}
+
+extension PhoneticBaseSyllable {
+    
     public static func prefix(byte: UInt8) -> PhoneticBaseSyllable {
         return .prefix(PhoneticBasePrefix(byte: byte))
     }

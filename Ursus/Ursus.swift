@@ -59,7 +59,7 @@ extension Ursus {
                 return
             }
             
-            guard let ship = try? Ship(string: name) else {
+            guard let ship = Ship(rawValue: name) else {
                 print("[Ursus] Error decoding urbauth:", urbauth)
                 return
             }

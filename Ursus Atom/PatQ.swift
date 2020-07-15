@@ -8,7 +8,7 @@
 import Foundation
 import BigInt
 
-public struct PatQ: Aura {
+public struct PatQ: Aura, Codable {
     
     internal var atom: BigUInt
 
@@ -20,10 +20,54 @@ public struct PatQ: Aura {
 
 extension PatQ {
     
-    public init(string: String) throws {
-        let bytes = try PhoneticBaseParser.parse(string)
+    public init(syllables: [PhoneticBaseSyllable]) {
+        let bytes = syllables.map(\.byte)
         let atom = BigUInt(Data(bytes))
         self.init(atom)
+    }
+    
+    public var syllables: [PhoneticBaseSyllable] {
+        let bytes = atom.serialize()
+        let syllables: [PhoneticBaseSyllable] = bytes.reversed().enumerated().reduce([]) { result, element in
+            let (index, byte) = element
+            switch index.parity {
+            case .even:
+                return [.suffix(byte: byte)] + result
+            case .odd:
+                return [.prefix(byte: byte)] + result
+            }
+        }
+        
+        switch syllables.count {
+        case 0:
+            return [.suffix(byte: 0)]
+        default:
+            return syllables
+        }
+    }
+    
+}
+
+extension PatQ {
+    
+    public init(string: String) throws {
+        self.init(syllables: try PhoneticBaseParser.parse(string))
+    }
+    
+    public var string: String {
+        return PhoneticBaseParser.render(syllables: syllables, spacing: .shortSpacing)
+    }
+    
+}
+
+extension PatQ: RawRepresentable {
+    
+    public init?(rawValue: String) {
+        try? self.init(string: rawValue)
+    }
+    
+    public var rawValue: String {
+        return string
     }
     
 }
@@ -31,8 +75,7 @@ extension PatQ {
 extension PatQ: CustomStringConvertible {
     
     public var description: String {
-        let bytes: [UInt8] = Array(atom.serialize())
-        return PhoneticBaseParser.render(bytes: bytes, padding: .noPadding, spacing: .shortSpacing)
+        return string
     }
     
 }
@@ -40,7 +83,7 @@ extension PatQ: CustomStringConvertible {
 extension PatQ: CustomDebugStringConvertible {
     
     public var debugDescription: String {
-        return ".~" + description
+        return ".~" + string
     }
     
 }
@@ -57,20 +100,6 @@ extension PatQ: ExpressibleByStringLiteral {
 
     public init(stringLiteral value: StringLiteralType) {
         try! self.init(string: String(stringLiteral: value))
-    }
-    
-}
-
-extension PatQ: Codable {
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        try self.init(string: try container.decode(String.self))
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(description)
     }
     
 }

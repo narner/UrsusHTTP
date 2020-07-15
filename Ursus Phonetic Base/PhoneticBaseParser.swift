@@ -17,30 +17,6 @@ public enum PhoneticBaseParserError: Error {
 
 public struct PhoneticBaseParser {
 
-    public enum Padding {
-        
-        case padding
-        case noPadding
-        
-        internal func shouldPad(bytes: [UInt8]) -> Bool {
-            switch self {
-            case .noPadding:
-                return bytes.count == 0
-            case .padding:
-                return bytes.count == 0 || (bytes.count.isOdd && bytes.count > 2)
-            }
-        }
-        
-        internal func pad(bytes: [UInt8]) -> [UInt8] {
-            if shouldPad(bytes: bytes) {
-                return [0] + bytes
-            } else {
-                return bytes
-            }
-        }
-        
-    }
-
     public enum Spacing {
         
         case longSpacing
@@ -56,43 +32,31 @@ public struct PhoneticBaseParser {
         }
         
     }
-    
-}
 
-extension PhoneticBaseParser {
-
-    public static func parse(_ string: String) throws -> [UInt8] {
+    public static func parse(_ string: String) throws -> [PhoneticBaseSyllable] {
         let syllables = string.replacingOccurrences(of: "[\\^~-]", with: "", options: .regularExpression).chunked(by: 3)
         return try syllables.reversed().enumerated().reduce([]) { result, element in
             let (index, syllable) = element
             switch index.parity {
             case .even:
-                guard let suffix = PhoneticBaseSuffix(rawValue: syllable) else {
+                guard let suffix = PhoneticBaseSyllable.suffix(rawValue: syllable) else {
                     throw PhoneticBaseParserError.invalidSuffix(syllable)
                 }
                 
-                return [suffix.byte] + result
+                return [suffix] + result
             case .odd:
-                guard let prefix = PhoneticBasePrefix(rawValue: syllable) else {
+                guard let prefix = PhoneticBaseSyllable.prefix(rawValue: syllable) else {
                     throw PhoneticBaseParserError.invalidPrefix(syllable)
                 }
                 
-                return [prefix.byte] + result
+                return [prefix] + result
             }
         }
     }
-
-    public static func render(bytes: [UInt8], padding: Padding, spacing: Spacing) -> String {
-        return padding.pad(bytes: bytes).reversed().enumerated().reduce("") { result, element in
-            let (index, byte) = element
-            let syllable: String = {
-                switch index.parity {
-                case .even:
-                    return PhoneticBaseSuffix(byte: byte).rawValue
-                case .odd:
-                    return PhoneticBasePrefix(byte: byte).rawValue
-                }
-            }()
+    
+    public static func render(syllables: [PhoneticBaseSyllable], spacing: Spacing) -> String {
+        return syllables.reversed().enumerated().reduce("") { result, element in
+            let (index, syllable) = element
             
             let glue: String = {
                 guard index.isMultiple(of: 8) == false else {
@@ -107,7 +71,7 @@ extension PhoneticBaseParser {
                 }
             }()
             
-            return syllable + glue + result
+            return syllable.rawValue + glue + result
         }
     }
     

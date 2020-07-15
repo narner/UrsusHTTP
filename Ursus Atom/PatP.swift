@@ -8,7 +8,7 @@
 import Foundation
 import BigInt
 
-public struct PatP: Aura {
+public struct PatP: Aura, Codable {
     
     internal var atom: BigUInt
 
@@ -49,10 +49,59 @@ extension PatP {
 
 extension PatP {
     
-    public init(string: String) throws {
-        let bytes = try PhoneticBaseParser.parse(string)
+    public init(syllables: [PhoneticBaseSyllable]) {
+        let bytes = syllables.map(\.byte)
         let deobfuscatedAtom = PhoneticBaseObfuscator.deobfuscate(BigUInt(Data(bytes)))
         self.init(deobfuscatedAtom)
+    }
+    
+    public var syllables: [PhoneticBaseSyllable] {
+        let obfuscatedAtom = PhoneticBaseObfuscator.obfuscate(atom)
+        let bytes = obfuscatedAtom.serialize()
+        let syllables: [PhoneticBaseSyllable] = bytes.reversed().enumerated().reduce([]) { result, element in
+            let (index, byte) = element
+            switch index.parity {
+            case .even:
+                return [.suffix(byte: byte)] + result
+            case .odd:
+                return [.prefix(byte: byte)] + result
+            }
+        }
+        
+        switch syllables.count {
+        case 0:
+            return [.suffix(byte: 0)]
+        case 1:
+            return syllables
+        case 2... where syllables.count.isOdd:
+            return [.prefix(byte: 0)] + syllables
+        default:
+            return syllables
+        }
+    }
+    
+}
+
+extension PatP {
+    
+    public init(string: String) throws {
+        self.init(syllables: try PhoneticBaseParser.parse(string))
+    }
+    
+    public var string: String {
+        return PhoneticBaseParser.render(syllables: syllables, spacing: .longSpacing)
+    }
+    
+}
+
+extension PatP: RawRepresentable {
+    
+    public init?(rawValue: String) {
+        try? self.init(string: rawValue)
+    }
+    
+    public var rawValue: String {
+        return string
     }
     
 }
@@ -60,9 +109,7 @@ extension PatP {
 extension PatP: CustomStringConvertible {
     
     public var description: String {
-        let obfuscatedAtom = PhoneticBaseObfuscator.obfuscate(atom)
-        let bytes: [UInt8] = Array(obfuscatedAtom.serialize())
-        return PhoneticBaseParser.render(bytes: bytes, padding: .padding, spacing: .longSpacing)
+        return string
     }
     
 }
@@ -70,7 +117,7 @@ extension PatP: CustomStringConvertible {
 extension PatP: CustomDebugStringConvertible {
     
     public var debugDescription: String {
-        return "~" + description
+        return "~" + string
     }
     
 }
@@ -87,20 +134,6 @@ extension PatP: ExpressibleByStringLiteral {
 
     public init(stringLiteral value: StringLiteralType) {
         try! self.init(string: String(stringLiteral: value))
-    }
-    
-}
-
-extension PatP: Codable {
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        try self.init(string: try container.decode(String.self))
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(description)
     }
     
 }
