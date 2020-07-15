@@ -1,11 +1,11 @@
 Pod::Spec.new do |s|
   s.name = "Ursus"
-  s.version = "1.2.5"
+  s.version = "1.3.0"
   s.summary = "An Urbit HTTP/`%eyre` client for iOS/macOS."
   s.homepage = "https://github.com/dclelland/Ursus"
   s.license = { type: 'MIT' }
   s.author = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
-  s.source = { git: "https://github.com/dclelland/Ursus.git", tag: "1.2.5" }
+  s.source = { git: "https://github.com/dclelland/Ursus.git", tag: "1.3.0" }
   s.swift_versions = ['5.1', '5.2']
   
   s.ios.deployment_target = '13.0'
@@ -14,25 +14,9 @@ Pod::Spec.new do |s|
   s.source_files = 'Ursus/**/*.swift'
   
   s.dependency 'Alamofire', '~> 5.2'
-  
-  s.subspec 'Atom' do |ss|
-    ss.source_files = 'Ursus Atom/**/*.swift'
-    ss.dependency 'BigInt', '~> 5.0'
-  end
+  s.dependency 'UrsusAtom', '~> 1.0'
   
   s.subspec 'EventSource' do |ss|
     ss.source_files = 'Ursus Event Source/**/*.swift'
   end
-  
-  s.subspec 'PhoneticBase' do |ss|
-    ss.source_files = 'Ursus Phonetic Base/**/*.swift'
-    ss.dependency 'Parity', '~> 2.3'
-    ss.dependency 'MurmurHash-Swift', '~> 1.0'
-  end
-
-  # s.subspec 'Sigil' do |ss|
-  #   ss.source_files = 'Ursus Sigil/**/*.swift'
-  #   ss.resources = 'Ursus Sigil/Resources/**/*'
-  #   ss.dependency 'SwiftSVG', '~> 2.0'
-  # end
 end
