@@ -67,9 +67,17 @@ extension PhoneticBaseParser {
             let (index, syllable) = element
             switch index.parity {
             case .even:
-                return [try PhoneticBaseSuffix.byte(forSuffix: syllable)] + result
+                guard let suffix = PhoneticBaseSuffix(rawValue: syllable) else {
+                    throw PhoneticBaseParserError.invalidSuffix(syllable)
+                }
+                
+                return [suffix.byte] + result
             case .odd:
-                return [try PhoneticBasePrefix.byte(forPrefix: syllable)] + result
+                guard let prefix = PhoneticBasePrefix(rawValue: syllable) else {
+                    throw PhoneticBaseParserError.invalidPrefix(syllable)
+                }
+                
+                return [prefix.byte] + result
             }
         }
     }
@@ -80,9 +88,9 @@ extension PhoneticBaseParser {
             let syllable: String = {
                 switch index.parity {
                 case .even:
-                    return PhoneticBaseSuffix.suffix(forByte: byte)
+                    return PhoneticBaseSuffix(byte: byte).rawValue
                 case .odd:
-                    return PhoneticBasePrefix.prefix(forByte: byte)
+                    return PhoneticBasePrefix(byte: byte).rawValue
                 }
             }()
             
