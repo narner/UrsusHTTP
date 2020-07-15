@@ -34,21 +34,19 @@ public struct PhoneticBaseObfuscator {
             let high = value & 0xFFFFFFFF00000000
             return high | deobfuscate(low)
         default:
-            break
+            return value
         }
-        
-        return value
     }
     
 }
 
 extension PhoneticBaseObfuscator {
 
-    private static func feistelCipher(_ m: UInt32) -> UInt32 {
+    public static func feistelCipher(_ m: UInt32) -> UInt32 {
         return capFe(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, m)
     }
     
-    private static func reverseFeistelCipher(_ m: UInt32) -> UInt32 {
+    public static func reverseFeistelCipher(_ m: UInt32) -> UInt32 {
         return capFen(4, 0xFFFF, 0x10000, 0xFFFFFFFF, capF, m)
     }
     
