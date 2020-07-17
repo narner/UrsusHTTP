@@ -1,5 +1,5 @@
 //
-//  UrsusCredentials.swift
+//  AirlockCredentials.swift
 //  Alamofire
 //
 //  Created by Daniel Clelland on 7/07/20.
@@ -7,11 +7,7 @@
 
 import Foundation
 
-public typealias Ship = PatP
-
-public typealias Code = PatP
-
-public struct UrsusCredentials: Codable {
+public struct AirlockCredentials: Codable {
     
     public var url: URL
     public var code: Code
