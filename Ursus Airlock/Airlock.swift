@@ -161,7 +161,7 @@ extension Airlock: EventSourceDelegate {
                 pokeHandlers[response.id]?(.finished)
                 pokeHandlers[response.id] = nil
             case .error(let message):
-                pokeHandlers[response.id]?(.failure(PokeError.pokeFailure(message)))
+                pokeHandlers[response.id]?(.failure(AirlockError.pokeFailure(message)))
                 pokeHandlers[response.id] = nil
             }
         case .success(.subscribe(let response)):
@@ -169,7 +169,7 @@ extension Airlock: EventSourceDelegate {
             case .okay:
                 subscribeHandlers[response.id]?(.started)
             case .error(let message):
-                subscribeHandlers[response.id]?(.failure(SubscribeError.subscribeFailure(message)))
+                subscribeHandlers[response.id]?(.failure(AirlockError.subscribeFailure(message)))
                 subscribeHandlers[response.id] = nil
             }
         case .success(.diff(let response)):
