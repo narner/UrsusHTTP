@@ -53,7 +53,12 @@ public class Airlock {
 extension Airlock {
     
     @discardableResult public func loginRequest(handler: @escaping (Ship) -> Void) -> DataRequest {
-        return session.request(loginURL, method: .post, parameters: ["password": credentials.code.description], encoder: URLEncodedFormParameterEncoder.default).validate().response { response in
+        return session.request(loginURL, method: .post, parameters: ["password": credentials.code.encodableString], encoder: URLEncodedFormParameterEncoder.default).validate().response { response in
+            guard case .success = response.result else {
+                print("[Ursus] Error with login request")
+                return
+            }
+            
             guard let urbauth = response.response?.value(forHTTPHeaderField: "Set-Cookie") else {
                 print("[Ursus] Error retrieving urbauth")
                 return
