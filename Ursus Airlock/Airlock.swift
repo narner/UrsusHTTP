@@ -53,25 +53,35 @@ public class Airlock {
 extension Airlock {
     
     @discardableResult public func loginRequest(handler: @escaping (Ship) -> Void) -> DataRequest {
-        return session.request(loginURL, method: .post, parameters: ["password": Code.Prefixless(credentials.code)], encoder: URLEncodedFormParameterEncoder.default).validate().response(responseSerializer: AirlockLoginResponseSerializer()) { response in
-            if let ship = response.value {
-                handler(ship)
+        let parameters = ["password": Code.Prefixless(credentials.code)]
+        return session
+            .request(loginURL, method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder.default)
+            .validate()
+            .response(responseSerializer: AirlockLoginResponseSerializer()) { response in
+                if let ship = response.value {
+                    handler(ship)
+                }
             }
-        }
     }
     
     @discardableResult public func logoutRequest() -> DataRequest {
-        return session.request(logoutURL, method: .post).validate()
+        return session
+            .request(logoutURL, method: .post)
+            .validate()
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
-        return session.request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder(encoder: encoder)).validate().response { [weak self] response in
-            self?.connectEventSourceIfDisconnected()
-        }
+        return session
+            .request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder(encoder: encoder))
+            .validate()
+            .response { [weak self] response in
+                self?.connectEventSourceIfDisconnected()
+            }
     }
     
     @discardableResult public func scryRequest(app: String, path: String) -> DataRequest {
-        return session.request(scryURL(app: app, path: path))
+        return session
+            .request(scryURL(app: app, path: path))
     }
     
 }
@@ -89,7 +99,7 @@ extension Airlock {
         let request = PokeRequest(id: id, ship: ship, app: app, mark: mark, json: json)
         pokeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
-            if response.error != nil {
+            if case .failure = response.result {
                 self?.pokeHandlers[id] = nil
             }
         }
@@ -101,7 +111,7 @@ extension Airlock {
         let request = SubscribeRequest(id: id, ship: ship, app: app, path: path)
         subscribeHandlers[id] = handler
         return channelRequest(request).response { [weak self] response in
-            if response.error != nil {
+            if case .failure = response.result {
                 self?.subscribeHandlers[id] = nil
             }
         }
