@@ -71,8 +71,9 @@ extension Airlock {
     }
     
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
+        let parameters = [parameters]
         return session
-            .request(channelURL, method: .put, parameters: [parameters], encoder: JSONParameterEncoder(encoder: encoder))
+            .request(channelURL, method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: encoder))
             .validate()
             .response { [weak self] response in
                 self?.connectEventSourceIfDisconnected()
