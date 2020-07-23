@@ -18,8 +18,8 @@ public class Airlock {
     private var session: Session = .default
     private var eventSource: EventSource? = nil
     
-    private var encoder = AirlockEncoder()
-    private var decoder = AirlockDecoder()
+    private var encoder = AirlockJSONEncoder()
+    private var decoder = AirlockJSONDecoder()
     
     private var pokeHandlers = [Int: (PokeEvent) -> Void]()
     private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
@@ -53,28 +53,10 @@ public class Airlock {
 extension Airlock {
     
     @discardableResult public func loginRequest(handler: @escaping (Ship) -> Void) -> DataRequest {
-        return session.request(loginURL, method: .post, parameters: ["password": Code.Prefixless(credentials.code)], encoder: URLEncodedFormParameterEncoder.default).validate().response { response in
-            guard case .success = response.result else {
-                print("[Ursus] Error with login request")
-                return
+        return session.request(loginURL, method: .post, parameters: ["password": Code.Prefixless(credentials.code)], encoder: URLEncodedFormParameterEncoder.default).validate().response(responseSerializer: AirlockLoginResponseSerializer()) { response in
+            if let ship = response.value {
+                handler(ship)
             }
-            
-            guard let urbauth = response.response?.value(forHTTPHeaderField: "Set-Cookie") else {
-                print("[Ursus] Error retrieving urbauth")
-                return
-            }
-            
-            guard let name = urbauth.split(separator: "=").first?.replacingOccurrences(of: "urbauth-", with: "") else {
-                print("[Ursus] Error decoding urbauth:", urbauth)
-                return
-            }
-            
-            guard let ship = Ship(rawValue: name) else {
-                print("[Ursus] Error decoding urbauth:", urbauth)
-                return
-            }
-            
-            handler(ship)
         }
     }
     
