@@ -33,7 +33,6 @@ public class Airlock {
     }
     
     private var lastEventID: Int = 0
-    private var lastAcknowledgedEventID: Int = 0
     
     public var credentials: AirlockCredentials
     
@@ -88,6 +87,11 @@ extension Airlock {
 
 extension Airlock {
     
+    @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
+        let request = AckRequest(eventID: eventID)
+        return channelRequest(request)
+    }
+    
     @discardableResult public func pokeRequest<JSON: Encodable>(ship: Ship, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let ship = Ship.Prefixless(ship)
@@ -137,37 +141,38 @@ extension Airlock {
 extension Airlock: EventSourceDelegate {
     
     public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
-        lastEventID = message.id.flatMap(Int.init) ?? lastEventID
-        
-        guard let data = message.data?.data(using: .utf8) else {
-            return
+        if let id = message.id.flatMap(Int.init) {
+            lastEventID = id
+            ackRequest(eventID: id)
         }
-
-        switch Result(catching: { try decoder.decode(Response.self, from: data) }) {
-        case .success(.poke(let response)):
-            switch response.result {
-            case .okay:
-                pokeHandlers[response.id]?(.finished)
-                pokeHandlers[response.id] = nil
-            case .error(let message):
-                pokeHandlers[response.id]?(.failure(AirlockError.pokeFailure(message)))
-                pokeHandlers[response.id] = nil
-            }
-        case .success(.subscribe(let response)):
-            switch response.result {
-            case .okay:
-                subscribeHandlers[response.id]?(.started)
-            case .error(let message):
-                subscribeHandlers[response.id]?(.failure(AirlockError.subscribeFailure(message)))
+        
+        if let data = message.data?.data(using: .utf8) {
+            switch Result(catching: { try decoder.decode(Response.self, from: data) }) {
+            case .success(.poke(let response)):
+                switch response.result {
+                case .okay:
+                    pokeHandlers[response.id]?(.finished)
+                    pokeHandlers[response.id] = nil
+                case .error(let message):
+                    pokeHandlers[response.id]?(.failure(AirlockError.pokeFailure(message)))
+                    pokeHandlers[response.id] = nil
+                }
+            case .success(.subscribe(let response)):
+                switch response.result {
+                case .okay:
+                    subscribeHandlers[response.id]?(.started)
+                case .error(let message):
+                    subscribeHandlers[response.id]?(.failure(AirlockError.subscribeFailure(message)))
+                    subscribeHandlers[response.id] = nil
+                }
+            case .success(.diff(let response)):
+                subscribeHandlers[response.id]?(.update(response.json))
+            case .success(.quit(let response)):
+                subscribeHandlers[response.id]?(.finished)
                 subscribeHandlers[response.id] = nil
+            case .failure(let error):
+                print("[Ursus] Error decoding message:", message, error)
             }
-        case .success(.diff(let response)):
-            subscribeHandlers[response.id]?(.update(response.json))
-        case .success(.quit(let response)):
-            subscribeHandlers[response.id]?(.finished)
-            subscribeHandlers[response.id] = nil
-        case .failure(let error):
-            print("[Ursus] Error decoding message:", message, error)
         }
     }
     

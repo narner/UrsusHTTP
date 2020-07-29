@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage = "https://github.com/dclelland/UrsusAirlock"
   s.license = { type: 'MIT' }
   s.author = { "Daniel Clelland" => "daniel.clelland@gmail.com" }
-  s.source = { git: "https://github.com/dclelland/UrsusAirlock.git", tag: "1.6.0" }
+  s.source = { git: "https://github.com/dclelland/UrsusAirlock.git", tag: "1.6.1" }
   s.swift_versions = ['5.1', '5.2']
   
   s.ios.deployment_target = '13.0'
