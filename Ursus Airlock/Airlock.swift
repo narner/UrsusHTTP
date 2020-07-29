@@ -52,15 +52,13 @@ public class Airlock {
 
 extension Airlock {
     
-    @discardableResult public func loginRequest(handler: @escaping (Ship) -> Void) -> DataRequest {
+    @discardableResult public func loginRequest(handler: @escaping (AFResult<Ship>) -> Void) -> DataRequest {
         let parameters = ["password": Code.Prefixless(credentials.code)]
         return session
             .request(loginURL, method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder.default)
             .validate()
             .response(responseSerializer: AirlockLoginResponseSerializer()) { response in
-                if let ship = response.value {
-                    handler(ship)
-                }
+                handler(response.result)
             }
     }
     
@@ -121,7 +119,7 @@ extension Airlock {
     @discardableResult public func subscribeRequest<JSON: Decodable>(ship: Ship, app: String, path: String, handler: @escaping (SubscribeEvent<JSON>) -> Void) -> DataRequest {
         let decoder = self.decoder
         return subscribeRequest(ship: ship, app: app, path: path) { event in
-            handler(event.map { data in
+            handler(event.tryMap { data in
                 return try decoder.decode(JSON.self, from: data)
             })
         }
