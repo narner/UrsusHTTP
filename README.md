@@ -14,7 +14,7 @@ airlock.loginRequest() { result in
     switch result {
     case .success(let ship):
         airlock.subscribeRequest(ship: ship, app: "chat-view", path: "/primary") { event in
-            print("On subscribe event:", event)
+            print(event)
         }
     case .failure(let error):
         print(error)
