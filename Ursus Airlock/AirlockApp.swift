@@ -40,10 +40,6 @@ extension AirlockApp {
 
 extension AirlockApp {
     
-    @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
-        return airlock.ackRequest(eventID: eventID)
-    }
-    
     @discardableResult public func pokeRequest<JSON: Encodable>(mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         return airlock.pokeRequest(ship: ship, app: app, mark: mark, json: json, handler: handler)
     }

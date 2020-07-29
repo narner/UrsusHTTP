@@ -32,7 +32,8 @@ public class Airlock {
         return requestID
     }
     
-    private var lastEventID: String? = nil
+    private var lastEventID: Int = 0
+    private var lastAcknowledgedEventID: Int = 0
     
     public var credentials: AirlockCredentials
     
@@ -87,11 +88,6 @@ extension Airlock {
 
 extension Airlock {
     
-    @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
-        let request = AckRequest(eventID: eventID)
-        return channelRequest(request)
-    }
-    
     @discardableResult public func pokeRequest<JSON: Encodable>(ship: Ship, app: String, mark: String = "json", json: JSON, handler: @escaping (PokeEvent) -> Void) -> DataRequest {
         let id = nextRequestID
         let ship = Ship.Prefixless(ship)
@@ -141,7 +137,7 @@ extension Airlock {
 extension Airlock: EventSourceDelegate {
     
     public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
-        self.lastEventID = message.id
+        lastEventID = message.id.flatMap(Int.init) ?? lastEventID
         
         guard let data = message.data?.data(using: .utf8) else {
             return
@@ -199,7 +195,7 @@ extension Airlock {
         }
         
         eventSource = EventSource(url: channelURL, delegate: self)
-        eventSource?.connect(lastEventID: lastEventID)
+        eventSource?.connect(lastEventID: String(lastEventID))
     }
     
     private func resetEventSource() {
@@ -208,7 +204,7 @@ extension Airlock {
         uid = Airlock.uid()
         
         requestID = 0
-        lastEventID = nil
+        lastEventID = 0
     }
     
 }
