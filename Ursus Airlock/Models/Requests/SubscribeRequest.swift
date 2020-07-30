@@ -12,8 +12,8 @@ internal struct SubscribeRequest: Encodable {
     var action: String = "subscribe"
     var id: Int
     var ship: Ship.Prefixless
-    var app: String
-    var path: String
+    var app: App
+    var path: Path
     
     enum CodingKeys: String, CodingKey {
         case action
