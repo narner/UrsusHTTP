@@ -17,12 +17,14 @@ internal struct PokeRequest<JSON: Encodable>: Encodable {
     var json: JSON
     
     enum CodingKeys: String, CodingKey {
+        
         case action
         case id
         case ship
         case app
         case mark
         case json
+        
     }
     
 }

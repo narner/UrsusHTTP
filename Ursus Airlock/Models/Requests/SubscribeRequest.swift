@@ -16,11 +16,13 @@ internal struct SubscribeRequest: Encodable {
     var path: Path
     
     enum CodingKeys: String, CodingKey {
+        
         case action
         case id
         case ship
         case app
         case path
+        
     }
     
 }
