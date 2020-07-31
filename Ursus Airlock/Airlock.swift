@@ -10,33 +10,32 @@ import Alamofire
 
 public class Airlock {
     
-    private var session: Session = .default
-    private var eventSource: EventSource? = nil
-    
     private var encoder = AirlockJSONEncoder()
     private var decoder = AirlockJSONDecoder()
     
     private var pokeHandlers = [Int: (PokeEvent) -> Void]()
     private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
-    private var uid: String = Airlock.uid()
+    private var eventSource: EventSource? = nil
+    private var eventSourceUID: String = Airlock.uid()
     
+    private var eventID: Int = 0
     private var requestID: Int = 0
     private var nextRequestID: Int {
         requestID += 1
         return requestID
     }
     
-    private var lastEventID: Int = 0
-    
+    public var session: Session
     public var credentials: AirlockCredentials
     
-    public init(credentials: AirlockCredentials) {
+    public init(session: Session = .default, credentials: AirlockCredentials) {
+        self.session = session
         self.credentials = credentials
     }
     
-    public convenience init(url: URL, code: Code) {
-        self.init(credentials: AirlockCredentials(url: url, code: code))
+    public convenience init(session: Session = .default, url: URL, code: Code) {
+        self.init(session: session, credentials: AirlockCredentials(url: url, code: code))
     }
     
     deinit {
@@ -66,7 +65,7 @@ extension Airlock {
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
         let parameters = [parameters]
         return session
-            .request(channelURL(uid: uid), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: encoder))
+            .request(channelURL(uid: eventSourceUID), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: encoder))
             .validate()
             .response { [weak self] response in
                 self?.connectEventSourceIfDisconnected()
@@ -137,7 +136,7 @@ extension Airlock: EventSourceDelegate {
     
     public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
         if let id = message.id.flatMap(Int.init) {
-            lastEventID = id
+            eventID = id
             ackRequest(eventID: id)
         }
         
@@ -194,17 +193,16 @@ extension Airlock {
             return
         }
         
-        eventSource = EventSource(url: channelURL(uid: uid), delegate: self)
-        eventSource?.connect(lastEventID: String(lastEventID))
+        eventSource = EventSource(url: channelURL(uid: eventSourceUID), delegate: self)
+        eventSource?.connect(lastEventID: String(eventID))
     }
     
     private func resetEventSource() {
         eventSource = nil
+        eventSourceUID = Airlock.uid()
         
-        uid = Airlock.uid()
-        
+        eventID = 0
         requestID = 0
-        lastEventID = 0
     }
     
 }
