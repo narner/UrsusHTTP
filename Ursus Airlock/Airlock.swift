@@ -47,6 +47,7 @@ public class Airlock {
 extension Airlock {
     
     #warning("TODO: Use an enum for state management here")
+    #warning("TODO: Try chaining with SubscribeRequest; can filter by response id then")
     
     @discardableResult public func connect() -> DataStreamRequest {
         return session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
@@ -133,11 +134,11 @@ extension Airlock {
         }
     }
     
-    @discardableResult public func subscribeRequest<JSON: Decodable>(ship: Ship, app: App, path: Path, handler: @escaping (SubscribeEvent<JSON>) -> Void) -> DataRequest {
+    @discardableResult public func subscribeRequest<JSON: Decodable>(ship: Ship, app: App, path: Path, handler: @escaping (SubscribeEvent<Result<JSON, Error>>) -> Void) -> DataRequest {
         let decoder = self.decoder
         return subscribeRequest(ship: ship, app: app, path: path) { event in
-            handler(event.tryMap { data in
-                return try decoder.decode(JSON.self, from: data)
+            handler(event.map { data in
+                return Result(catching: { try decoder.decode(JSON.self, from: data) })
             })
         }
     }
@@ -171,7 +172,7 @@ extension Airlock {
                     pokeHandlers[response.id]?(.finished)
                     pokeHandlers[response.id] = nil
                 case .error(let message):
-                    pokeHandlers[response.id]?(.failure(AirlockError.pokeFailure(message)))
+                    pokeHandlers[response.id]?(.failure(.pokeFailure(message)))
                     pokeHandlers[response.id] = nil
                 }
             case .success(.subscribe(let response)):
@@ -179,7 +180,7 @@ extension Airlock {
                 case .okay:
                     subscribeHandlers[response.id]?(.started)
                 case .error(let message):
-                    subscribeHandlers[response.id]?(.failure(AirlockError.subscribeFailure(message)))
+                    subscribeHandlers[response.id]?(.failure(.subscribeFailure(message)))
                     subscribeHandlers[response.id] = nil
                 }
             case .success(.diff(let response)):
@@ -188,24 +189,25 @@ extension Airlock {
                 subscribeHandlers[response.id]?(.finished)
                 subscribeHandlers[response.id] = nil
             case .failure(let error):
-                print("[Ursus] Error decoding message:", message, error)
+                print("[UrsusAirlock] Error decoding message:", message, error)
             }
         }
     }
     
     #warning("TODO: Tidy this method up and test everything")
+    #warning("TODO: Ensure completion event gets piped into the subscription")
     #warning("TODO: Decide what to do about the delete request, handlers, and event/request IDs")
     
     private func eventSource(didReceiveCompletion completion: DataStreamRequest.Completion) {
         deleteRequest()
         
         pokeHandlers.values.forEach { handler in
-            handler(completion.error.flatMap { .failure($0) } ?? .finished)
+            handler(.finished)
         }
         pokeHandlers.removeAll()
         
         subscribeHandlers.values.forEach { handler in
-            handler(completion.error.flatMap { .failure($0) } ?? .finished)
+            handler(.finished)
         }
         subscribeHandlers.removeAll()
         
