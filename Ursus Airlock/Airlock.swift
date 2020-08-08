@@ -11,18 +11,17 @@ import AlamofireEventSource
 
 public class Airlock {
     
-    private var pokeHandlers = [Int: (PokeEvent) -> Void]()
-    private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
-    
+    private var eventSource: DataStreamRequest? = nil
     private var eventSourceUID: String = Airlock.uid()
-    private var eventSourceCancellationToken: DataStreamRequest.CancellationToken? = nil
     
-    private var eventID: Int = 0
     private var requestID: Int = 0
     private var nextRequestID: Int {
         requestID += 1
         return requestID
     }
+    
+    private var pokeHandlers = [Int: (PokeEvent) -> Void]()
+    private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
     public var credentials: AirlockCredentials
     
@@ -46,27 +45,23 @@ public class Airlock {
 
 extension Airlock {
     
-    #warning("TODO: Use an enum for state management here")
-    #warning("TODO: Try chaining with SubscribeRequest; can filter by response id then")
-    #warning("TODO: Should a decoder error halt the entire subscription process...?")
-    
     @discardableResult public func connect() -> DataStreamRequest {
-        return session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
+        eventSource = eventSource ?? session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put)
             .validate()
-            .responseEventSource { [weak self] eventSource in
+            .responseDecodableEventSource(using: DecodableEventSourceSerializer<Response>(decoder: decoder)) { [weak self] eventSource in
                 switch eventSource.event {
                 case .message(let message):
-                    self?.eventSourceCancellationToken = eventSource.token
                     self?.eventSource(didReceiveMessage: message)
                 case .complete(let completion):
-                    self?.eventSourceCancellationToken = nil
                     self?.eventSource(didReceiveCompletion: completion)
                 }
             }
+        
+        return eventSource!
     }
     
     public func disconnect() {
-        eventSourceCancellationToken?.cancel()
+        eventSource?.cancel()
     }
     
 }
@@ -159,14 +154,13 @@ extension Airlock {
 
 extension Airlock {
     
-    private func eventSource(didReceiveMessage message: EventSourceMessage) {
+    private func eventSource(didReceiveMessage message: DecodableEventSourceMessage<Response>) {
         if let id = message.id.flatMap(Int.init) {
-            eventID = id
             ackRequest(eventID: id)
         }
         
-        if let data = message.data?.data(using: .utf8) {
-            switch Result(catching: { try decoder.decode(Response.self, from: data) }) {
+        if let result = message.result {
+            switch result {
             case .success(.poke(let response)):
                 switch response.result {
                 case .okay:
@@ -195,28 +189,16 @@ extension Airlock {
         }
     }
     
-    #warning("TODO: Tidy this method up and test everything")
-    #warning("TODO: Ensure completion event gets piped into the subscription")
-    #warning("TODO: Decide what to do about the delete request, handlers, and event/request IDs")
-    
     private func eventSource(didReceiveCompletion completion: DataStreamRequest.Completion) {
         deleteRequest()
         
-        pokeHandlers.values.forEach { handler in
-            handler(.finished)
-        }
-        pokeHandlers.removeAll()
-        
-        subscribeHandlers.values.forEach { handler in
-            handler(.finished)
-        }
-        subscribeHandlers.removeAll()
-        
-//        eventSource = nil
+        eventSource = nil
         eventSourceUID = Airlock.uid()
 
-        eventID = 0
         requestID = 0
+        
+        pokeHandlers.removeAll()
+        subscribeHandlers.removeAll()
     }
     
 }
