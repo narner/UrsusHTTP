@@ -7,14 +7,15 @@
 
 import Foundation
 import Alamofire
+import AlamofireEventSource
 
 public class Airlock {
     
     private var pokeHandlers = [Int: (PokeEvent) -> Void]()
     private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
-    private var eventSource: EventSource? = nil
     private var eventSourceUID: String = Airlock.uid()
+    private var eventSourceCancellationToken: DataStreamRequest.CancellationToken? = nil
     
     private var eventID: Int = 0
     private var requestID: Int = 0
@@ -45,6 +46,31 @@ public class Airlock {
 
 extension Airlock {
     
+    #warning("TODO: Use an enum for state management here")
+    
+    @discardableResult public func connect() -> DataStreamRequest {
+        return session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
+            .validate()
+            .responseEventSource { [weak self] eventSource in
+                switch eventSource.event {
+                case .message(let message):
+                    self?.eventSourceCancellationToken = eventSource.token
+                    self?.eventSource(didReceiveMessage: message)
+                case .complete(let completion):
+                    self?.eventSourceCancellationToken = nil
+                    self?.eventSource(didReceiveCompletion: completion)
+                }
+            }
+    }
+    
+    public func disconnect() {
+        eventSourceCancellationToken?.cancel()
+    }
+    
+}
+
+extension Airlock {
+    
     @discardableResult public func loginRequest(handler: @escaping (AFResult<Ship>) -> Void) -> DataRequest {
         let parameters = ["password": Code.Prefixless(credentials.code)]
         return session
@@ -66,14 +92,12 @@ extension Airlock {
         return session
             .request(channelURL(uid: eventSourceUID), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: encoder))
             .validate()
-            .response { [weak self] response in
-                self?.connectEventSourceIfDisconnected()
-            }
     }
     
     @discardableResult public func scryRequest(app: App, path: Path) -> DataRequest {
         return session
             .request(scryURL(app: app, path: path))
+            .validate()
     }
     
 }
@@ -131,9 +155,9 @@ extension Airlock {
     
 }
 
-extension Airlock: EventSourceDelegate {
+extension Airlock {
     
-    public func eventSource(_ eventSource: EventSource, didReceiveMessage message: EventSourceMessage) {
+    private func eventSource(didReceiveMessage message: EventSourceMessage) {
         if let id = message.id.flatMap(Int.init) {
             eventID = id
             ackRequest(eventID: id)
@@ -169,37 +193,25 @@ extension Airlock: EventSourceDelegate {
         }
     }
     
-    public func eventSource(_ eventSource: EventSource, didCompleteWithError error: EventSourceError) {
+    #warning("TODO: Tidy this method up and test everything")
+    #warning("TODO: Decide what to do about the delete request, handlers, and event/request IDs")
+    
+    private func eventSource(didReceiveCompletion completion: DataStreamRequest.Completion) {
+        deleteRequest()
+        
         pokeHandlers.values.forEach { handler in
-            handler(.failure(error))
+            handler(completion.error.flatMap { .failure($0) } ?? .finished)
         }
         pokeHandlers.removeAll()
         
         subscribeHandlers.values.forEach { handler in
-            handler(.failure(error))
+            handler(completion.error.flatMap { .failure($0) } ?? .finished)
         }
         subscribeHandlers.removeAll()
         
-        resetEventSource()
-    }
-    
-}
-
-extension Airlock {
-    
-    private func connectEventSourceIfDisconnected() {
-        guard eventSource == nil else {
-            return
-        }
-        
-        eventSource = EventSource(url: channelURL(uid: eventSourceUID), delegate: self)
-        eventSource?.connect(lastEventID: String(eventID))
-    }
-    
-    private func resetEventSource() {
-        eventSource = nil
+//        eventSource = nil
         eventSourceUID = Airlock.uid()
-        
+
         eventID = 0
         requestID = 0
     }
