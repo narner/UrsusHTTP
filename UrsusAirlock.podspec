@@ -14,6 +14,6 @@ Pod::Spec.new do |s|
   s.source_files = 'Ursus Airlock/**/*.swift'
   
   s.dependency 'Alamofire', '~> 5.2'
-  s.dependency 'AlamofireEventSource', '~> 1.1'
+  s.dependency 'AlamofireEventSource', '~> 1.2'
   s.dependency 'UrsusAtom', '~> 1.2'
 end

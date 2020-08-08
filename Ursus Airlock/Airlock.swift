@@ -14,6 +14,7 @@ public class Airlock {
     private var eventSource: DataStreamRequest? = nil
     private var eventSourceUID: String = Airlock.uid()
     
+    private var eventID: Int = 0
     private var requestID: Int = 0
     private var nextRequestID: Int {
         requestID += 1
@@ -46,7 +47,7 @@ public class Airlock {
 extension Airlock {
     
     @discardableResult public func connect() -> DataStreamRequest {
-        eventSource = eventSource ?? session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put)
+        eventSource = eventSource ?? session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
             .validate()
             .responseDecodableEventSource(using: DecodableEventSourceSerializer<Response>(decoder: decoder)) { [weak self] eventSource in
                 switch eventSource.event {
@@ -156,12 +157,13 @@ extension Airlock {
     
     private func eventSource(didReceiveMessage message: DecodableEventSourceMessage<Response>) {
         if let id = message.id.flatMap(Int.init) {
+            eventID = id
             ackRequest(eventID: id)
         }
         
-        if let result = message.result {
-            switch result {
-            case .success(.poke(let response)):
+        if let data = message.data {
+            switch data {
+            case .poke(let response):
                 switch response.result {
                 case .okay:
                     pokeHandlers[response.id]?(.finished)
@@ -170,7 +172,7 @@ extension Airlock {
                     pokeHandlers[response.id]?(.failure(.pokeFailure(message)))
                     pokeHandlers[response.id] = nil
                 }
-            case .success(.subscribe(let response)):
+            case .subscribe(let response):
                 switch response.result {
                 case .okay:
                     subscribeHandlers[response.id]?(.started)
@@ -178,13 +180,11 @@ extension Airlock {
                     subscribeHandlers[response.id]?(.failure(.subscribeFailure(message)))
                     subscribeHandlers[response.id] = nil
                 }
-            case .success(.diff(let response)):
+            case .diff(let response):
                 subscribeHandlers[response.id]?(.update(response.json))
-            case .success(.quit(let response)):
+            case .quit(let response):
                 subscribeHandlers[response.id]?(.finished)
                 subscribeHandlers[response.id] = nil
-            case .failure(let error):
-                print("[UrsusAirlock] Error decoding message:", message, error)
             }
         }
     }
@@ -195,6 +195,7 @@ extension Airlock {
         eventSource = nil
         eventSourceUID = Airlock.uid()
 
+        eventID = 0
         requestID = 0
         
         pokeHandlers.removeAll()
