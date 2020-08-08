@@ -48,6 +48,7 @@ extension Airlock {
     
     #warning("TODO: Use an enum for state management here")
     #warning("TODO: Try chaining with SubscribeRequest; can filter by response id then")
+    #warning("TODO: Should a decoder error halt the entire subscription process...?")
     
     @discardableResult public func connect() -> DataStreamRequest {
         return session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
