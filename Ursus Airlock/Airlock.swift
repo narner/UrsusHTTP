@@ -50,7 +50,7 @@ extension Airlock {
     @discardableResult public func connect() -> DataStreamRequest {
         eventSource = eventSource ?? session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
             .validate()
-            .responseDecodableEventSource(using: DecodableEventSourceSerializer<Response>(decoder: decoder)) { [weak self] eventSource in
+            .responseDecodableEventSource(using: DecodableEventSourceSerializer<Response>(decoder: AirlockJSONDecoder())) { [weak self] eventSource in
                 switch eventSource.event {
                 case .message(let message):
                     self?.eventSource(didReceiveMessage: message)
