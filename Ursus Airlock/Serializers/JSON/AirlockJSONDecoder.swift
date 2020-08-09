@@ -37,7 +37,7 @@ extension JSONDecoder.DataDecodingStrategy {
                 }
             }
             
-            return try JSONSerialization.data(withJSONObject: jsonObject as Any)
+            return try jsonObject.map { try JSONSerialization.data(withJSONObject: $0) } ?? Data()
         }
     }
     
