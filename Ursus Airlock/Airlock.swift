@@ -27,9 +27,6 @@ public class Airlock {
     public var session: Session
     public var credentials: AirlockCredentials
     
-    public var encoder: JSONEncoder = AirlockJSONEncoder()
-    public var decoder: JSONDecoder = AirlockJSONDecoder()
-    
     public init(session: Session = .default, credentials: AirlockCredentials) {
         self.session = session
         self.credentials = credentials
@@ -89,7 +86,7 @@ extension Airlock {
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
         let parameters = [parameters]
         return session
-            .request(channelURL(uid: eventSourceUID), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: encoder))
+            .request(channelURL(uid: eventSourceUID), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: AirlockJSONEncoder()))
             .validate()
     }
     
@@ -133,7 +130,7 @@ extension Airlock {
     }
     
     @discardableResult public func subscribeRequest<JSON: Decodable>(ship: Ship, app: App, path: Path, handler: @escaping (SubscribeEvent<Result<JSON, Error>>) -> Void) -> DataRequest {
-        let decoder = self.decoder
+        let decoder = AirlockJSONDecoder()
         return subscribeRequest(ship: ship, app: app, path: path) { event in
             handler(event.map { data in
                 return Result(catching: { try decoder.decode(JSON.self, from: data) })
