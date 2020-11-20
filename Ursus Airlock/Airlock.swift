@@ -96,6 +96,12 @@ extension Airlock {
             .validate()
     }
     
+    @discardableResult public func spiderRequest(input: Mark, thread: Thread, output: Mark) -> DataRequest {
+        return session
+            .request(spiderURL(input: input, thread: thread, output: output))
+            .validate()
+    }
+    
 }
 
 extension Airlock {
@@ -218,6 +224,10 @@ extension Airlock {
     
     private func scryURL(app: App, path: Path) -> URL {
         return credentials.url.appendingPathComponent("/~/scry/\(app)\(path).json")
+    }
+    
+    private func spiderURL(input: Mark, thread: Thread, output: Mark) -> URL {
+        return credentials.url.appendingPathComponent("/spider/\(input)/\(thread)/\(output).json")
     }
     
 }

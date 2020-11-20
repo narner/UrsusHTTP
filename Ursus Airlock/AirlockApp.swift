@@ -36,6 +36,10 @@ extension AirlockApp {
         return airlock.scryRequest(app: app, path: path)
     }
     
+    @discardableResult public func spiderRequest(input: Mark, thread: Thread, output: Mark) -> DataRequest {
+        return airlock.spiderRequest(input: input, thread: thread, output: output)
+    }
+    
 }
 
 extension AirlockApp {

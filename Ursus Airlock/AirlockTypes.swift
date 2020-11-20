@@ -17,3 +17,5 @@ public typealias App = String
 public typealias Path = String
 
 public typealias Mark = String
+
+public typealias Thread = String
