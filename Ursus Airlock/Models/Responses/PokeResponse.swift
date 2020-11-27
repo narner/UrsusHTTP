@@ -36,7 +36,7 @@ internal struct PokeResponse: Decodable {
         case [.id, .error]:
             self.result = .error(try container.decode(String.self, forKey: .error))
         default:
-            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Failed to decode \(type(of: self)); available keys: \(container.allKeys)"))
+            throw DecodingError.dataCorruptedError(type(of: self), at: decoder.codingPath, in: container)
         }
     }
     

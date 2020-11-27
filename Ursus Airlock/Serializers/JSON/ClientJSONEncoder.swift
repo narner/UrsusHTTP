@@ -1,5 +1,5 @@
 //
-//  AirlockJSONEncoder.swift
+//  ClientJSONEncoder.swift
 //  Alamofire
 //
 //  Created by Daniel Clelland on 16/06/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class AirlockJSONEncoder: JSONEncoder {
+public class ClientJSONEncoder: JSONEncoder {
     
     public override init() {
         super.init()

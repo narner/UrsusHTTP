@@ -1,5 +1,5 @@
 //
-//  Airlock.swift
+//  Client.swift
 //  Ursus
 //
 //  Created by Daniel Clelland on 3/06/20.
@@ -9,10 +9,10 @@ import Foundation
 import Alamofire
 import AlamofireEventSource
 
-public class Airlock {
+public class Client {
     
     private var eventSource: DataStreamRequest? = nil
-    private var eventSourceUID: String = Airlock.uid()
+    private var eventSourceUID: String = Client.uid()
     
     private var eventID: Int = 0
     private var requestID: Int = 0
@@ -25,15 +25,15 @@ public class Airlock {
     private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
     public var session: Session
-    public var credentials: AirlockCredentials
+    public var credentials: Credentials
     
-    public init(session: Session = .default, credentials: AirlockCredentials) {
+    public init(session: Session = .default, credentials: Credentials) {
         self.session = session
         self.credentials = credentials
     }
     
     public convenience init(session: Session = .default, url: URL, code: Code) {
-        self.init(session: session, credentials: AirlockCredentials(url: url, code: code))
+        self.init(session: session, credentials: Credentials(url: url, code: code))
     }
     
     deinit {
@@ -42,12 +42,12 @@ public class Airlock {
     
 }
 
-extension Airlock {
+extension Client {
     
     @discardableResult public func connect() -> DataStreamRequest {
         eventSource = eventSource ?? session.eventSourceRequest(channelURL(uid: eventSourceUID), method: .put, lastEventID: String(eventID))
             .validate()
-            .responseDecodableEventSource(using: DecodableEventSourceSerializer<Response>(decoder: AirlockJSONDecoder())) { [weak self] eventSource in
+            .responseDecodableEventSource(using: DecodableEventSourceSerializer<Response>(decoder: ClientJSONDecoder())) { [weak self] eventSource in
                 switch eventSource.event {
                 case .message(let message):
                     self?.eventSource(didReceiveMessage: message)
@@ -65,14 +65,14 @@ extension Airlock {
     
 }
 
-extension Airlock {
+extension Client {
     
     @discardableResult public func loginRequest(handler: @escaping (AFResult<Ship>) -> Void) -> DataRequest {
         let parameters = ["password": Code.Prefixless(credentials.code)]
         return session
             .request(loginURL, method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder.default)
             .validate()
-            .response(responseSerializer: AirlockLoginResponseSerializer()) { response in
+            .response(responseSerializer: ClientLoginResponseSerializer()) { response in
                 handler(response.result)
             }
     }
@@ -86,7 +86,7 @@ extension Airlock {
     @discardableResult public func channelRequest<Parameters: Encodable>(_ parameters: Parameters) -> DataRequest {
         let parameters = [parameters]
         return session
-            .request(channelURL(uid: eventSourceUID), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: AirlockJSONEncoder()))
+            .request(channelURL(uid: eventSourceUID), method: .put, parameters: parameters, encoder: JSONParameterEncoder(encoder: ClientJSONEncoder()))
             .validate()
     }
     
@@ -104,7 +104,7 @@ extension Airlock {
     
 }
 
-extension Airlock {
+extension Client {
     
     @discardableResult public func ackRequest(eventID: Int) -> DataRequest {
         let request = AckRequest(eventID: eventID)
@@ -136,7 +136,7 @@ extension Airlock {
     }
     
     @discardableResult public func subscribeRequest<JSON: Decodable>(ship: Ship, app: App, path: Path, handler: @escaping (SubscribeEvent<Result<JSON, Error>>) -> Void) -> DataRequest {
-        let decoder = AirlockJSONDecoder()
+        let decoder = ClientJSONDecoder()
         return subscribeRequest(ship: ship, app: app, path: path) { event in
             handler(event.map { data in
                 return Result(catching: { try decoder.decode(JSON.self, from: data) })
@@ -157,7 +157,7 @@ extension Airlock {
     
 }
 
-extension Airlock {
+extension Client {
     
     private func eventSource(didReceiveMessage message: DecodableEventSourceMessage<Response>) {
         if let id = message.id.flatMap(Int.init) {
@@ -185,6 +185,7 @@ extension Airlock {
                     subscribeHandlers[response.id] = nil
                 }
             case .diff(let response):
+                print("DIFF: \(String(data: response.json, encoding: .utf8)!)")
                 subscribeHandlers[response.id]?(.update(response.json))
             case .quit(let response):
                 subscribeHandlers[response.id]?(.finished)
@@ -197,7 +198,7 @@ extension Airlock {
         deleteRequest()
         
         eventSource = nil
-        eventSourceUID = Airlock.uid()
+        eventSourceUID = Client.uid()
 
         eventID = 0
         requestID = 0
@@ -208,7 +209,7 @@ extension Airlock {
     
 }
 
-extension Airlock {
+extension Client {
     
     private var loginURL: URL {
         return credentials.url.appendingPathComponent("/~/login")
@@ -232,7 +233,7 @@ extension Airlock {
     
 }
 
-extension Airlock {
+extension Client {
     
     private static func uid() -> String {
         return "\(Int(Date().timeIntervalSince1970 * 1000))-\(String(Int.random(in: 0...0xFFFFFF), radix: 16))"

@@ -1,5 +1,5 @@
 //
-//  AirlockLoginResponseSerializerError.swift
+//  ClientLoginResponseSerializerError.swift
 //  Alamofire
 //
 //  Created by Daniel Clelland on 23/07/20.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal enum AirlockLoginResponseSerializerError: LocalizedError {
+internal enum ClientLoginResponseSerializerError: LocalizedError {
     
     case missingAuthenticationHeader
     case invalidAuthenticationHeader(String)

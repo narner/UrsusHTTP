@@ -1,13 +1,13 @@
 //
-//  AirlockCredentials.swift
-//  Alamofire
+//  Credentials.swift
+//  UrsusHTTP
 //
 //  Created by Daniel Clelland on 7/07/20.
 //
 
 import Foundation
 
-public struct AirlockCredentials: Codable {
+public struct Credentials: Codable {
     
     public var url: URL
     public var code: Code

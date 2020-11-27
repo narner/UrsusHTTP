@@ -1,6 +1,6 @@
 //
-//  AirlockTypes.swift
-//  Alamofire
+//  Types.swift
+//  UrsusHTTP
 //
 //  Created by Daniel Clelland on 30/07/20.
 //

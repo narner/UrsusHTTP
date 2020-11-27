@@ -1,4 +1,4 @@
-# Ursus Airlock
+# Ursus HTTP
 
 An Urbit HTTP/`%eyre` client for iOS/macOS in Swift.
 
@@ -6,15 +6,15 @@ See my [Ursus Chat](https://github.com/dclelland/UrsusChat) repository for a dem
 
 ## Usage
 
-Ursus Airlock is very much a work in progress - better documentation and a demo app to come. Here's a quick sketch for now:
+Ursus HTTP is very much a work in progress - better documentation and a demo app to come. Here's a quick sketch for now:
 
 ```swift
-let airlock = Airlock(url: URL(string: "http://localhost")!, code: "fipfes-fipfes-fipfes-fipfes")
-airlock.loginRequest() { result in
+let client = Client(url: URL(string: "http://localhost")!, code: "fipfes-fipfes-fipfes-fipfes")
+client.loginRequest() { result in
     switch result {
     case .success(let ship):
-        airlock.connect()
-        airlock.subscribeRequest(ship: ship, app: "chat-view", path: "/primary") { event in
+        client.connect()
+        client.subscribeRequest(ship: ship, app: "chat-view", path: "/primary") { event in
             print(event)
         }
     case .failure(let error):
