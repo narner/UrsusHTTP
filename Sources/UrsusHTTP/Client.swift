@@ -24,8 +24,8 @@ public class Client {
     private var pokeHandlers = [Int: (PokeEvent) -> Void]()
     private var subscribeHandlers = [Int: (SubscribeEvent<Data>) -> Void]()
     
-    public var session: Session
-    public var credentials: Credentials
+    public let session: Session
+    public let credentials: Credentials
     
     public init(session: Session = .default, credentials: Credentials) {
         self.session = session
