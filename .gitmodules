@@ -1,0 +1,3 @@
+[submodule "Dependencies/AlamofireEventStorage"]
+	path = Dependencies/AlamofireEventStorage
+	url = git@github.com:dclelland/AlamofireEventSource.git
