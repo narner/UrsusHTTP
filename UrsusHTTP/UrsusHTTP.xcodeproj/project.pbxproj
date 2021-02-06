@@ -3,21 +3,34 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5107804125CE1301001053AF /* PokeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5107804025CE1301001053AF /* PokeEvent.swift */; };
+		510780B625CE166D001053AF /* SubscribeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780B525CE166D001053AF /* SubscribeEvent.swift */; };
+		510780CE25CE1676001053AF /* AckRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780CD25CE1676001053AF /* AckRequest.swift */; };
+		510780D225CE1679001053AF /* PokeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780D125CE1679001053AF /* PokeRequest.swift */; };
+		510780D625CE167C001053AF /* DeleteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780D525CE167C001053AF /* DeleteRequest.swift */; };
+		510780DA25CE1680001053AF /* SubscribeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780D925CE1680001053AF /* SubscribeRequest.swift */; };
+		510780DE25CE1683001053AF /* UnsubscribeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780DD25CE1683001053AF /* UnsubscribeRequest.swift */; };
+		510780E225CE1685001053AF /* DiffResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780E125CE1685001053AF /* DiffResponse.swift */; };
+		510780E625CE168F001053AF /* PokeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780E525CE168F001053AF /* PokeResponse.swift */; };
+		510780EA25CE1692001053AF /* QuitResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780E925CE1691001053AF /* QuitResponse.swift */; };
+		510780EE25CE1698001053AF /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780ED25CE1698001053AF /* Response.swift */; };
+		510780F225CE169B001053AF /* SubscribeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780F125CE169B001053AF /* SubscribeResponse.swift */; };
+		510780F625CE169D001053AF /* ClientJSONDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780F525CE169D001053AF /* ClientJSONDecoder.swift */; };
+		510780FA25CE16A0001053AF /* DecodingError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780F925CE16A0001053AF /* DecodingError+Extensions.swift */; };
+		510780FE25CE16A5001053AF /* ClientJSONEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510780FD25CE16A5001053AF /* ClientJSONEncoder.swift */; };
+		5107810225CE16AC001053AF /* ClientLoginResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5107810125CE16AC001053AF /* ClientLoginResponseSerializer.swift */; };
+		5107810625CE16B7001053AF /* ClientLoginResponseSerializerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5107810525CE16B7001053AF /* ClientLoginResponseSerializerError.swift */; };
+		5107813525CE1704001053AF /* UrsusAtom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 510CA30725CE08C90041E3DA /* UrsusAtom.framework */; };
 		510CA0EA25CE01820041E3DA /* UrsusHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 510CA0E025CE01820041E3DA /* UrsusHTTP.framework */; };
 		510CA0EF25CE01820041E3DA /* UrsusHTTPTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510CA0EE25CE01820041E3DA /* UrsusHTTPTests.swift */; };
 		510CA0F125CE01820041E3DA /* UrsusHTTP.h in Headers */ = {isa = PBXBuildFile; fileRef = 510CA0E325CE01820041E3DA /* UrsusHTTP.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		510CA10225CE018F0041E3DA /* Extensions in Resources */ = {isa = PBXBuildFile; fileRef = 510CA0FC25CE018F0041E3DA /* Extensions */; };
 		510CA10325CE018F0041E3DA /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510CA0FD25CE018F0041E3DA /* Client.swift */; };
-		510CA10425CE018F0041E3DA /* Serializers in Resources */ = {isa = PBXBuildFile; fileRef = 510CA0FE25CE018F0041E3DA /* Serializers */; };
 		510CA10525CE018F0041E3DA /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510CA0FF25CE018F0041E3DA /* Credentials.swift */; };
-		510CA10625CE018F0041E3DA /* Models in Resources */ = {isa = PBXBuildFile; fileRef = 510CA10025CE018F0041E3DA /* Models */; };
 		510CA10725CE018F0041E3DA /* Types.swift in Sources */ = {isa = PBXBuildFile; fileRef = 510CA10125CE018F0041E3DA /* Types.swift */; };
-		510CA31E25CE093F0041E3DA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 510CA31D25CE093F0041E3DA /* Alamofire */; };
-		510CA33425CE09670041E3DA /* UrsusAtom.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 510CA30725CE08C90041E3DA /* UrsusAtom.framework */; };
 		510CA38A25CE0D310041E3DA /* AlamofireEventSource.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 510CA36F25CE0CF20041E3DA /* AlamofireEventSource.framework */; };
 /* End PBXBuildFile section */
 
@@ -60,17 +73,31 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5107804025CE1301001053AF /* PokeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeEvent.swift; sourceTree = "<group>"; };
+		510780B525CE166D001053AF /* SubscribeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeEvent.swift; sourceTree = "<group>"; };
+		510780CD25CE1676001053AF /* AckRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AckRequest.swift; sourceTree = "<group>"; };
+		510780D125CE1679001053AF /* PokeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeRequest.swift; sourceTree = "<group>"; };
+		510780D525CE167C001053AF /* DeleteRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteRequest.swift; sourceTree = "<group>"; };
+		510780D925CE1680001053AF /* SubscribeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeRequest.swift; sourceTree = "<group>"; };
+		510780DD25CE1683001053AF /* UnsubscribeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsubscribeRequest.swift; sourceTree = "<group>"; };
+		510780E125CE1685001053AF /* DiffResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffResponse.swift; sourceTree = "<group>"; };
+		510780E525CE168F001053AF /* PokeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokeResponse.swift; sourceTree = "<group>"; };
+		510780E925CE1691001053AF /* QuitResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitResponse.swift; sourceTree = "<group>"; };
+		510780ED25CE1698001053AF /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		510780F125CE169B001053AF /* SubscribeResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribeResponse.swift; sourceTree = "<group>"; };
+		510780F525CE169D001053AF /* ClientJSONDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientJSONDecoder.swift; sourceTree = "<group>"; };
+		510780F925CE16A0001053AF /* DecodingError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DecodingError+Extensions.swift"; sourceTree = "<group>"; };
+		510780FD25CE16A5001053AF /* ClientJSONEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientJSONEncoder.swift; sourceTree = "<group>"; };
+		5107810125CE16AC001053AF /* ClientLoginResponseSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientLoginResponseSerializer.swift; sourceTree = "<group>"; };
+		5107810525CE16B7001053AF /* ClientLoginResponseSerializerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientLoginResponseSerializerError.swift; sourceTree = "<group>"; };
 		510CA0E025CE01820041E3DA /* UrsusHTTP.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UrsusHTTP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		510CA0E325CE01820041E3DA /* UrsusHTTP.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UrsusHTTP.h; sourceTree = "<group>"; };
 		510CA0E425CE01820041E3DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		510CA0E925CE01820041E3DA /* UrsusHTTPTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UrsusHTTPTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		510CA0EE25CE01820041E3DA /* UrsusHTTPTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrsusHTTPTests.swift; sourceTree = "<group>"; };
 		510CA0F025CE01820041E3DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		510CA0FC25CE018F0041E3DA /* Extensions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Extensions; sourceTree = "<group>"; };
 		510CA0FD25CE018F0041E3DA /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
-		510CA0FE25CE018F0041E3DA /* Serializers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Serializers; sourceTree = "<group>"; };
 		510CA0FF25CE018F0041E3DA /* Credentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
-		510CA10025CE018F0041E3DA /* Models */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Models; sourceTree = "<group>"; };
 		510CA10125CE018F0041E3DA /* Types.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Types.swift; sourceTree = "<group>"; };
 		510CA2FF25CE08C90041E3DA /* UrsusAtom.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = UrsusAtom.xcodeproj; path = ../../UrsusAtom/UrsusAtom/UrsusAtom.xcodeproj; sourceTree = "<group>"; };
 		510CA36925CE0CF20041E3DA /* AlamofireEventSource.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlamofireEventSource.xcodeproj; path = ../Dependencies/AlamofireEventStorage/AlamofireEventSource/AlamofireEventSource.xcodeproj; sourceTree = "<group>"; };
@@ -81,9 +108,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5107813525CE1704001053AF /* UrsusAtom.framework in Frameworks */,
 				510CA38A25CE0D310041E3DA /* AlamofireEventSource.framework in Frameworks */,
-				510CA31E25CE093F0041E3DA /* Alamofire in Frameworks */,
-				510CA33425CE09670041E3DA /* UrsusAtom.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +124,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5107813825CE173A001053AF /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				510780DD25CE1683001053AF /* UnsubscribeRequest.swift */,
+				510780D925CE1680001053AF /* SubscribeRequest.swift */,
+				510780D525CE167C001053AF /* DeleteRequest.swift */,
+				510780D125CE1679001053AF /* PokeRequest.swift */,
+				510780CD25CE1676001053AF /* AckRequest.swift */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		5107813925CE1752001053AF /* Event */ = {
+			isa = PBXGroup;
+			children = (
+				510780B525CE166D001053AF /* SubscribeEvent.swift */,
+				5107804025CE1301001053AF /* PokeEvent.swift */,
+			);
+			path = Event;
+			sourceTree = "<group>";
+		};
+		5107813A25CE1770001053AF /* Response */ = {
+			isa = PBXGroup;
+			children = (
+				510780ED25CE1698001053AF /* Response.swift */,
+				510780F125CE169B001053AF /* SubscribeResponse.swift */,
+				510780E925CE1691001053AF /* QuitResponse.swift */,
+				510780E525CE168F001053AF /* PokeResponse.swift */,
+				510780E125CE1685001053AF /* DiffResponse.swift */,
+			);
+			path = Response;
+			sourceTree = "<group>";
+		};
+		5107813B25CE179C001053AF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				510780F925CE16A0001053AF /* DecodingError+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		5107814225CE1807001053AF /* Serializers */ = {
+			isa = PBXGroup;
+			children = (
+				5107810125CE16AC001053AF /* ClientLoginResponseSerializer.swift */,
+				510780FD25CE16A5001053AF /* ClientJSONEncoder.swift */,
+				5107810525CE16B7001053AF /* ClientLoginResponseSerializerError.swift */,
+				510780F525CE169D001053AF /* ClientJSONDecoder.swift */,
+			);
+			path = Serializers;
+			sourceTree = "<group>";
+		};
 		510CA0D625CE01820041E3DA = {
 			isa = PBXGroup;
 			children = (
@@ -122,12 +200,14 @@
 		510CA0E225CE01820041E3DA /* UrsusHTTP */ = {
 			isa = PBXGroup;
 			children = (
+				510CA10125CE018F0041E3DA /* Types.swift */,
 				510CA0FD25CE018F0041E3DA /* Client.swift */,
 				510CA0FF25CE018F0041E3DA /* Credentials.swift */,
-				510CA0FC25CE018F0041E3DA /* Extensions */,
-				510CA10025CE018F0041E3DA /* Models */,
-				510CA0FE25CE018F0041E3DA /* Serializers */,
-				510CA10125CE018F0041E3DA /* Types.swift */,
+				5107814225CE1807001053AF /* Serializers */,
+				5107813B25CE179C001053AF /* Extensions */,
+				5107813A25CE1770001053AF /* Response */,
+				5107813825CE173A001053AF /* Requests */,
+				5107813925CE1752001053AF /* Event */,
 				510CA0E325CE01820041E3DA /* UrsusHTTP.h */,
 				510CA0E425CE01820041E3DA /* Info.plist */,
 			);
@@ -197,7 +277,6 @@
 			);
 			name = UrsusHTTP;
 			packageProductDependencies = (
-				510CA31D25CE093F0041E3DA /* Alamofire */,
 			);
 			productName = UrsusHTTP;
 			productReference = 510CA0E025CE01820041E3DA /* UrsusHTTP.framework */;
@@ -249,7 +328,6 @@
 			);
 			mainGroup = 510CA0D625CE01820041E3DA;
 			packageReferences = (
-				510CA31C25CE093F0041E3DA /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = 510CA0E125CE01820041E3DA /* Products */;
 			projectDirPath = "";
@@ -307,9 +385,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				510CA10625CE018F0041E3DA /* Models in Resources */,
-				510CA10425CE018F0041E3DA /* Serializers in Resources */,
-				510CA10225CE018F0041E3DA /* Extensions in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -327,9 +402,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				510CA10725CE018F0041E3DA /* Types.swift in Sources */,
 				510CA10525CE018F0041E3DA /* Credentials.swift in Sources */,
 				510CA10325CE018F0041E3DA /* Client.swift in Sources */,
+				5107810625CE16B7001053AF /* ClientLoginResponseSerializerError.swift in Sources */,
+				5107810225CE16AC001053AF /* ClientLoginResponseSerializer.swift in Sources */,
+				510780FE25CE16A5001053AF /* ClientJSONEncoder.swift in Sources */,
+				510780FA25CE16A0001053AF /* DecodingError+Extensions.swift in Sources */,
+				510780F625CE169D001053AF /* ClientJSONDecoder.swift in Sources */,
+				510780F225CE169B001053AF /* SubscribeResponse.swift in Sources */,
+				510780EE25CE1698001053AF /* Response.swift in Sources */,
+				510780EA25CE1692001053AF /* QuitResponse.swift in Sources */,
+				510780E625CE168F001053AF /* PokeResponse.swift in Sources */,
+				510780E225CE1685001053AF /* DiffResponse.swift in Sources */,
+				510780DE25CE1683001053AF /* UnsubscribeRequest.swift in Sources */,
+				510780DA25CE1680001053AF /* SubscribeRequest.swift in Sources */,
+				510780D625CE167C001053AF /* DeleteRequest.swift in Sources */,
+				510780D225CE1679001053AF /* PokeRequest.swift in Sources */,
+				510780CE25CE1676001053AF /* AckRequest.swift in Sources */,
+				510780B625CE166D001053AF /* SubscribeEvent.swift in Sources */,
+				5107804125CE1301001053AF /* PokeEvent.swift in Sources */,
+				510CA10725CE018F0041E3DA /* Types.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,25 +682,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		510CA31C25CE093F0041E3DA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:Alamofire/Alamofire.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.4.1;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		510CA31D25CE093F0041E3DA /* Alamofire */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 510CA31C25CE093F0041E3DA /* XCRemoteSwiftPackageReference "Alamofire" */;
-			productName = Alamofire;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 510CA0D725CE01820041E3DA /* Project object */;
 }
